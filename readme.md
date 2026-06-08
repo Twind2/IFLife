@@ -3,6 +3,9 @@
 《人生 IF 线 - 高考版》是一款基于纯前端技术（HTML/CSS/Vanilla JS）与大语言模型 (LLM) 驱动的网页互动叙事/文字冒险体验项目。用户可以通过选择不同的年代（如世纪初、一零年代、当下）、心仪的高校以及专业，配合个人性格问卷，生成一段专属的“平行时空大学人生”。
 
 ---
+在线游玩连接：https://lifeif.sypherdao.com/
+---
+---
 
 ## ✨ 核心特性
 
@@ -19,10 +22,6 @@
 
 ```
 
-```text
-README.md created successfully.
-
-```text
 /
 ├── index.html       # 游戏入口与封面页，包含基于视差与物理反馈的动态卡片交互问卷。
 ├── config.js        # AI 引擎及 API 接口配置文件，用于填入 API Key、Model 和接口 URL。
