@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>人生if线-高考版</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Kinetic 核心调色盘 */
+    --bg: #ffffff;
+    --fg: #111111;
+    --mint: #d7f1e1;
+    --peach: #ffe8d6;
+    --sky: #e0f2fe;
+    --lilac: #f3e8ff;
+    --yellow-soft: #fef08a;
+    --shadow: rgba(0, 0, 0, 0.06) 0px 24px 60px;
+    
+    /* 后续阶段复用标准色 */
+    --text-dim: #5d7b88;
+    --line: rgba(18, 183, 199, 0.2);
+    --cyan: #12c7d0;
+    --blue: #0b5eb7;
+    --blue-deep: #073a6f;
+    --safe-b: env(safe-area-inset-bottom, 0px);
+    --safe-t: env(safe-area-inset-top, 0px);
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--fg); font-family: 'Inter', "PingFang SC", system-ui, sans-serif; cursor: default; }
+  
+  /* 独立画布容器，限定移动端黄金比例 */
+  .app { position: relative; height: 100%; max-width: 520px; margin: 0 auto; overflow: hidden; background: #ffffff; box-shadow: 0 0 50px rgba(0,0,0,0.03); }
+  
+  /* 基础场景控制 */
+  .screen { position: absolute; inset: 0; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1); display: flex; flex-direction: column; }
+  .screen.active { opacity: 1; visibility: visible; pointer-events: auto; }
+  .ui{font-family:"PingFang SC","Heiti SC","Microsoft YaHei",system-ui,sans-serif;}
+
+  /* ================= Index 封面页 ================= */
+  #screen-cover{justify-content:flex-start;align-items:stretch;text-align:left;padding:0;overflow:hidden;
+    background:url("ebed013c9753524e9f14bb2880416597.jpg") center top/cover no-repeat;}
+  .cover-copy{position:absolute;z-index:1;left:48px;top:27%;width:250px;padding:0;}
+  .cover-kicker{font-size:14px;letter-spacing:.42em;color:var(--blue);text-indent:.42em;margin-bottom:13px;opacity:0;animation:rise .9s .1s forwards;}
+  .cover-title{font-family:"Songti SC","STSong","Source Han Serif SC","SimSun",serif;font-size:62px;font-weight:700;line-height:.96;margin:0;color:var(--blue-deep);
+    text-shadow:0 1px 0 rgba(255,255,255,.8);opacity:0;animation:rise .9s .25s forwards;}
+  .cover-sub{position:absolute;z-index:1;right:28px;top:57.5%;width:188px;margin:0;color:var(--blue-deep);font-size:13px;line-height:1.7;opacity:0;animation:rise .9s .45s forwards;}
+  .cover-actions{position:absolute;z-index:1;right:28px;top:82%;width:188px;opacity:0;animation:rise .9s .8s forwards;}
+  .cover-actions .btn{width:100%;padding-left:0;padding-right:0;}
+  .cover-line{width:46px;height:2px;background:linear-gradient(90deg,var(--cyan),rgba(12,110,198,.18));margin:18px 0 0;opacity:0;animation:rise .9s .6s forwards;}
+  .btn{font-family:"PingFang SC","Heiti SC",system-ui,sans-serif;border:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(226,251,252,.72));
+    color:var(--blue);padding:14px 30px;border-radius:40px;font-size:16px;cursor:pointer;
+    transition:transform .15s ease, background .25s ease, box-shadow .25s ease;letter-spacing:.1em;box-shadow:0 10px 28px rgba(10,112,186,.12);}
+  .btn:active{transform:scale(.96);background:rgba(217,251,251,.9);}
+
+  /* ================= Kinetic 专属问卷画布 UI ================= */
+  .kinetic-container { position: relative; width: 100%; height: 100%; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px 24px; }
+  
+  /* 核心问题区域（Hero Title） */
+  .k-hero { text-align: center; max-width: 420px; z-index: 10; pointer-events: none; margin-bottom: 40px; transition: opacity 0.3s ease, transform 0.3s ease; }
+  .k-hero h1 { font-family: 'Inter', sans-serif; font-size: 24px; font-weight: 600; line-height: 1.5; color: var(--fg); letter-spacing: -0.01em; }
+  .k-hero p { font-family: 'Gaegu', cursive; font-size: 16px; color: #aaa; margin-top: 8px; letter-spacing: 0.05em; }
+
+  /* 互动悬浮选项卡片 - 宽度回调至 200px 找平衡 */
+  .k-card { position: absolute; padding: 20px 22px; border-radius: 28px; box-shadow: var(--shadow); width: 200px; min-height: 90px; transition: transform 0.15s ease-out, opacity 0.3s ease, box-shadow 0.2s ease; cursor: pointer; user-select: none; display: flex; flex-direction: column; justify-content: center; opacity: 0; transform: scale(0.85); z-index: 5; border: 1px solid rgba(0, 0, 0, 0.02); }
+  .k-card.incoming { opacity: 1; transform: scale(1); }
+  .k-card:hover { z-index: 50 !important; box-shadow: rgba(0, 0, 0, 0.12) 0px 30px 60px; }
+  .k-card:active { cursor: grabbing; transform: scale(0.96) !important; }
+  
+  .k-card h3 { font-size: 15px; font-weight: 600; line-height: 1.45; color: var(--fg); }
+  .k-card p { font-size: 12px; color: rgba(0, 0, 0, 0.4); margin-top: 6px; line-height: 1.3; }
+
+  /* 跳过与功能性按钮 */
+  .k-action-zone { position: absolute; bottom: calc(30px + var(--safe-b)); display: flex; flex-direction: column; align-items: center; gap: 12px; z-index: 100; }
+  .btn-skip { font-size: 13px; font-weight: 500; color: #999; background: none; border: none; border-bottom: 1px solid transparent; cursor: pointer; transition: all 0.2s; padding-bottom: 2px; pointer-events: auto; }
+  .btn-skip:hover { color: var(--fg); border-bottom-color: var(--fg); }
+
+  /* 后台装饰动效点 */
+  .k-dot { position: absolute; width: 8px; height: 8px; border-radius: 50%; background: #e5e5e5; z-index: 1; pointer-events: none; }
+
+  /* ================= 标准通用组件 (后续阶段接入) ================= */
+  .btn-primary { 
+    pointer-events: auto; /* 保证按钮可以点击 */
+    background:linear-gradient(135deg,var(--cyan),var(--blue)); color: #ffffff; padding: 14px 30px; border-radius: 40px; font-weight: 600; font-size: 16px; display: inline-flex; align-items: center; justify-content:center; gap: 12px; transition: all 0.3s ease; border:1px solid rgba(255,255,255,.7); cursor: pointer; box-shadow:0 14px 32px rgba(13,128,194,.28); 
+  }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
+  .arrow-icon { width: 14px; height: 14px; display: flex; align-items: center; justify-content: center; }
+
+  @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+  <section class="screen active" id="screen-cover">
+    <div class="cover-copy">
+      <div class="cover-kicker ui">另 一 种 人 生</div>
+      <h1 class="cover-title">人生<br>IF 线</h1>
+      <div class="cover-line"></div>
+    </div>
+    <p class="cover-sub ui">如果当年走了另一条路，<br>你会变成谁？<br><br>聊几句，选一个年代、一所大学，<br>让我把那段没发生的人生，写给你看。</p>
+    <div class="cover-actions">
+      <button class="btn btn-primary" data-act="start">开始书写</button>
+    </div>
+  </section>
+
+  <section class="screen" id="screen-question">
+    <div class="kinetic-container" id="q-canvas">
+      <div class="k-dot" style="top: 15%; left: 25%; opacity: 0.3;"></div>
+      <div class="k-dot" style="bottom: 25%; right: 20%; opacity: 0.25;"></div>
+      <div class="k-dot" style="top: 65%; left: 15%; opacity: 0.2;"></div>
+      <div class="k-dot" style="top: 45%; right: 10%; opacity: 0.35;"></div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ========== 核心静态问答链数据 ========== */
+  var ERAS = [
+    {key:"00s",label:"世纪初",admitEra:"互联网时代的黎明",url:"2000.html"},
+    {key:"10s",label:"一零年代",admitEra:"移动互联网的风口",url:"2010.html"},
+    {key:"20s",label:"当下",admitEra:"智能化波澜的当下",url:"2020.html"}
+  ];
+  
+  var S = { era: null }; // 全局状态快照
+  
+  /* 完全过滤原始表情与默认包装样式的纯净数据流 */
+  var QUESTIONS = [
+    {
+      ask: "先从时空坐标开始<br>你的故事发生在哪一个年代？",
+      opts: ERAS.map(function(e){ return {t: e.label, sub: e.admitEra, val: e}; }),
+      apply: function(o){ S.era = o.val; }
+    }
+  ];
+
+  /* ========== 科学卡片布局测算系统（适中距离，平衡不挤占文字与不松散） ========== */
+  var CARD_LAYOUT_PRESETS = [
+    {bg: 'var(--sky)', pos: {top: '18%', left: '12%'}, rot: -3},
+    {bg: 'var(--peach)', pos: {top: '16%', right: '12%'}, rot: 4},
+    {bg: 'var(--mint)', pos: {bottom: '22%', left: '14%'}, rot: 5},
+    {bg: 'var(--lilac)', pos: {bottom: '24%', right: '12%'}, rot: -3},
+    {bg: 'var(--yellow-soft)', pos: {top: '46%', left: '8%'}, rot: -2},
+    {bg: 'var(--sky)', pos: {top: '50%', right: '8%'}, rot: 3}
+  ];
+  var ERA_LAYOUT_PRESETS = [
+    {bg: 'var(--mint)', pos: {top: '28%', left: '8%'}, rot: -3},
+    {bg: 'var(--lilac)', pos: {top: '28%', right: '8%'}, rot: 3},
+    {bg: 'var(--yellow-soft)', pos: {bottom: '18%', left: '50%', marginLeft: '-100px'}, rot: -1}
+  ];
+
+  var qi = 0;
+  var qCanvas = document.getElementById('q-canvas');
+
+  function showScreen(id) {
+    var ss = document.querySelectorAll('.screen');
+    for(var i=0; i<ss.length; i++) { ss[i].classList.remove('active'); }
+    document.getElementById(id).classList.add('active');
+  }
+
+  /* ========== 动态生成卡片并渲染核心视差面板 ========== */
+  function renderQuestionStage() {
+    if(qi >= QUESTIONS.length) {
+      return;
+    }
+    
+    var q = QUESTIONS[qi];
+    
+    // 固化清洗画布，保留核心视差背景点
+    var dots = qCanvas.querySelectorAll('.k-dot');
+    qCanvas.innerHTML = '';
+    dots.forEach(function(d){ qCanvas.appendChild(d); });
+
+    // 渲染核心主标题 (Hero Section)
+    var hero = document.createElement('div');
+    hero.className = 'k-hero';
+    hero.style.opacity = '0';
+    hero.style.transform = 'translateY(15px)';
+    hero.innerHTML = '<h1>' + q.ask + '</h1>' + (q.desc ? '<p>' + q.desc + '</p>' : '');
+    qCanvas.appendChild(hero);
+
+    var cardsTrackList = [];
+    var isMobile = window.innerWidth <= 520;
+
+    // 建立卡片选项集群
+    q.opts.forEach(function(o, idx){
+      var layoutSet = (qi === 0 && q.opts.length === 3 ? ERA_LAYOUT_PRESETS : CARD_LAYOUT_PRESETS);
+      var cfg = layoutSet[idx % layoutSet.length];
+      var card = document.createElement('div');
+      card.className = 'k-card';
+      card.style.background = cfg.bg;
+      
+      if (isMobile) {
+        // 移动端环境：转为流体卡片堆叠，动态拉开微小纵深错落
+        card.style.position = 'relative';
+        card.style.margin = '8px 0';
+        card.style.width = '240px';
+        card.style.left = (idx % 2 === 0 ? '-8px' : '8px');
+        card.style.transform = 'rotate(' + (cfg.rot * 0.4) + 'deg)';
+      } else {
+        // 桌面端环境：进行四角放射性错落排布，模拟流体排版
+        if(cfg.pos.top) card.style.top = cfg.pos.top;
+        if(cfg.pos.bottom) card.style.bottom = cfg.pos.bottom;
+        if(cfg.pos.left) card.style.left = cfg.pos.left;
+        if(cfg.pos.right) card.style.right = cfg.pos.right;
+        if(cfg.pos.marginLeft) card.style.marginLeft = cfg.pos.marginLeft;
+        card.style.transform = 'rotate(' + cfg.rot + 'deg)';
+      }
+
+      card.innerHTML = '<h3>' + o.t + '</h3>' + (o.sub ? '<p>' + o.sub + '</p>' : '');
+      
+      // 点击触发决策并步进
+      card.addEventListener('click', function(){
+        if(q.apply) q.apply(o);
+        if(o.val && o.val.url) {
+          window.location.href = o.val.url;
+          return;
+        }
+        advanceStage();
+      });
+
+      qCanvas.appendChild(card);
+      cardsTrackList.push(card);
+    });
+
+    // 功能控制区（轻量化跳过设计）
+    var actionZone = document.createElement('div');
+    actionZone.className = 'k-action-zone';
+    if(q.skippable) {
+      var skip = document.createElement('button');
+      skip.className = 'btn-skip';
+      skip.textContent = '顺其自然，跳过此项';
+      skip.addEventListener('click', advanceStage);
+      actionZone.appendChild(skip);
+    }
+    qCanvas.appendChild(actionZone);
+
+    // 触发高性能丝滑硬件加速进场
+    requestAnimationFrame(function(){
+      hero.style.opacity = '1';
+      hero.style.transform = 'translateY(0)';
+      setTimeout(function(){
+        cardsTrackList.forEach(function(c, i){
+          setTimeout(function(){
+            c.classList.add('incoming');
+            var initCfg = layoutSet[i % layoutSet.length];
+            var initRot = isMobile ? (initCfg.rot * 0.4) : initCfg.rot;
+            c.dataset.baseRotation = initRot;
+          }, i * 60);
+        });
+      }, 100);
+    });
+
+    // 挂载全局用于视差物理系统监听
+    window.activeKineticCards = cardsTrackList;
+  }
+
+  function advanceStage() {
+    var entities = qCanvas.querySelectorAll('.k-card, .k-hero, .k-action-zone');
+    entities.forEach(function(node){
+      node.style.opacity = '0';
+      node.style.transform = 'scale(0.92)';
+    });
+    setTimeout(function(){
+      qi++;
+      renderQuestionStage();
+    }, 350);
+  }
+
+  /* ========== 视差力学矩阵系统（Parallax Effect） ========== */
+  function bindKineticPhysics() {
+    var mx = 0, my = 0;
+    var dots = document.querySelectorAll('.k-dot');
+    
+    window.addEventListener('mousemove', function(e){
+      mx = (e.clientX / window.innerWidth) - 0.5;
+      my = (e.clientY / window.innerHeight) - 0.5;
+      
+      if(window.activeKineticCards) {
+        window.activeKineticCards.forEach(function(card, idx) {
+          var weight = (idx + 1) * 12; 
+          var tx = mx * weight;
+          var ty = my * weight;
+          var baseRot = parseFloat(card.dataset.baseRotation || 0);
+          if(!card.matches(':active')) {
+            card.style.transform = 'translate(' + tx + 'px, ' + ty + 'px) rotate(' + baseRot + 'deg)';
+          }
+        });
+      }
+      
+      dots.forEach(function(dot, idx){
+        var factor = (idx + 1) * 24;
+        dot.style.transform = 'translate(' + (mx * factor) + 'px, ' + (my * factor) + 'px)';
+      });
+    });
+  }
+
+  /* ========== 触发器绑定 ========== */
+  document.addEventListener('click', function(e){
+    var el = e.target.closest('[data-act]');
+    if(!el) return;
+    if(el.getAttribute('data-act') === 'start') {
+      qi = 0; S = {};
+      showScreen('screen-question');
+      renderQuestionStage();
+    }
+  });
+
+  // 初始化视差物理环境
+  window.addEventListener('load', function(){
+    bindKineticPhysics();
+  });
+
+})();
+</script>
+</body>
+</html>

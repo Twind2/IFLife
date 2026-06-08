@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>飞叔 · Bitdefence 人生 IF 线</title>
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    html, body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    body {
+        width: 100vw;
+        min-height: 100vh;
+        min-height: 100dvh;
+        background-color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    button, input, textarea {
+        font: inherit;
+    }
+
+    .phone-container {
+        width: 100vw;
+        height: 100vh;
+        height: 100dvh;
+        max-width: none;
+        max-height: none;
+        background-color: #fff;
+        border: 0;
+        box-shadow: none;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .status-bar {
+        height: 20px;
+        background: #000;
+        color: #fff;
+        font-size: 11px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 5px;
+        letter-spacing: 0.5px;
+        flex: 0 0 auto;
+    }
+
+    .battery {
+        width: 18px;
+        height: 9px;
+        border: 1px solid #fff;
+        position: relative;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .battery::after {
+        content: '';
+        position: absolute;
+        right: -3px;
+        top: 2px;
+        width: 2px;
+        height: 3px;
+        background: #fff;
+    }
+    .battery-level {
+        width: 80%;
+        height: 100%;
+        background: #fff;
+        display: block;
+    }
+
+    .nav-bar {
+        height: 44px;
+        background: linear-gradient(to bottom, #515151 0%, #353535 49%, #222222 51%, #242424 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        position: relative;
+        border-bottom: 1px solid #000;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.25);
+        flex: 0 0 auto;
+    }
+
+    .nav-center {
+        display: grid;
+        place-items: center;
+        max-width: 178px;
+        min-width: 0;
+    }
+
+    .nav-bar h1 {
+        font-size: 18px;
+        font-weight: bold;
+        text-shadow: 0 -1px 0 rgba(0,0,0,0.8);
+        max-width: 178px;
+        margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .chat-status {
+        height: 12px;
+        margin-top: -1px;
+        color: rgba(255,255,255,.78);
+        font-size: 10px;
+        line-height: 12px;
+        letter-spacing: 0;
+        text-shadow: 0 -1px 0 rgba(0,0,0,.7);
+    }
+
+    .nav-btn {
+        position: absolute;
+        top: 7px;
+        min-width: 36px;
+        height: 29px;
+        padding: 0 8px;
+        background: linear-gradient(to bottom, #6a6a6a 0%, #4a4a4a 49%, #343434 51%, #3a3a3a 100%);
+        border: 1px solid #111;
+        border-radius: 4px;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.25), 0 1px 0 rgba(255,255,255,0.2);
+        color: #fff;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: bold;
+        text-shadow: 0 -1px 0 rgba(0,0,0,0.8);
+    }
+    .nav-btn:active {
+        background: linear-gradient(to bottom, #343434 0%, #222 50%, #111 100%);
+        box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+    }
+    .nav-left { left: 7px; }
+    .nav-right { right: 7px; }
+    .add-btn {
+        width: 36px;
+        padding: 0;
+        font-size: 22px;
+        line-height: 24px;
+    }
+
+    .screen {
+        display: none;
+        flex: 1 1 auto;
+        min-height: 0;
+        flex-direction: column;
+    }
+    .screen.active {
+        display: flex;
+    }
+
+    .chat-list {
+        flex: 1;
+        overflow-y: auto;
+        background-color: #fff;
+    }
+
+    .chat-item {
+        display: flex;
+        width: 100%;
+        padding: 8px 10px;
+        border: 0;
+        border-bottom: 1px solid #d9d9d9;
+        align-items: center;
+        background: #fff;
+        cursor: pointer;
+        text-align: left;
+    }
+    .chat-item:active {
+        background: #d9d9d9;
+    }
+
+    .avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 5px;
+        margin-right: 10px;
+        flex-shrink: 0;
+        background-color: #e0e0e0;
+        border: 1px solid #c0c0c0;
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        position: relative;
+        overflow: hidden;
+    }
+    .av-1 {
+        background:
+            radial-gradient(circle at 70% 25%, rgba(255,255,255,.58), transparent 18px),
+            linear-gradient(135deg, #0b3b52, #51c4d4 55%, #9cf0df);
+    }
+    .av-1::after {
+        content: "IF";
+        position: absolute;
+        inset: 7px;
+        border: 1px solid rgba(255,255,255,.7);
+        border-radius: 4px;
+        color: #fff;
+        display: grid;
+        place-items: center;
+        font-size: 16px;
+        font-weight: bold;
+        text-shadow: 0 1px 2px rgba(0,0,0,.5);
+    }
+    .av-2 { background: #d7b5d8; }
+    .av-3 { background: #f39c12; }
+    .av-4 { background: #2ecc71; }
+
+    .chat-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-width: 0;
+    }
+    .chat-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 3px;
+    }
+    .chat-name {
+        font-size: 16px;
+        color: #000;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .chat-time {
+        font-size: 12px;
+        color: #999;
+        flex-shrink: 0;
+        margin-left: 8px;
+    }
+    .chat-msg {
+        font-size: 13px;
+        color: #777;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .tab-bar {
+        height: 50px;
+        background: linear-gradient(to bottom, #2b2b2b 0%, #1c1c1c 49%, #000000 51%, #000000 100%);
+        display: flex;
+        border-top: 1px solid #000;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.15);
+        flex: 0 0 auto;
+    }
+    .tab-item {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #8a8a8a;
+        font-size: 10px;
+        font-weight: bold;
+        cursor: pointer;
+        text-shadow: 0 -1px 0 rgba(0,0,0,0.8);
+    }
+    .tab-icon {
+        width: 26px;
+        height: 26px;
+        margin-bottom: 2px;
+        fill: #7c7c7c;
+    }
+    .tab-item.active { color: #3ec4f6; }
+    .tab-item.active .tab-icon { fill: url(#blue-gradient); }
+
+    .lifeif-shell {
+        flex: 1 1 auto;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        background:
+            radial-gradient(80px 70px at 42px 44px, rgba(98,190,178,.18), transparent 70%),
+            radial-gradient(90px 80px at 275px 92px, rgba(212,156,79,.18), transparent 70%),
+            linear-gradient(180deg, #f2f0eb 0%, #dedbd3 100%);
+    }
+    .lifeif-feed {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        padding: 12px 9px 10px;
+    }
+    .lifeif-dock {
+        flex: 0 0 auto;
+        padding: 8px 8px 9px;
+        max-height: min(34dvh, 240px);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        background: linear-gradient(180deg, rgba(247,247,247,.86), rgba(216,216,216,.96));
+        border-top: 1px solid #b8b8b8;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
+    }
+    .bubble-row {
+        display: flex;
+        gap: 7px;
+        align-items: flex-start;
+        margin-bottom: 10px;
+    }
+    .bubble-row.user {
+        justify-content: flex-end;
+    }
+    .mini-avatar {
+        width: 31px;
+        height: 31px;
+        border-radius: 4px;
+        border: 1px solid rgba(0,0,0,.18);
+        background:
+            radial-gradient(circle at 70% 25%, rgba(255,255,255,.58), transparent 15px),
+            linear-gradient(135deg, #0b3b52, #51c4d4 55%, #9cf0df);
+        position: relative;
+        flex: 0 0 auto;
+    }
+    .mini-avatar::after {
+        content: "IF";
+        position: absolute;
+        inset: 5px;
+        border: 1px solid rgba(255,255,255,.7);
+        border-radius: 3px;
+        color: #fff;
+        display: grid;
+        place-items: center;
+        font-size: 10px;
+        font-weight: bold;
+    }
+    .bubble {
+        max-width: min(680px, calc(100vw - 72px));
+        border: 1px solid rgba(0,0,0,.12);
+        border-radius: 5px;
+        padding: 8px 9px;
+        font-size: 14px;
+        line-height: 1.58;
+        color: #1a1a1a;
+        background: linear-gradient(180deg, #fff, #f6f6f6);
+        box-shadow: 0 1px 1px rgba(0,0,0,.08);
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+    .bubble.user {
+        background: linear-gradient(180deg, #b8f19e, #93df75);
+        border-color: #7dbd62;
+    }
+    .bubble.card {
+        width: min(680px, calc(100vw - 72px));
+        background: linear-gradient(180deg, #fbfdff, #e8edf4);
+        border-color: rgba(88,105,130,.28);
+    }
+    .bubble h2 {
+        font-size: 17px;
+        margin: 0 0 5px;
+        color: #2c241b;
+    }
+    .bubble h3 {
+        font-size: 15px;
+        margin: 8px 0 4px;
+        color: #2c241b;
+    }
+    .muted {
+        color: #777;
+        font-size: 12px;
+    }
+    .tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-top: 7px;
+    }
+    .tag {
+        display: inline-block;
+        padding: 2px 7px;
+        border-radius: 999px;
+        background: rgba(18,116,139,.1);
+        border: 1px solid rgba(18,116,139,.2);
+        color: #196577;
+        font-size: 11px;
+    }
+    .choice-list {
+        display: grid;
+        gap: 7px;
+    }
+    .choice-btn {
+        width: 100%;
+        min-height: 39px;
+        border: 1px solid #999;
+        border-radius: 5px;
+        background: linear-gradient(180deg, #fff, #dcdcdc);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.8);
+        color: #202020;
+        cursor: pointer;
+        text-align: left;
+        padding: 8px 9px;
+        font-size: 13px;
+        line-height: 1.4;
+    }
+    .choice-btn:active {
+        background: linear-gradient(180deg, #d0d0d0, #f2f2f2);
+    }
+    .choice-btn:disabled {
+        cursor: default;
+        color: #888;
+        background: linear-gradient(180deg, #eeeeee, #d8d8d8);
+    }
+    .choice-btn strong {
+        display: block;
+        font-size: 13px;
+    }
+    .choice-btn span {
+        display: block;
+        margin-top: 2px;
+        font-size: 11px;
+        color: #626262;
+    }
+    .typing {
+        display: inline-flex;
+        gap: 4px;
+        align-items: center;
+        height: 18px;
+    }
+    .typing i {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: #777;
+        opacity: .35;
+        animation: pulse 1.1s infinite;
+    }
+    .typing i:nth-child(2) { animation-delay: .16s; }
+    .typing i:nth-child(3) { animation-delay: .32s; }
+    @keyframes pulse {
+        0%, 70%, 100% { opacity: .3; transform: translateY(0); }
+        35% { opacity: .9; transform: translateY(-3px); }
+    }
+    .dock-typing {
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #666;
+    }
+
+    .overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 10;
+        display: none;
+        align-items: flex-end;
+        background: rgba(0,0,0,.45);
+    }
+    .overlay.active {
+        display: flex;
+    }
+    .sheet {
+        width: 100%;
+        max-height: 100vh;
+        max-height: 100dvh;
+        background: #f3f3f3;
+        border-top: 1px solid #888;
+        box-shadow: 0 -8px 25px rgba(0,0,0,.24);
+        display: flex;
+        flex-direction: column;
+    }
+    .sheet-head {
+        height: 38px;
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 9px;
+        color: #fff;
+        background: linear-gradient(to bottom, #515151, #242424);
+        border-bottom: 1px solid #111;
+        font-weight: bold;
+        text-shadow: 0 -1px 0 rgba(0,0,0,.8);
+    }
+    .sheet-body {
+        overflow-y: auto;
+        padding: 10px;
+    }
+    .sheet-close {
+        width: 30px;
+        height: 26px;
+        color: #fff;
+        background: linear-gradient(to bottom, #6a6a6a, #3a3a3a);
+        border: 1px solid #111;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .field {
+        margin-bottom: 10px;
+    }
+    .field label {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 12px;
+        color: #555;
+        font-weight: bold;
+    }
+    .field input, .field textarea {
+        width: 100%;
+        border: 1px solid #aaa;
+        border-radius: 4px;
+        background: #fff;
+        padding: 7px;
+        font-size: 12px;
+        color: #222;
+        outline: none;
+    }
+    .field textarea {
+        min-height: 86px;
+        resize: vertical;
+        font-family: Consolas, "Courier New", monospace;
+    }
+    .toggle {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        margin-bottom: 8px;
+        font-size: 12px;
+        color: #333;
+    }
+    .action-row {
+        display: flex;
+        gap: 7px;
+        margin-top: 7px;
+    }
+    .action-row button {
+        flex: 1;
+        min-height: 33px;
+        border-radius: 5px;
+        border: 1px solid #888;
+        background: linear-gradient(180deg, #fff, #dcdcdc);
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: bold;
+    }
+    .action-row .primary {
+        border-color: #368719;
+        color: #fff;
+        background: linear-gradient(180deg, #75cf4c, #339013);
+        text-shadow: 0 -1px 0 rgba(0,0,0,.35);
+    }
+    .toast {
+        position: absolute;
+        left: 50%;
+        bottom: 63px;
+        transform: translateX(-50%);
+        z-index: 20;
+        max-width: min(520px, calc(100vw - 32px));
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(0,0,0,.78);
+        color: #fff;
+        font-size: 12px;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute;">
+    <defs>
+        <linearGradient id="blue-gradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#40c8fa" />
+            <stop offset="50%" stop-color="#1481db" />
+            <stop offset="51%" stop-color="#0e67b9" />
+            <stop offset="100%" stop-color="#0a539c" />
+        </linearGradient>
+    </defs>
+</svg>
+
+<div class="phone-container">
+    <div class="status-bar">
+        <div class="left">••••• Wi-Fi</div>
+        <div class="center" id="statusClock">0:28</div>
+        <div class="right">
+            <div class="battery"><span class="battery-level"></span></div>
+        </div>
+    </div>
+
+    <div class="nav-bar">
+        <button class="nav-btn nav-left" id="backBtn" style="display:none;">飞叔</button>
+        <div class="nav-center">
+            <h1 id="navTitle">飞叔</h1>
+            <div class="chat-status" id="chatStatus"></div>
+        </div>
+        <button class="nav-btn nav-right add-btn" id="homeAddBtn">+</button>
+    </div>
+
+    <section class="screen active" data-screen="home" id="homeScreen">
+        <div class="chat-list">
+            <button class="chat-item" id="bitdefenceEntry" type="button" aria-label="进入 Bitdefence 人生 IF 线">
+                <div class="avatar av-1"></div>
+                <div class="chat-info">
+                    <div class="chat-header">
+                        <span class="chat-name">Bitdefence助手</span>
+                        <span class="chat-time" id="bitdefenceTime">13-6-29</span>
+                    </div>
+                    <div class="chat-msg" id="bitdefencePreview">[新消息]点击体验人生 IF 线</div>
+                </div>
+            </button>
+            <button class="chat-item" type="button" aria-label="菲儿">
+                <div class="avatar av-2"></div>
+                <div class="chat-info">
+                    <div class="chat-header">
+                        <span class="chat-name">菲儿</span>
+                        <span class="chat-time">13-6-29</span>
+                    </div>
+                    <div class="chat-msg">[飞叔红包]♥祝你幸福</div>
+                </div>
+            </button>
+            <button class="chat-item" type="button" aria-label="老板">
+                <div class="avatar av-3"></div>
+                <div class="chat-info">
+                    <div class="chat-header">
+                        <span class="chat-name">老板</span>
+                        <span class="chat-time">13-6-28</span>
+                    </div>
+                    <div class="chat-msg">明早十点，把方案再过一遍</div>
+                </div>
+            </button>
+            <button class="chat-item" type="button">
+                <div class="avatar av-4"></div>
+                <div class="chat-info">
+                    <div class="chat-header">
+                        <span class="chat-name">Ziler</span>
+                        <span class="chat-time">13-6-28</span>
+                    </div>
+                    <div class="chat-msg">Ziler : Wow,Awesome!咖啡店点单，罗......</div>
+                </div>
+            </button>
+            <button class="chat-item" type="button">
+                <div class="avatar av-4"></div>
+                <div class="chat-info">
+                    <div class="chat-header">
+                        <span class="chat-name">飞叔团队</span>
+                        <span class="chat-time">13-6-28</span>
+                    </div>
+                    <div class="chat-msg">欢迎你再次回到飞叔。如果你...</div>
+                </div>
+            </button>
+        </div>
+        <div class="tab-bar">
+            <div class="tab-item active">
+                <svg class="tab-icon" viewBox="0 0 24 24">
+                    <path d="M8.5 15.5c-3.59 0-6.5-2.46-6.5-5.5S4.91 4.5 8.5 4.5c3.59 0 6.5 2.46 6.5 5.5s-2.91 5.5-6.5 5.5zm8 3c-2.76 0-5-1.9-5-4.24 0-.3.04-.59.1-.88 1.48-.48 2.76-1.4 3.65-2.58.4-.55.73-1.15.96-1.8.8.44 1.29 1.1 1.29 1.83 0 2.21-2.24 4-5 4z" />
+                    <path d="M8.5 16.5l-2.5 1.5 1-2.5zm8 4l-2 1 .5-2z"/>
+                </svg>
+                <span>飞叔</span>
+            </div>
+            <div class="tab-item">
+                <svg class="tab-icon" viewBox="0 0 24 24">
+                    <rect x="3" y="4" width="18" height="16" rx="2" />
+                    <path fill="#222" d="M8 14c-2 0-3 1-3 2v1h6v-1c0-1-1-2-3-2zm0-5c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 2h4v1h-4zm0 3h4v1h-4z"/>
+                </svg>
+                <span>通讯录</span>
+            </div>
+            <div class="tab-item">
+                <svg class="tab-icon" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/>
+                    <polygon points="11.5,7 15,15 12.5,17 9,9" />
+                </svg>
+                <span>发现</span>
+            </div>
+            <div class="tab-item">
+                <svg class="tab-icon" viewBox="0 0 24 24">
+                    <path d="M12 13c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zm0-2c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z"/>
+                </svg>
+                <span>我</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="screen" data-screen="lifeif" id="lifeifScreen">
+        <div class="lifeif-shell">
+            <main class="lifeif-feed" id="lifeifFeed"></main>
+            <footer class="lifeif-dock" id="lifeifDock"></footer>
+        </div>
+    </section>
+
+</div>
+
+<script src="config.js"></script>
+<script>
+(function(){
+    "use strict";
+
+    var LIFEIF_PROGRESS_KEY = "lifeif_2010_progress";
+    var REPLY_DELAY_MS = 1200;
+    var BOT_SEGMENT_DELAY_MS = 900;
+    var ENDING_SEGMENT_DELAY_MS = 1400;
+    var CHOICE_DELAY_MIN_MS = 1000;
+    var CHOICE_DELAY_JITTER_MS = 1000;
+    var lastPromptText = "";
+    var lastResponseText = "";
+    var botSegmentQueue = Promise.resolve();
+    var choiceTimer = null;
+    var STAGES = [
+        "大一上 · 初到校园",
+        "大一下 · 专业分流",
+        "大二上 · 深入专业",
+        "大三下 · 升学就业准备",
+        "大四 · 毕业选择"
+    ];
+
+    function choiceDelayMs() {
+        return CHOICE_DELAY_MIN_MS + Math.floor(Math.random() * CHOICE_DELAY_JITTER_MS);
+    }
+
+    function clearChoiceTimer() {
+        if (choiceTimer) {
+            clearTimeout(choiceTimer);
+            choiceTimer = null;
+        }
+    }
+
+    var SYSTEM_PROMPT = [
+        "你是《人生 IF 线》的互动叙事引擎，负责为用户生成另一条大学人生。",
+        "写作要求：二人称“你”；中文；文学夜读感；具体、克制、可信；不要像招生广告，不要像算命。",
+        "安全要求：这是虚构互动叙事，不做真实预测；不输出歧视、羞辱、宿命论；不收集或推断敏感身份。",
+        "事实要求：学校、专业、时代只能使用公开、常识化、低争议描述；不编造校徽、官方排名、具体个人隐私。校内梗必须像真实学生会知道的微细节，但如果不确定，只写低争议的校园生活细节，不伪造具体传闻。",
+        "结构要求：最终内容只输出合法 JSON，不要 Markdown，不要解释 JSON 外的任何文字。"
+    ].join("\n");
+
+    var PROMPTS = {
+        profile: [
+            "任务：根据用户选择的高考时间和画像问答，生成一个可用于后续推荐与叙事的人物画像。",
+            "输出 JSON schema：",
+            "{\"title\":\"12字以内画像名\",\"summary\":\"80-120字画像总结\",\"traits\":[\"3-5个短标签\"],\"needs\":[\"学校/专业推荐应关注的3个点\"],\"tension\":\"这个人大学四年最可能面对的内在拉扯\"}",
+            "要求：画像要温柔但准确，避免简单复述选项。"
+        ].join("\n"),
+        recommend: [
+            "任务：基于用户画像、分数段、兴趣和高考时间，推荐 4 所学校，并为每所学校推荐 2 个专业方向。",
+            "输出 JSON schema：",
+            "{\"schools\":[{\"name\":\"学校名\",\"city\":\"城市\",\"fit\":\"匹配度短语\",\"reason\":\"50-80字理由\",\"lore\":[\"只有本校学生/熟悉校园的人才会会心一笑的梗或微细节，3-5条\"],\"majors\":[{\"name\":\"专业方向\",\"reason\":\"30-50字理由\"}]}]}",
+            "要求：学校推荐要有梯度，不能全是顶尖校；如果分数段未透露，用“稳妥/冲刺/城市/专业气质”混合推荐。lore 必须具体到地点、日常、课程/社团/城市连接或校园口头禅层面，避免泛泛写“图书馆很安静”。"
+        ].join("\n"),
+        story: [
+            "任务：生成下一段大学互动剧情。你会拿到用户画像、学校、专业、历史选择和当前阶段。",
+            "输出 JSON schema：",
+            "{\"stage\":\"阶段名\",\"title\":\"场景标题\",\"usedLore\":\"本段使用的学校梗\",\"text\":\"90-150字场景正文\",\"choices\":[{\"label\":\"选择按钮文案，16字以内\",\"consequence\":\"选择后的45-80字后续叙事\",\"impact\":[\"影响标签1\",\"影响标签2\"]}]}",
+            "流程要求：阶段顺序固定为大一上初到校园、大一下专业分流、大二上深入专业、大三下升学就业准备、大四毕业选择。专业分流只发生在大一下或大二上；大三下写考研、保研、求职、考公、留学等准备，不再称为分流。",
+            "硬性要求：每段 text 必须自然使用 selectedSchool.lore 里的至少 1 条，像本校学生讲给本校学生听，而不是游客介绍。usedLore 填实际使用的那条。choices 必须 3 个；选择之间要有真实价值冲突，不能只是好/坏。"
+        ].join("\n"),
+        transition: [
+            "任务：为两个大学阶段之间生成一段自然转场。你会拿到上一阶段、下一阶段、用户刚做的选择和历史。",
+            "输出 JSON schema：",
+            "{\"text\":\"45-70字转场正文\"}",
+            "要求：承接上一选择的余波，引出下一阶段；不要使用固定翻页句式；不要把阶段写成机械标题；不要提到真实姓名。"
+        ].join("\n"),
+        ending: [
+            "任务：基于用户画像、学校、专业、全部剧情和选择，生成结局内容。",
+            "输出 JSON schema：",
+            "{\"outcomeTitle\":\"12字以内结局名\",\"summary\":\"140-220字四年总结\",\"letter\":\"140-220字写给十年后的信，以亲爱的你开头\",\"books\":[{\"title\":\"书名\",\"author\":\"作者\",\"reason\":\"推荐理由，40字以内\"}],\"quote\":{\"text\":\"一句哲学家说过或可归因的短句\",\"philosopher\":\"哲学家\"}}",
+            "要求：books 给 3 本；quote 不要鸡汤，要贴合用户困境；summary 或 letter 必须回调至少一个学校 lore 和一个用户做过的选择。"
+        ].join("\n")
+    };
+
+    var ERAS = [
+        { key: "80s", label: "八十年代高考", hint: "理想主义和分配制度同时在场。" },
+        { key: "90s", label: "九十年代高考", hint: "稳定与下海第一次正面拉扯。" },
+        { key: "00s", label: "世纪初高考", hint: "扩招、入世、互联网启蒙，让机会看起来很多也很新。" },
+        { key: "10s", label: "一零年代高考", hint: "移动互联网、大厂、留学、创业都很耀眼。" },
+        { key: "20s", label: "当下高考", hint: "就业压力、考研考公、AI 变化共同构成底色。" }
+    ];
+    var QUESTIONS = [
+        { id: "scoreBand", text: "那一年，你大概站在哪个分数段？", options: [
+            ["顶尖水平", "可以冲刺最强的一批学校"], ["重点线以上", "选择空间不错，适合匹配气质"], ["本科线附近", "更看重城市、专业和成长机会"], ["不想透露", "按兴趣与性格推荐"]
+        ] },
+        { id: "interest", text: "你最容易被哪类事情吸引？", options: [
+            ["技术与发明", "代码、机器、工程、AI"], ["文字与表达", "写作、媒体、语言、内容"], ["商业与城市", "市场、管理、金融、创业"], ["法律与公共议题", "规则、社会、治理、公平"]
+        ] },
+        { id: "temper", text: "如果回到大学，你更想把自己放进哪种生活？", options: [
+            ["慢慢扎根", "在一个领域里越走越深"], ["频繁试错", "用很多路径确认自己"], ["保持锋利", "拿结果证明选择"], ["认真生活", "把人和日常也当作功课"]
+        ] },
+        { id: "worry", text: "你最怕哪一种大学遗憾？", options: [
+            ["没有勇气", "明明想要却没试过"], ["走错方向", "很努力但离自己很远"], ["错过同伴", "一路赢却越来越孤单"], ["太晚醒来", "直到毕业才开始选择"]
+        ] }
+    ];
+
+    var feed = document.getElementById("lifeifFeed");
+    var dock = document.getElementById("lifeifDock");
+    var navTitle = document.getElementById("navTitle");
+    var backBtn = document.getElementById("backBtn");
+    var homeAddBtn = document.getElementById("homeAddBtn");
+    var S = {};
+    var config = loadConfig();
+
+    function resetState() {
+        S = {
+            era: null,
+            answers: {},
+            questionIndex: 0,
+            profile: null,
+            apiSchools: null,
+            school: null,
+            major: null,
+            story: [],
+            stageIndex: 0,
+            ending: null,
+            apiNotice: ""
+        };
+    }
+
+    function defaultConfig() {
+        var builtin = window.LIFEIF_BUILTIN_API_CONFIG || {};
+        return {
+            mockMode: !!builtin.mockMode,
+            streamMode: !!builtin.streamMode,
+            jsonMode: !!builtin.jsonMode,
+            apiUrl: builtin.apiUrl || "",
+            apiModel: builtin.apiModel || "",
+            apiKey: builtin.apiKey || "",
+            thinkingType: builtin.thinkingType,
+            reasoningEffort: builtin.reasoningEffort
+        };
+    }
+
+    function loadConfig() {
+        return defaultConfig();
+    }
+
+    function normalizeApiUrl(url) {
+        url = String(url || "").trim().replace(/\/+$/, "");
+        if (!url) return "";
+        if (/\/chat\/completions$/i.test(url)) return url;
+        if (/\/v1$/i.test(url)) return url + "/chat/completions";
+        return url + "/v1/chat/completions";
+    }
+
+    function contextForPrompt(extra) {
+        var ctx = {
+            examEra: S.era,
+            answers: S.answers,
+            profile: S.profile,
+            selectedSchool: S.school,
+            selectedMajor: S.major,
+            storyHistory: S.story,
+            profileNumbers: {p: S.p, pref: S.pref, talent: S.talent, family: S.family, userLevel: S.userLevel},
+            currentPage: "2010 年代 Bitdef 版"
+        };
+        Object.keys(extra || {}).forEach(function(key){ ctx[key] = extra[key]; });
+        return ctx;
+    }
+
+    function buildUserPrompt(task, extra) {
+        return PROMPTS[task] + "\n\n上下文：\n" + JSON.stringify(contextForPrompt(extra), null, 2);
+    }
+
+    function requestBody(task, prompt, stream) {
+        var body = {
+            model: config.apiModel,
+            temperature: 0.86,
+            stream: !!stream,
+            thinking: { type: config.thinkingType },
+            messages: [
+                { role: "system", content: SYSTEM_PROMPT },
+                { role: "user", content: prompt }
+            ]
+        };
+        if (config.thinkingType && config.thinkingType !== "disabled" && config.reasoningEffort) body.reasoning_effort = config.reasoningEffort;
+        if (config.jsonMode) body.response_format = { type: "json_object" };
+        return body;
+    }
+
+    function apiStateText() {
+        config = loadConfig();
+        if (config.mockMode) return "当前来源：本地 mock。未启用真实 API 配置。";
+        if (!config.apiUrl || !config.apiKey) return "当前来源：本地 mock。API URL 或 API KEY 未配置完整。";
+        return "当前来源：真实 API · " + normalizeApiUrl(config.apiUrl) + " · " + config.apiModel;
+    }
+
+    function markApiFallback(task, extra, err) {
+        var reason = err && err.message ? err.message : String(err || "未知错误");
+        S.apiNotice = "真实 API 调用失败，已回退本地 mock：" + reason;
+        bot("⚠ " + escapeHtml(S.apiNotice));
+        savePrompt(lastPromptText, reason);
+        return mockApi(task, extra || {});
+    }
+
+    function parseJson(text) {
+        var raw = String(text || "").trim();
+        raw = raw.replace(/<think>[\s\S]*?<\/think>/gi, "").trim();
+        raw = raw.replace(/^```(?:json)?/i, "").replace(/```$/i, "").trim();
+        try { return JSON.parse(raw); } catch (e) {}
+        var start = raw.indexOf("{");
+        var end = raw.lastIndexOf("}");
+        if (start >= 0 && end > start) return JSON.parse(raw.slice(start, end + 1));
+        throw new Error("模型没有返回合法 JSON");
+    }
+
+    function savePrompt(prompt, response) {
+        lastPromptText = prompt || "";
+        lastResponseText = response || "";
+    }
+
+    function callApi(task, extra) {
+        extra = extra || {};
+        var prompt = buildUserPrompt(task, extra);
+        savePrompt(prompt, "");
+        config = loadConfig();
+        if (config.mockMode || !config.apiUrl || !config.apiKey) return mockApi(task, extra);
+        var endpoint = normalizeApiUrl(config.apiUrl);
+        if (config.streamMode && window.ReadableStream) {
+            return fetch(endpoint, {
+                method: "POST",
+                headers: { "Content-Type": "application/json", "Authorization": "Bearer " + config.apiKey },
+                body: JSON.stringify(requestBody(task, prompt, true))
+            }).then(function(res) {
+                if (!res.ok) throw new Error("API 请求失败：HTTP " + res.status);
+                return readStreamJson(res);
+            }).catch(function(err) {
+                toast("API 失败，已切换本地 mock");
+                return markApiFallback(task, extra, err);
+            });
+        }
+        return fetch(endpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Authorization": "Bearer " + config.apiKey },
+            body: JSON.stringify(requestBody(task, prompt, false))
+        }).then(function(res) {
+            if (!res.ok) throw new Error("API 请求失败：HTTP " + res.status);
+            return res.json();
+        }).then(function(payload) {
+            var msg = payload.choices && payload.choices[0] && payload.choices[0].message;
+            var content = msg && msg.content ? msg.content : "";
+            savePrompt(prompt, content);
+            return parseJson(content);
+        }).catch(function(err) {
+            toast("API 失败，已切换本地 mock");
+            return markApiFallback(task, extra, err);
+        });
+    }
+
+    function readStreamJson(res) {
+        var decoder = new TextDecoder();
+        var reader = res.body.getReader();
+        var buffer = "";
+        var content = "";
+        function pump() {
+            return reader.read().then(function(result) {
+                if (result.done) {
+                    savePrompt(lastPromptText, content);
+                    return parseJson(content);
+                }
+                buffer += decoder.decode(result.value, { stream: true });
+                var blocks = buffer.split(/\r?\n\r?\n/);
+                buffer = blocks.pop();
+                blocks.forEach(function(block) {
+                    block.split(/\r?\n/).forEach(function(line) {
+                        line = line.trim();
+                        if (line.indexOf("data:") !== 0) return;
+                        var data = line.slice(5).trim();
+                        if (!data || data === "[DONE]") return;
+                        try {
+                            var payload = JSON.parse(data);
+                            var delta = payload.choices && payload.choices[0] && payload.choices[0].delta;
+                            if (delta && delta.content) content += delta.content;
+                        } catch (e) {}
+                    });
+                });
+                return pump();
+            });
+        }
+        return pump();
+    }
+
+    function mockApi(task, extra) {
+        return new Promise(function(resolve) {
+            setTimeout(function() {
+                if (task === "profile") resolve(mockProfile());
+                if (task === "recommend") resolve({ schools: mockSchools() });
+                if (task === "story") resolve(mockStory(extra.currentStage));
+                if (task === "transition") resolve({ text: semesterBridge(extra.fromStage, extra.toStage) });
+                if (task === "ending") resolve(mockEnding());
+            }, 450);
+        });
+    }
+
+    function mockProfile() {
+        var interest = S.answers.interest || "技术与发明";
+        return {
+            title: interest.indexOf("文字") >= 0 ? "慢热的表达者" : "清醒的试路人",
+            summary: "你不是只想赢一次考试的人。你更在意一条路能不能让自己持续生长：既要看见现实的边界，也想保留一点对世界的好奇。大学四年里，你会在安全感和主动选择之间来回确认。",
+            traits: ["敏感", "能扛事", "重视成长", "不愿将就"],
+            needs: ["城市提供真实机会", "专业要能迁移", "校园生活有同伴感"],
+            tension: "最深的拉扯，是一边想走稳，一边又害怕把真正想要的东西拖到太晚。"
+        };
+    }
+
+    function mockSchools() {
+        return [
+            {
+                name: "南京大学",
+                city: "南京",
+                fit: "精神密度高",
+                reason: "适合把好奇心安放进长期问题里。南京的节奏不急，学校气质又足够硬朗，能让你在专业、阅读和同伴之间慢慢形成自己的判断。",
+                lore: ["从鼓楼到仙林像换了一种大学天气", "社团招新时总有人把路牌贴得像小型展览", "晚上的教学楼走廊很适合把一个问题想完"],
+                majors: [
+                    { name: "计算机与数据方向", reason: "既有技术纵深，也能给未来保留迁移空间。" },
+                    { name: "新闻传播与社会研究", reason: "适合把表达欲和公共议题连接起来。" }
+                ]
+            },
+            {
+                name: "华东师范大学",
+                city: "上海",
+                fit: "温和但不松散",
+                reason: "上海给你现实感，校园又保留安静和审美。它适合一边学习专业，一边观察城市怎样塑造人的选择。",
+                lore: ["中北校区的河边常有人边走边背稿", "闵行的大风会把社团海报吹得格外认真", "丽娃河边很容易把话聊到很晚"],
+                majors: [
+                    { name: "心理学与教育科技", reason: "能把理解人和理解系统放在一起。" },
+                    { name: "城市与公共管理", reason: "适合关注规则、组织和真实生活的人。" }
+                ]
+            },
+            {
+                name: "深圳大学",
+                city: "深圳",
+                fit: "机会贴身",
+                reason: "它更像一座城市给大学生开的窗口。适合愿意试错、愿意和产业保持距离很近的人。",
+                lore: ["荔园的风总像在催人快一点行动", "很多讨论会自然滑向项目、产品和融资", "下课后去科技园像去另一个课堂"],
+                majors: [
+                    { name: "软件工程与产品方向", reason: "适合快速把想法做成可用的东西。" },
+                    { name: "广告与品牌传播", reason: "能把表达、商业和城市经验接起来。" }
+                ]
+            },
+            {
+                name: "苏州大学",
+                city: "苏州",
+                fit: "稳妥里有余味",
+                reason: "它不逼你立刻变成锋利的人，却能给你足够完整的校园生活和城市资源。适合慢慢扎根，也适合后来转向。",
+                lore: ["本部老建筑会让新生突然放慢脚步", "独墅湖的夜路很适合和同学复盘一天", "去平江路像一次不正式的校外散步课"],
+                majors: [
+                    { name: "法学与社会治理", reason: "适合把规则感和现实问题结合起来。" },
+                    { name: "纺织、设计与新材料", reason: "能连接审美、工程和产业传统。" }
+                ]
+            }
+        ];
+    }
+
+    function mockStory(stage) {
+        var lore = (S.school && S.school.lore && S.school.lore[0]) || "晚上的教学楼走廊很适合把一个问题想完";
+        var major = S.major && S.major.name ? S.major.name : "你的专业";
+        var stageTitle = stage.indexOf("初到") >= 0 ? "新生群里的夜晚" :
+            stage.indexOf("专业分流") >= 0 ? "第一次承认不确定" :
+            stage.indexOf("深入专业") >= 0 ? "凌晨两点的版本" :
+            stage.indexOf("升学就业") >= 0 ? "电梯里的选择" : "最后一次穿过校园";
+        var scene = stage.indexOf("初到") >= 0 ? "你拖着行李进宿舍，群消息一条接一条，陌生人的名字开始变成床位和口音。" :
+            stage.indexOf("专业分流") >= 0 ? "大一下，专业方向、辅修和继续深挖都摆到桌前，你第一次承认原来的计划有一点不合身。" :
+            stage.indexOf("深入专业") >= 0 ? "大二上，项目截止前夜，页面、数据或文案反复出错，你和同伴都开始露出真实脾气。" :
+            stage.indexOf("升学就业") >= 0 ? "大三下，考研、保研、求职和考公的消息同时涌来，你在电梯镜面里看见一个正在准备长大的自己。" :
+            "大四的离校前，你最后一次绕远路穿过熟悉的地方，很多普通瞬间突然有了重量。";
+        return {
+            stage: stage,
+            title: stageTitle,
+            usedLore: lore,
+            text: scene + lore + "。你带着" + major + "的作业走得很慢，手机里同时躺着课程通知、同伴邀约和一个你不太敢点开的机会。选择不是宏大的宣言，它常常只是今晚先回复哪一条消息。",
+            choices: [
+                { label: "先把专业学深", consequence: "你把更多时间放进课程和项目里。短期少了一些热闹，但你逐渐获得一种能靠手艺站住的踏实。", impact: ["专业纵深", "慢热自信"] },
+                { label: "去试一次社团", consequence: "你走进陌生房间，发现自己未必擅长表达，却能在共同做事里找到同伴，也学会开口。", impact: ["同伴关系", "表达练习"] },
+                { label: "接住城市机会", consequence: "你把校园外的真实节奏纳入判断，兴奋和疲惫同时出现，也更早明白自己想避开什么。", impact: ["现实感", "试错"] }
+            ]
+        };
+    }
+
+    function mockEnding() {
+        var choice = S.story[0] && S.story[0].choice ? textValue(S.story[0].choice.label) : "先把专业学深";
+        var lore = (S.school && S.school.lore && S.school.lore[0]) || "那条熟悉的校园路";
+        return {
+            outcomeTitle: "把路走成自己",
+            summary: "四年后，你并没有得到一条完美人生线，却得到了一种更耐用的判断力。你记得" + lore + "，也记得第一次选择“" + choice + "”时心里的犹豫。后来很多事没有按计划发生，但你开始懂得：真正改变人的不是某个闪亮结果，而是一次次愿意承担后果的选择。",
+            letter: "亲爱的你，如果十年后的生活并不完全像今天想象的那样，也请不要急着否定这四年。你曾经认真地害怕过，也认真地试过。那些夜晚、那些同伴、那些看似普通的课程，都会在某个需要勇气的时刻回来帮你。愿你到那时仍然能承认自己想要什么，也仍然有力气重新开始。",
+            books: [
+                { title: "可能性的艺术", author: "罗莎蒙德·斯通·赞德", reason: "提醒你把选择看成创造。" },
+                { title: "存在主义是一种人道主义", author: "萨特", reason: "适合面对自由与责任。" },
+                { title: "工作、消费主义和新穷人", author: "鲍曼", reason: "帮你辨认时代焦虑。" }
+            ],
+            quote: { text: "人是被判定为自由的。", philosopher: "萨特" }
+        };
+    }
+
+    function defaultEra() {
+        return ERAS.filter(function(era) { return era.key === "10s"; })[0] || ERAS[0];
+    }
+
+    function switchScreen(name) {
+        document.querySelectorAll(".screen").forEach(function(screen) {
+            screen.classList.toggle("active", screen.getAttribute("data-screen") === name);
+        });
+        var inLifeif = name === "lifeif";
+        navTitle.textContent = inLifeif ? "Bitdefence助手" : "飞叔";
+        backBtn.style.display = inLifeif ? "block" : "none";
+        homeAddBtn.style.display = inLifeif ? "none" : "block";
+        setChatStatus("");
+    }
+
+    function renderLifeIf() {
+        localStorage.removeItem(LIFEIF_PROGRESS_KEY);
+        resetState();
+        S.era = defaultEra();
+        S.flowStep = "question";
+        config = loadConfig();
+        feed.innerHTML = "";
+        dock.innerHTML = "";
+        botSegmentQueue = Promise.resolve();
+        renderBotSegments("嗨，你好，我是 Bitdefence。\n\n你已经选择了一零年代。接下来回答几个问题，我会把那条移动互联网刚刚改写生活的大学人生，写给你看。").then(askQuestion);
+    }
+
+    function resumeLifeIf() {
+        var saved = loadProgress();
+        if (!saved || !saved.state || !saved.feedHtml) return false;
+        S = saved.state;
+        S.era = S.era || defaultEra();
+        feed.innerHTML = saved.feedHtml || "";
+        dock.innerHTML = "";
+        setChatStatus("");
+        switchScreen("lifeif");
+        restoreControls();
+        scrollFeed();
+        return true;
+    }
+
+    function bot(content, isCard) {
+        var row = document.createElement("div");
+        row.className = "bubble-row";
+        row.innerHTML = '<div class="mini-avatar"></div><div class="bubble' + (isCard ? " card" : "") + '">' + content + '</div>';
+        feed.appendChild(row);
+        scrollFeed();
+        saveProgress();
+    }
+
+    function user(content) {
+        var row = document.createElement("div");
+        row.className = "bubble-row user";
+        row.innerHTML = '<div class="bubble user">' + escapeHtml(content) + '</div>';
+        feed.appendChild(row);
+        scrollFeed();
+        saveProgress();
+    }
+
+    function busy() {
+        dock.innerHTML = '<div class="dock-typing"><span class="typing" aria-hidden="true"><i></i><i></i><i></i></span></div>';
+        setChatStatus("正在输入");
+        saveProgress();
+    }
+
+    function setChatStatus(text) {
+        var status = document.getElementById("chatStatus");
+        if (status) status.textContent = text || "";
+    }
+
+    function waitReply() {
+        busy();
+        return new Promise(function(resolve) { setTimeout(resolve, REPLY_DELAY_MS + Math.floor(Math.random() * 500)); });
+    }
+
+    function renderBotSegments(text, isCard) {
+        var isEnding = arguments[2] === true;
+        var segments = splitMessage(text);
+        if (!segments.length) return botSegmentQueue;
+        botSegmentQueue = botSegmentQueue.then(function() {
+            return segments.reduce(function(chain, segment, index) {
+                return chain.then(function() {
+                    busy();
+                    return new Promise(function(resolve) {
+                        setTimeout(function() {
+                            bot(escapeHtml(segment), isCard && index === 0);
+                            resolve();
+                        }, (isEnding ? ENDING_SEGMENT_DELAY_MS : BOT_SEGMENT_DELAY_MS) + Math.floor(Math.random() * 350));
+                    });
+                });
+            }, Promise.resolve()).then(function() {
+                setChatStatus("");
+            });
+        });
+        return botSegmentQueue;
+    }
+
+    function splitMessage(text) {
+        var raw = textValue(text).replace(/\s*\n+\s*/g, "\n").trim();
+        if (!raw) return [];
+        var parts = raw.split(/\n+/).filter(Boolean);
+        if (parts.length > 1) return parts;
+        var sentences = raw.match(/[^。！？!?；;]+[。！？!?；;]?/g) || [raw];
+        var groups = [];
+        var current = "";
+        sentences.forEach(function(sentence) {
+            if (current && (current + sentence).length > 76) {
+                groups.push(current);
+                current = sentence;
+            } else {
+                current += sentence;
+            }
+        });
+        if (current) groups.push(current);
+        return groups;
+    }
+
+    function renderChoices(items) {
+        clearChoiceTimer();
+        dock.innerHTML = "";
+        choiceTimer = setTimeout(function() {
+            choiceTimer = null;
+            dock.innerHTML = '<div class="choice-list"></div>';
+            var list = dock.querySelector(".choice-list");
+            items.forEach(function(item) {
+                var btn = document.createElement("button");
+                btn.type = "button";
+                btn.className = "choice-btn";
+                btn.innerHTML = "<strong>" + escapeHtml(item.label) + "</strong>" + (item.note ? "<span>" + escapeHtml(item.note) + "</span>" : "");
+                btn.addEventListener("click", function() {
+                    Array.prototype.forEach.call(list.querySelectorAll("button"), function(x){ x.disabled = true; });
+                    if (item.userLabel !== false) user(item.userLabel || item.label);
+                    if (item.immediate) {
+                        item.onClick();
+                        return;
+                    }
+                    waitReply().then(item.onClick);
+                });
+                list.appendChild(btn);
+            });
+            setChatStatus("");
+            saveProgress();
+            requestAnimationFrame(function(){ scrollFeed(); });
+        }, choiceDelayMs());
+    }
+
+    function askQuestion() {
+        var q = QUESTIONS[S.questionIndex];
+        if (!q) return generateProfile();
+        S.flowStep = "question";
+        return renderBotSegments(q.text).then(function() {
+            renderQuestionChoices(q);
+        });
+    }
+
+    function renderQuestionChoices(q) {
+        renderChoices(q.options.map(function(option) {
+            return {
+                label: option[0],
+                note: option[1],
+                onClick: function() {
+                    S.answers[q.id] = option[0];
+                    S.questionIndex += 1;
+                    saveProgress();
+                    askQuestion();
+                }
+            };
+        }));
+    }
+
+    function generateProfile() {
+        S.flowStep = "profileBusy";
+        busy();
+        callApi("profile").then(function(profile) {
+            S.profile = profile;
+            bot(profileCard(profile), true);
+            return renderBotSegments(profile.summary || "").then(function() {
+                S.flowStep = "profileReady";
+                renderProfileChoices();
+            });
+        });
+    }
+
+    function renderProfileChoices() {
+        renderChoices([{ label: "根据画像看学校", note: "匹配 4 所学校与专业方向", onClick: generateSchools }]);
+    }
+
+    function generateSchools() {
+        S.flowStep = "schoolsBusy";
+        busy();
+        callApi("recommend").then(function(data) {
+            S.apiSchools = (data.schools || []).slice(0, 4);
+            if (!S.apiSchools.length) S.apiSchools = mockSchools();
+            return renderBotSegments("我找到了四个可能的入口。选择一个学校，再选一个专业方向，我们就从那里开始另一条人生。").then(function() {
+                S.flowStep = "schoolsReady";
+                renderSchoolChoices();
+            });
+        });
+    }
+
+    function renderSchoolChoices() {
+        renderChoices((S.apiSchools || []).map(function(school) {
+            return {
+                label: school.name + " · " + school.city,
+                note: school.fit + "｜" + school.reason,
+                onClick: function() {
+                    S.school = school;
+                    S.flowStep = "majorChoice";
+                    chooseMajor(school);
+                }
+            };
+        }));
+    }
+
+    function chooseMajor(school) {
+        bot("<h2>" + escapeHtml(school.name) + "</h2>" + escapeHtml(school.reason) + '<div class="tag-row">' + (school.lore || []).map(function(x){ return '<span class="tag">' + escapeHtml(x) + '</span>'; }).join("") + "</div>", true);
+        waitReply().then(function() {
+            renderMajorChoices(school);
+        });
+    }
+
+    function renderMajorChoices(school) {
+        renderChoices((school.majors || []).slice(0, 2).map(function(major) {
+            return {
+                label: major.name,
+                note: major.reason,
+                onClick: function() {
+                    S.major = major;
+                    beginStory();
+                }
+            };
+        }));
+    }
+
+    function beginStory() {
+        S.stageIndex = 0;
+        S.story = [];
+        generateStoryStage();
+    }
+
+    function generateStoryStage() {
+        if (S.stageIndex >= STAGES.length) return generateEnding();
+        var stage = STAGES[S.stageIndex];
+        S.flowStep = "storyBusy";
+        busy();
+        callApi("story", { currentStage: stage }).then(function(part) {
+            part.choices = ensureChoices(part.choices);
+            S.currentPart = part;
+            bot(storyHeader(part), true);
+            return renderBotSegments(part.text || "").then(function() {
+                S.flowStep = "storyChoice";
+                renderStoryChoices(part);
+            });
+        });
+    }
+
+    function renderStoryChoices(part) {
+        renderChoices((part.choices || []).slice(0, 3).map(function(choice) {
+            return {
+                label: choice.label,
+                note: stagePrompt(choice, part),
+                onClick: function() {
+                    return renderBotSegments(choice.consequence || "").then(function() {
+                        S.story.push({ stage: part.stage || STAGES[S.stageIndex], title: part.title, text: part.text, choice: choice });
+                        S.stageIndex += 1;
+                        S.currentPart = null;
+                        saveProgress();
+                        return waitReply().then(function() {
+                            return generateTransition(part.stage || STAGES[S.stageIndex - 1], STAGES[S.stageIndex], choice).then(function(text) {
+                                return renderBotSegments(text);
+                            }).then(function() {
+                                generateStoryStage();
+                            });
+                        });
+                    });
+                }
+            };
+        }));
+    }
+
+    function stagePrompt(choice, part) {
+        var impact = Array.isArray(choice.impact) ? choice.impact.map(textValue).filter(Boolean).join(" / ") : textValue(choice.impact);
+        var stage = textValue(part && part.stage ? part.stage : STAGES[S.stageIndex]);
+        if (stage.indexOf("报到") >= 0) return "你会把第一晚交给谁？" + (impact ? "｜" + impact : "");
+        if (stage.indexOf("专业分流") >= 0) return "这会改变你看待专业的方式。" + (impact ? "｜" + impact : "");
+        if (stage.indexOf("深入专业") >= 0) return "这一年会留下具体的能力和后果。" + (impact ? "｜" + impact : "");
+        if (stage.indexOf("升学就业") >= 0) return "选择会推近毕业后的方向。" + (impact ? "｜" + impact : "");
+        if (stage.indexOf("毕业选择") >= 0) return "这会成为结局里被回望的一笔。" + (impact ? "｜" + impact : "");
+        return "这会成为结局里被回望的一笔。" + (impact ? "｜" + impact : "");
+    }
+
+    function generateEnding() {
+        S.flowStep = "endingBusy";
+        busy();
+        callApi("ending").then(function(ending) {
+            S.ending = ending;
+            bot("<h2>" + escapeHtml(ending.outcomeTitle || "另一条人生") + "</h2>", true);
+            return renderBotSegments(ending.summary || "", true, true).then(function() {
+                bot("<h3>写给十年后的信</h3>", true);
+                return renderBotSegments(ending.letter || "", false, true);
+            }).then(function() {
+                bot(endingExtras(ending), true);
+                S.flowStep = "ending";
+                renderEndingChoices();
+            });
+        });
+    }
+
+    function renderEndingChoices() {
+        renderChoices([
+            { label: "分享结局", note: "把这条人生线发给朋友", onClick: shareEnding, userLabel: "分享结局", immediate: true },
+            { label: "重新体验一次", note: "保留一零年代，换一组选择", onClick: renderLifeIf }
+        ]);
+    }
+
+    function shareEnding() {
+        var text = endingShareText();
+        if (navigator.share) {
+            navigator.share({ title: "我的人生 IF 线", text: text }).then(function(){ toast("结局已分享"); }).catch(function(){});
+        } else if (navigator.clipboard) {
+            navigator.clipboard.writeText(text).then(function(){ toast("结局已复制，可以去分享了"); });
+        } else {
+            toast("结局：" + limitAtSentence(text, 30));
+        }
+        renderEndingChoices();
+    }
+
+    function endingShareText() {
+        var school = S.school && S.school.name ? textValue(S.school.name) : "一所大学";
+        var major = S.major && S.major.name ? textValue(S.major.name) : "一个专业";
+        var title = S.ending && S.ending.outcomeTitle ? textValue(S.ending.outcomeTitle) : "另一条人生";
+        var summary = S.ending && S.ending.summary ? textValue(S.ending.summary) : "";
+        return "我的一零年代人生 IF 线：" + title + "\n" + school + " · " + major + "\n" + summary;
+    }
+
+    function ensureChoices(choices) {
+        var fallback = mockStory(STAGES[S.stageIndex]).choices;
+        choices = Array.isArray(choices) ? choices.slice(0, 3) : [];
+        while (choices.length < 3) choices.push(fallback[choices.length]);
+        return choices;
+    }
+
+    function profileCard(profile) {
+        return "<h2>" + escapeHtml(profile.title || "你的 IF 画像") + "</h2>" +
+            '<div class="tag-row">' + (profile.traits || []).slice(0, 4).map(function(x){ return '<span class="tag">' + escapeHtml(x) + '</span>'; }).join("") + "</div>" +
+            "<h3>内在拉扯</h3>" + escapeHtml(profile.tension || "");
+    }
+
+    function storyHeader(part) {
+        return '<div class="muted">' + escapeHtml(part.stage || STAGES[S.stageIndex]) + "</div>" +
+            "<h2>" + escapeHtml(part.title || "新的阶段") + "</h2>";
+    }
+
+    function generateTransition(from, to, choice) {
+        if (!to) return Promise.resolve("");
+        return callApi("transition", {
+            fromStage: from,
+            toStage: to,
+            lastChoice: choice && choice.label ? textValue(choice.label) : "",
+            lastConsequence: choice && choice.consequence ? textValue(choice.consequence) : ""
+        }).then(function(data) {
+            return (data && data.text) || semesterBridge(from, to);
+        });
+    }
+
+    function semesterBridge(from, to) {
+        from = textValue(from);
+        to = textValue(to);
+        if (!to) return "";
+        var lines = [
+            from + "慢慢收尾。几次晚归、几张新课表之后，" + to + "就这样接了上来。",
+            from + "的余波还留在课表、消息和夜路里，" + to + "已经在聊天列表里亮了起来。",
+            "中间隔着一段普通得容易忘记的时间：上课、赶路、回消息。再抬头时，故事走进了" + to + "。"
+        ];
+        return lines[S.stageIndex % lines.length];
+    }
+
+    function limitAtSentence(s, max) {
+        s = textValue(s).trim();
+        if (!max || s.length <= max) return s;
+        var cut = s.slice(0, max);
+        var idx = Math.max(cut.lastIndexOf("。"), cut.lastIndexOf("！"), cut.lastIndexOf("？"));
+        if (idx >= Math.min(12, max * .45)) return cut.slice(0, idx + 1);
+        return cut.replace(/[，。！？；：、\s]+$/, "") + "。";
+    }
+
+    function endingExtras(ending) {
+        var books = (ending.books || []).slice(0, 3).map(function(book) {
+            return "<h3>" + escapeHtml(book.title || "") + "</h3><div>" + escapeHtml(book.author || "") + "｜" + escapeHtml(book.reason || "") + "</div>";
+        }).join("");
+        var quote = ending.quote ? "<h3>一句话</h3>" + escapeHtml(ending.quote.text || "") + "<div class='muted'>— " + escapeHtml(ending.quote.philosopher || "") + "</div>" : "";
+        return books + quote;
+    }
+
+    function loadProgress() {
+        try { return JSON.parse(localStorage.getItem(LIFEIF_PROGRESS_KEY) || "null"); } catch (e) { return null; }
+    }
+
+    function saveProgress() {
+        if (!S || !S.era) return;
+        var payload = {
+            state: S,
+            feedHtml: feed.innerHTML,
+            savedAt: Date.now()
+        };
+        try { localStorage.setItem(LIFEIF_PROGRESS_KEY, JSON.stringify(payload)); } catch (e) {}
+        updateHomeProgress();
+    }
+
+    function updateHomeProgress() {
+        var preview = document.getElementById("bitdefencePreview");
+        var time = document.getElementById("bitdefenceTime");
+        if (!preview) return;
+        var saved = loadProgress();
+        if (!saved || !saved.state) {
+            preview.textContent = "[新消息]点击体验人生 IF 线";
+            if (time) time.textContent = "13-6-29";
+            return;
+        }
+        var state = saved.state;
+        if (state.ending && state.ending.outcomeTitle) {
+            preview.textContent = "结局：" + state.ending.outcomeTitle + "，点击继续查看";
+        } else if (state.stageIndex > 0 || state.currentPart) {
+            var stage = state.currentPart && state.currentPart.stage ? state.currentPart.stage : STAGES[Math.min(state.stageIndex, STAGES.length - 1)];
+            preview.textContent = "进行到 " + stage + "，点击继续";
+        } else if (state.school && state.major) {
+            preview.textContent = state.school.name + " · " + state.major.name + "，故事将开始";
+        } else if (state.profile) {
+            preview.textContent = "画像已完成，点击继续选择学校";
+        } else {
+            preview.textContent = "已回答 " + (state.questionIndex || 0) + "/4，点击继续";
+        }
+        if (time) time.textContent = "现在";
+    }
+
+    function updateStatusClock() {
+        var clock = document.getElementById("statusClock");
+        if (!clock) return;
+        var now = new Date();
+        var h = String(now.getHours()).padStart(2, "0");
+        var m = String(now.getMinutes()).padStart(2, "0");
+        var s = String(now.getSeconds()).padStart(2, "0");
+        clock.textContent = h + ":" + m + ":" + s;
+    }
+
+    function restoreControls() {
+        var step = S.flowStep || "question";
+        if (step === "question") {
+            var q = QUESTIONS[S.questionIndex];
+            if (q) renderQuestionChoices(q); else generateProfile();
+        } else if (step === "profileReady") {
+            renderProfileChoices();
+        } else if (step === "schoolsReady") {
+            renderSchoolChoices();
+        } else if (step === "majorChoice" && S.school) {
+            renderMajorChoices(S.school);
+        } else if (step === "storyChoice" && S.currentPart) {
+            renderStoryChoices(S.currentPart);
+        } else if (step === "ending") {
+            renderEndingChoices();
+        } else {
+            renderChoices([{ label: "继续", note: "接着刚才的位置往下走", onClick: function(){ continueFromState(); } }]);
+        }
+    }
+
+    function continueFromState() {
+        if (!S.profile) return generateProfile();
+        if (!S.apiSchools) return generateSchools();
+        if (!S.major && S.school) return renderMajorChoices(S.school);
+        if (!S.ending) return generateStoryStage();
+        renderEndingChoices();
+    }
+
+    function scrollFeed() {
+        feed.scrollTop = feed.scrollHeight;
+    }
+    function toast(message) {
+        var old = document.querySelector(".toast");
+        if (old) old.remove();
+        var el = document.createElement("div");
+        el.className = "toast";
+        el.textContent = message;
+        document.querySelector(".phone-container").appendChild(el);
+        setTimeout(function(){ el.remove(); }, 1700);
+    }
+    function textValue(value) {
+        if (value == null) return "";
+        if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") return String(value);
+        if (typeof value === "function") return textValue(value());
+        if (Array.isArray(value)) return value.map(textValue).filter(Boolean).join(" / ");
+        if (typeof value === "object") {
+            var keys = ["text", "label", "title", "name", "summary", "consequence", "reason", "fit", "stage", "choice", "message", "value"];
+            for (var i = 0; i < keys.length; i++) {
+                var text = textValue(value[keys[i]]);
+                if (text) return text;
+            }
+            try {
+                var json = JSON.stringify(value);
+                return json && json !== "{}" ? json : "";
+            } catch (e) {}
+        }
+        return "";
+    }
+
+    function escapeHtml(text) {
+        return textValue(text).replace(/[&<>"']/g, function(ch) {
+            return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch];
+        });
+    }
+
+    document.getElementById("bitdefenceEntry").addEventListener("click", function() {
+        if (!resumeLifeIf()) {
+            switchScreen("lifeif");
+            renderLifeIf();
+        }
+    });
+    backBtn.addEventListener("click", function(){
+        saveProgress();
+        updateHomeProgress();
+        switchScreen("home");
+    });
+    homeAddBtn.addEventListener("click", function(){ toast("请选择 Bitdefence助手 开始体验"); });
+    updateStatusClock();
+    setInterval(updateStatusClock,1000);
+    updateHomeProgress();
+})();
+</script>
+</body>
+</html>

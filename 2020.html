@@ -1,0 +1,5578 @@
+<!DOCTYPE html><html vid="0"><head vid="1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    
+    <link rel="stylesheet" href="assets/fonts/inter.css" vid="3">
+    <style vid="5">
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #f8fafc;
+        }
+
+        
+        .gradient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: #ffffff;
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            filter: blur(80px);
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: move 20s infinite alternate ease-in-out;
+        }
+
+        .blob-1 {
+            background: #dcfce7; 
+            top: -100px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+
+        .blob-2 {
+            background: #ccfbf1; 
+            bottom: -150px;
+            right: -100px;
+            animation-duration: 25s;
+            animation-delay: -5s;
+        }
+
+        .blob-3 {
+            background: #f0fdf4;
+            top: 40%;
+            left: 30%;
+            width: 400px;
+            height: 400px;
+            animation-duration: 30s;
+            animation-delay: -10s;
+        }
+
+        @keyframes move {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .chat-container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .lifeif-feed {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px 24px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+
+        .lifeif-row {
+            display: flex;
+            width: 100%;
+        }
+
+        .lifeif-row.user {
+            justify-content: flex-end;
+        }
+
+        .lifeif-bubble {
+            max-width: 86%;
+            border-radius: 30px;
+            padding: 15px 20px;
+            font-size: 17px;
+            line-height: 1.75;
+            white-space: pre-wrap;
+            box-shadow: 0 10px 28px rgba(15, 118, 110, 0.06);
+        }
+
+        .lifeif-bubble.bot {
+            color: #6b7280;
+            background: transparent;
+            box-shadow: none;
+            padding-left: 2px;
+        }
+
+        .lifeif-bubble.user {
+            color: #111827;
+            background: rgba(255, 255, 255, 0.82);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .choice-dock {
+            padding: 12px 16px 28px;
+        }
+
+        .choice-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 14px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.44);
+            border: 1px solid rgba(255, 255, 255, 0.62);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 18px 40px rgba(15, 118, 110, 0.1);
+        }
+
+        .choice-btn {
+            width: 100%;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.74);
+            color: #1f2937;
+            padding: 13px 16px;
+            border-radius: 22px;
+            font-size: 15px;
+            line-height: 1.45;
+            cursor: pointer;
+            transition: transform 0.16s ease, background 0.2s ease;
+        }
+
+        .choice-btn:active {
+            transform: scale(0.98);
+            background: rgba(240, 253, 250, 0.86);
+        }
+
+        .choice-btn.skip {
+            text-align: center;
+            color: #6b7280;
+            border-style: dashed;
+        }
+
+        .profile-card {
+            color: #374151;
+            background: rgba(255, 255, 255, 0.72);
+            border: 1px solid rgba(255, 255, 255, 0.65);
+            border-radius: 28px;
+            padding: 18px 20px;
+            line-height: 1.75;
+            box-shadow: 0 16px 36px rgba(15, 118, 110, 0.08);
+        }
+    
+  :root{
+    --ink:#f8fafc; --ink2:#ffffff; --paper:#ffffff; --paper-ink:#123646;
+    --text:#172033; --text-dim:#6b7280; --gold:#10b981; --gold-soft:#059669; --blue:#059669;
+    --line:rgba(16,185,129,.22); --card:rgba(255,255,255,.72);
+    --safe-b: env(safe-area-inset-bottom,0px); --safe-t: env(safe-area-inset-top,0px); --status-h:44px; --appbar-h:58px;
+  }
+  .lifeif-app{position:relative;width:100%;height:100%;max-width:520px;margin:0 auto;overflow:hidden;}
+  @supports (height: 100dvh){
+    html,body,.lifeif-app{height:100dvh;}
+  }
+  .lifeif-status{position:absolute;top:0;left:0;right:0;z-index:40;height:calc(var(--status-h) + var(--safe-t));display:flex;align-items:flex-end;justify-content:space-between;padding:0 24px 10px;color:#111827;pointer-events:none;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}
+  .lifeif-status-time{font-size:14px;line-height:1;font-weight:650;letter-spacing:0;}
+  .lifeif-status-icons{display:flex;align-items:center;gap:8px;}
+  .lifeif-signal{display:flex;align-items:flex-end;gap:2px;height:14px;}
+  .lifeif-signal i{display:block;width:3px;border-radius:2px;background:#111827;}
+  .lifeif-signal i:nth-child(1){height:5px}.lifeif-signal i:nth-child(2){height:7px}.lifeif-signal i:nth-child(3){height:10px}.lifeif-signal i:nth-child(4){height:13px}
+  .lifeif-wifi{position:relative;width:19px;height:14px;overflow:hidden;}
+  .lifeif-wifi:before,.lifeif-wifi:after{content:"";position:absolute;left:50%;border:2px solid transparent;border-top-color:#111827;border-radius:50%;transform:translateX(-50%);}
+  .lifeif-wifi:before{bottom:-12px;width:25px;height:25px}
+  .lifeif-wifi:after{bottom:-8px;width:17px;height:17px}
+  .lifeif-wifi i{position:absolute;left:50%;bottom:1px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:#111827;}
+  .lifeif-battery{position:relative;display:flex;align-items:center;gap:3px;height:14px;padding:1px 3px;border:1px solid rgba(17,24,39,.32);border-radius:3px;font-size:10px;font-weight:700;line-height:1;color:#111827;}
+  .lifeif-battery:after{content:"";position:absolute;right:-4px;top:4px;width:2px;height:6px;border-radius:0 2px 2px 0;background:rgba(17,24,39,.55);}
+  .lifeif-battery-fill{width:15px;height:8px;border-radius:2px;background:#111827;}
+  .lifeif-appbar{position:absolute;top:calc(var(--safe-t) + var(--status-h));left:0;right:0;z-index:39;height:var(--appbar-h);display:flex;align-items:center;justify-content:space-between;padding:6px 16px 10px;pointer-events:auto;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}
+  .lifeif-appbar-left{display:flex;align-items:center;gap:16px;min-width:0;}
+  .lifeif-glass{background:rgba(255,255,255,.42);border:1px solid rgba(255,255,255,.34);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 10px 26px rgba(15,118,110,.06);}
+  .lifeif-menu{width:40px;height:40px;border-radius:999px;display:flex;align-items:center;justify-content:center;padding:0;color:#374151;}
+  .lifeif-menu i,.lifeif-menu i:before,.lifeif-menu i:after{display:block;width:18px;height:2px;border-radius:999px;background:#374151;content:"";}
+  .lifeif-menu i{position:relative}.lifeif-menu i:before{position:absolute;top:-6px}.lifeif-menu i:after{position:absolute;top:6px}
+  .lifeif-model{display:flex;align-items:center;gap:5px;min-width:0;color:#1f2937;font-size:17px;font-weight:500;line-height:1;white-space:nowrap;}
+  .lifeif-caret{width:7px;height:7px;border-right:1.8px solid #4b5563;border-bottom:1.8px solid #4b5563;transform:rotate(45deg);margin-top:-4px;}
+  .lifeif-actions{display:flex;align-items:center;gap:4px;padding:6px 10px 6px 6px;border-radius:999px;background:rgba(255,255,255,.42);border:1px solid rgba(255,255,255,.34);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
+  .lifeif-sparkle{width:42px;height:32px;border-radius:999px;display:flex;align-items:center;justify-content:center;}
+  .lifeif-sparkle i{position:relative;width:20px;height:20px;display:block;}
+  .lifeif-sparkle i:before{content:"";position:absolute;left:3px;top:1px;width:15px;height:15px;background:#059669;clip-path:polygon(50% 0,62% 37%,100% 50%,62% 63%,50% 100%,38% 63%,0 50%,38% 37%);}
+  .lifeif-sparkle i:after{content:"";position:absolute;right:1px;bottom:1px;width:5px;height:5px;border-radius:50%;background:#059669;}
+  .lifeif-dots{position:relative;width:24px;height:24px;border:0;background:transparent;padding:0;}
+  .lifeif-dots:before{content:"";position:absolute;top:50%;left:4px;width:4px;height:4px;border-radius:50%;background:#374151;box-shadow:8px 0 0 #374151,16px 0 0 #374151;transform:translateY(-50%);}
+  .screen{position:absolute;inset:0;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .35s ease;display:flex;flex-direction:column;padding:calc(18px + var(--safe-t) + var(--status-h) + var(--appbar-h)) 18px calc(18px + var(--safe-b));}
+  .screen.active{opacity:1;visibility:visible;pointer-events:auto;}
+  #screen-cover{display:none;}
+  .topbar{display:none;}
+  .avatar{display:none;}
+  .topname{font-size:19px;font-weight:600;color:#172033;}
+  .topname b{font-weight:600;}
+  .topname span{display:block;font-size:12px;color:#6b7280;margin-top:3px;font-weight:500;letter-spacing:.04em;}
+  .feed{flex:1;overflow-y:auto;overflow-x:hidden;padding:22px 6px 12px;-webkit-overflow-scrolling:touch;}
+  .feed::-webkit-scrollbar,.grid::-webkit-scrollbar,.modal-card::-webkit-scrollbar{width:0;display:none;}
+  .bubble{max-width:90%;margin:0 0 18px;padding:15px 20px;border-radius:30px;background:rgba(255,255,255,.78);border:1px solid rgba(255,255,255,.72);font-size:16px;line-height:1.85;color:#172033;white-space:pre-wrap;box-shadow:0 12px 30px rgba(15,118,110,.07);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);}
+  .bubble.narr{background:transparent;border-color:transparent;box-shadow:none;color:#6b7280;padding-left:4px;}
+  .bubble.user{margin-left:auto;background:rgba(255,255,255,.86);border-color:rgba(255,255,255,.8);color:#111827;border-radius:30px;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}
+  .stage-tag{display:inline-block;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:11px;letter-spacing:.16em;color:#059669;background:rgba(255,255,255,.64);border:1px solid rgba(16,185,129,.22);border-radius:999px;padding:3px 12px;margin-bottom:8px;}
+  .typing{display:inline-flex;align-items:center;gap:7px;padding:4px 0;line-height:1;vertical-align:middle;}
+  .typing-copy{display:inline-block;line-height:1.2;}
+  .typing-dots{display:inline-flex;align-items:center;gap:5px;height:10px;}
+  .typing i{width:7px;height:7px;border-radius:50%;background:#10b981;opacity:.45;animation:blink 1.2s infinite;}
+  .typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+  @keyframes blink{0%,60%,100%{opacity:.25;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
+  .dock{flex:0 0 auto;padding-top:10px;}
+  .choices{display:flex;flex-direction:column;gap:10px;padding:14px;border-radius:30px;background:rgba(255,255,255,.44);border:1px solid rgba(255,255,255,.62);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 18px 40px rgba(15,118,110,.1);}
+  .choice{width:100%;text-align:left;border:1px solid rgba(255,255,255,.72);background:rgba(255,255,255,.76);color:#1f2937;padding:13px 16px;border-radius:22px;font-size:15px;line-height:1.45;cursor:pointer;transition:transform .16s ease,background .2s ease;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}
+  .choice:active{transform:scale(.98);background:rgba(240,253,250,.86);}
+  .choice .k{color:#059669;margin-right:8px;font-weight:700;}
+  .choice.skip{text-align:center;color:#6b7280;border-style:dashed;}
+  .tapnext{text-align:center;color:#6b7280;font-size:12px;letter-spacing:.2em;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:8px;}
+  .pick-title{font-size:23px;line-height:1.35;font-weight:650;margin:2px 0 6px;color:#172033;}
+  .pick-sub{font-size:13px;color:#6b7280;margin-bottom:14px;}
+  .filterbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+  .chip{font-size:12px;padding:7px 13px;border-radius:999px;border:1px solid rgba(255,255,255,.66);background:rgba(255,255,255,.58);color:#4b5563;cursor:pointer;}
+  .chip.on{background:#172033;color:#fff;border-color:#172033;}
+  .grid{flex:1;overflow-y:auto;display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-bottom:10px;}
+  .tile{border:1px solid rgba(255,255,255,.66);background:rgba(255,255,255,.72);border-radius:22px;padding:16px;box-shadow:0 10px 26px rgba(15,118,110,.06);cursor:pointer;}
+  .tile.sel{box-shadow:0 0 0 2px #172033,0 14px 32px rgba(15,118,110,.1);}
+  .tile .n{font-size:15px;font-weight:650;color:#172033;}.tile .c{font-size:11px;color:#059669;margin-top:4px;}.tile .d{font-size:12px;color:#6b7280;line-height:1.55;margin-top:8px;}
+  .ending-head{text-align:center;margin-bottom:10px;}.ending-head .t{font-size:25px;font-weight:650;color:#172033;}.ending-head .s{font-size:12px;color:#6b7280;margin-top:5px;}
+  .timeline{position:relative;margin:18px 0 8px;padding-left:20px;}.timeline:before{content:"";position:absolute;left:5px;top:4px;bottom:4px;width:1px;background:rgba(16,185,129,.25)}
+  .tl{position:relative;margin-bottom:16px;font-size:15px;line-height:1.8;color:#374151;}.tl:before{content:"";position:absolute;left:-19px;top:8px;width:9px;height:9px;border-radius:50%;background:#10b981}.tl b{display:block;font-size:12px;letter-spacing:.08em;color:#059669;margin-bottom:3px;}
+  .letter{background:rgba(255,255,255,.84);border:1px solid rgba(255,255,255,.7);border-radius:28px;padding:22px;margin:18px 0;line-height:1.9;color:#172033;box-shadow:0 16px 36px rgba(15,118,110,.08);}.letter:before{content:"亲爱的你：";display:block;font-weight:650;margin-bottom:10px}.letter .sign{text-align:right;margin-top:16px;color:#6b7280;font-style:italic;}
+  .endbtns{flex:0 0 auto;display:flex;gap:10px;flex-wrap:wrap;padding-top:12px;}.endbtns .btn{flex:1;min-width:40%;padding:13px 0;font-size:14px;}.endbtns .btn-primary{flex:1 1 100%;}
+  .btn{border:1px solid rgba(255,255,255,.72);background:rgba(255,255,255,.68);color:#172033;padding:14px 24px;border-radius:999px;font-size:15px;font-weight:600;cursor:pointer;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}.btn-primary{background:#172033;color:#fff;border-color:#172033;}.btn-ghost{color:#374151;}
+  .overlay{position:fixed;inset:0;background:rgba(15,23,42,.2);backdrop-filter:blur(10px);z-index:120;display:none;align-items:center;justify-content:center;padding:24px;}.overlay.active{display:flex}.modal-card{max-width:440px;width:100%;background:rgba(255,255,255,.94);border:1px solid rgba(255,255,255,.7);border-radius:24px;padding:22px;max-height:88vh;overflow:auto;box-shadow:0 24px 70px rgba(15,118,110,.14);}.modal-card h3{margin:0 0 8px;font-size:19px;color:#172033}.modal-card p.hint{color:#6b7280;font-size:13px;line-height:1.6;margin:0 0 14px}.mine{width:100%;min-height:120px;font-family:inherit;font-size:16px;line-height:1.8;padding:14px;border-radius:18px;border:1px solid rgba(16,185,129,.18);background:rgba(255,255,255,.76);color:#172033;outline:none;resize:none}.poster-img{width:100%;border-radius:16px;display:block}.poster-tip{text-align:center;color:#6b7280;font-size:12px;margin-top:12px;}.poster-exit{position:absolute;top:calc(14px + var(--safe-t));right:14px;z-index:2;padding:9px 15px;border-radius:999px;border:1px solid rgba(255,255,255,.76);background:rgba(255,255,255,.9);color:#172033;box-shadow:0 12px 28px rgba(15,23,42,.14);font-size:14px;}
+  .ai-icon{width:38px;height:38px;border-radius:999px;border:1px solid rgba(16,185,129,.22);background:rgba(255,255,255,.72);color:#172033;display:grid;place-items:center;font-size:17px;cursor:pointer;box-shadow:0 10px 24px rgba(15,118,110,.08);}
+  .ai-icon:active{transform:scale(.97);}
+  .ai-live{display:inline-flex;align-items:center;gap:6px;margin-left:8px;color:#059669;font-size:11px;letter-spacing:.08em;}
+  .ai-live i{width:6px;height:6px;border-radius:50%;background:#10b981;box-shadow:0 0 12px rgba(16,185,129,.8);animation:blink 1.1s infinite;}
+  @media (max-width: 520px){
+    .lifeif-app{max-width:none;}
+    .lifeif-status{padding-left:22px;padding-right:22px;}
+    .lifeif-appbar{padding-left:14px;padding-right:14px;}
+    .screen{padding:calc(14px + var(--safe-t) + var(--status-h) + var(--appbar-h)) 14px calc(14px + var(--safe-b));}
+    .topbar{padding:4px 2px 10px;}
+    .feed{padding:16px 2px 10px;}
+    .bubble{max-width:94%;font-size:15px;line-height:1.78;padding:13px 16px;border-radius:24px;}
+    .choices{gap:9px;padding:12px;border-radius:24px;}
+    .choice{font-size:14px;line-height:1.5;padding:12px 14px;border-radius:18px;}
+    .grid{grid-template-columns:1fr;gap:10px;}
+    .tile{border-radius:18px;padding:14px;}
+    .overlay{padding:16px;}
+  }
+</style>
+
+  <style type="text/css">
+*, ::before, ::after {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}
+
+::backdrop {
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}/*
+! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com
+*//*
+1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
+2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
+*/
+
+*,
+::before,
+::after {
+  box-sizing: border-box; /* 1 */
+  border-width: 0; /* 2 */
+  border-style: solid; /* 2 */
+  border-color: #e5e7eb; /* 2 */
+}
+
+::before,
+::after {
+  --tw-content: '';
+}
+
+/*
+1. Use a consistent sensible line-height in all browsers.
+2. Prevent adjustments of font size after orientation changes in iOS.
+3. Use a more readable tab size.
+4. Use the user's configured `sans` font-family by default.
+5. Use the user's configured `sans` font-feature-settings by default.
+6. Use the user's configured `sans` font-variation-settings by default.
+7. Disable tap highlights on iOS
+*/
+
+html,
+:host {
+  line-height: 1.5; /* 1 */
+  -webkit-text-size-adjust: 100%; /* 2 */
+  -moz-tab-size: 4; /* 3 */
+  tab-size: 4; /* 3 */
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; /* 4 */
+  font-feature-settings: normal; /* 5 */
+  font-variation-settings: normal; /* 6 */
+  -webkit-tap-highlight-color: transparent; /* 7 */
+}
+
+/*
+1. Remove the margin in all browsers.
+2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.
+*/
+
+body {
+  margin: 0; /* 1 */
+  line-height: inherit; /* 2 */
+}
+
+/*
+1. Add the correct height in Firefox.
+2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)
+3. Ensure horizontal rules are visible by default.
+*/
+
+hr {
+  height: 0; /* 1 */
+  color: inherit; /* 2 */
+  border-top-width: 1px; /* 3 */
+}
+
+/*
+Add the correct text decoration in Chrome, Edge, and Safari.
+*/
+
+abbr:where([title]) {
+  text-decoration: underline dotted;
+}
+
+/*
+Remove the default font size and weight for headings.
+*/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/*
+Reset links to optimize for opt-in styling instead of opt-out.
+*/
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+/*
+Add the correct font weight in Edge and Safari.
+*/
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+/*
+1. Use the user's configured `mono` font-family by default.
+2. Use the user's configured `mono` font-feature-settings by default.
+3. Use the user's configured `mono` font-variation-settings by default.
+4. Correct the odd `em` font sizing in all browsers.
+*/
+
+code,
+kbd,
+samp,
+pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; /* 1 */
+  font-feature-settings: normal; /* 2 */
+  font-variation-settings: normal; /* 3 */
+  font-size: 1em; /* 4 */
+}
+
+/*
+Add the correct font size in all browsers.
+*/
+
+small {
+  font-size: 80%;
+}
+
+/*
+Prevent `sub` and `sup` elements from affecting the line height in all browsers.
+*/
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
+
+/*
+1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)
+2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)
+3. Remove gaps between table borders by default.
+*/
+
+table {
+  text-indent: 0; /* 1 */
+  border-color: inherit; /* 2 */
+  border-collapse: collapse; /* 3 */
+}
+
+/*
+1. Change the font styles in all browsers.
+2. Remove the margin in Firefox and Safari.
+3. Remove default padding in all browsers.
+*/
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit; /* 1 */
+  font-feature-settings: inherit; /* 1 */
+  font-variation-settings: inherit; /* 1 */
+  font-size: 100%; /* 1 */
+  font-weight: inherit; /* 1 */
+  line-height: inherit; /* 1 */
+  letter-spacing: inherit; /* 1 */
+  color: inherit; /* 1 */
+  margin: 0; /* 2 */
+  padding: 0; /* 3 */
+}
+
+/*
+Remove the inheritance of text transform in Edge and Firefox.
+*/
+
+button,
+select {
+  text-transform: none;
+}
+
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Remove default button styles.
+*/
+
+button,
+input:where([type='button']),
+input:where([type='reset']),
+input:where([type='submit']) {
+  -webkit-appearance: button; /* 1 */
+  background-color: transparent; /* 2 */
+  background-image: none; /* 2 */
+}
+
+/*
+Use the modern Firefox focus style for all focusable elements.
+*/
+
+:-moz-focusring {
+  outline: auto;
+}
+
+/*
+Remove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)
+*/
+
+:-moz-ui-invalid {
+  box-shadow: none;
+}
+
+/*
+Add the correct vertical alignment in Chrome and Firefox.
+*/
+
+progress {
+  vertical-align: baseline;
+}
+
+/*
+Correct the cursor style of increment and decrement buttons in Safari.
+*/
+
+::-webkit-inner-spin-button,
+::-webkit-outer-spin-button {
+  height: auto;
+}
+
+/*
+1. Correct the odd appearance in Chrome and Safari.
+2. Correct the outline style in Safari.
+*/
+
+[type='search'] {
+  -webkit-appearance: textfield; /* 1 */
+  outline-offset: -2px; /* 2 */
+}
+
+/*
+Remove the inner padding in Chrome and Safari on macOS.
+*/
+
+::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Change font properties to `inherit` in Safari.
+*/
+
+::-webkit-file-upload-button {
+  -webkit-appearance: button; /* 1 */
+  font: inherit; /* 2 */
+}
+
+/*
+Add the correct display in Chrome and Safari.
+*/
+
+summary {
+  display: list-item;
+}
+
+/*
+Removes the default spacing and border for appropriate elements.
+*/
+
+blockquote,
+dl,
+dd,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+figure,
+p,
+pre {
+  margin: 0;
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+}
+
+legend {
+  padding: 0;
+}
+
+ol,
+ul,
+menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+Reset default styling for dialogs.
+*/
+dialog {
+  padding: 0;
+}
+
+/*
+Prevent resizing textareas horizontally by default.
+*/
+
+textarea {
+  resize: vertical;
+}
+
+/*
+1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)
+2. Set the default placeholder color to the user's configured gray 400 color.
+*/
+
+input::placeholder,
+textarea::placeholder {
+  opacity: 1; /* 1 */
+  color: #9ca3af; /* 2 */
+}
+
+/*
+Set the default cursor for buttons.
+*/
+
+button,
+[role="button"] {
+  cursor: pointer;
+}
+
+/*
+Make sure disabled buttons don't get the pointer cursor.
+*/
+:disabled {
+  cursor: default;
+}
+
+/*
+1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)
+2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)
+   This can trigger a poorly considered lint error in some tools but is included by design.
+*/
+
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: block; /* 1 */
+  vertical-align: middle; /* 2 */
+}
+
+/*
+Constrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)
+*/
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Make elements with the HTML hidden attribute stay hidden by default */
+[hidden]:where(:not([hidden="until-found"])) {
+  display: none;
+}
+.fixed {
+  position: fixed;
+}
+.absolute {
+  position: absolute;
+}
+.relative {
+  position: relative;
+}
+.ml-2 {
+  margin-left: 0.5rem;
+}
+.mt-0\.5 {
+  margin-top: 0.125rem;
+}
+.mt-2 {
+  margin-top: 0.5rem;
+}
+.flex {
+  display: flex;
+}
+.hidden {
+  display: none;
+}
+.h-10 {
+  height: 2.5rem;
+}
+.h-12 {
+  height: 3rem;
+}
+.h-2 {
+  height: 0.5rem;
+}
+.h-4 {
+  height: 1rem;
+}
+.h-8 {
+  height: 2rem;
+}
+.h-full {
+  height: 100%;
+}
+.w-10 {
+  width: 2.5rem;
+}
+.w-4 {
+  width: 1rem;
+}
+.w-8 {
+  width: 2rem;
+}
+.w-full {
+  width: 100%;
+}
+.max-w-\[80\%\] {
+  max-width: 80%;
+}
+.max-w-\[90\%\] {
+  max-width: 90%;
+}
+.flex-1 {
+  flex: 1 1 0%;
+}
+.transform {
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.items-center {
+  align-items: center;
+}
+.justify-start {
+  justify-content: flex-start;
+}
+.justify-end {
+  justify-content: flex-end;
+}
+.justify-center {
+  justify-content: center;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.gap-0\.5 {
+  gap: 0.125rem;
+}
+.gap-1 {
+  gap: 0.25rem;
+}
+.gap-1\.5 {
+  gap: 0.375rem;
+}
+.gap-2 {
+  gap: 0.5rem;
+}
+.gap-4 {
+  gap: 1rem;
+}
+.space-y-8 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(2rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(2rem * var(--tw-space-y-reverse));
+}
+.overflow-y-auto {
+  overflow-y: auto;
+}
+.rounded {
+  border-radius: 0.25rem;
+}
+.rounded-\[32px\] {
+  border-radius: 32px;
+}
+.rounded-\[40px\] {
+  border-radius: 40px;
+}
+.rounded-full {
+  border-radius: 9999px;
+}
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+.rounded-sm {
+  border-radius: 0.125rem;
+}
+.border {
+  border-width: 1px;
+}
+.border-2 {
+  border-width: 2px;
+}
+.border-none {
+  border-style: none;
+}
+.border-black\/20 {
+  border-color: rgb(0 0 0 / 0.2);
+}
+.border-gray-400\/50 {
+  border-color: rgb(156 163 175 / 0.5);
+}
+.border-white\/30 {
+  border-color: rgb(255 255 255 / 0.3);
+}
+.border-white\/50 {
+  border-color: rgb(255 255 255 / 0.5);
+}
+.border-white\/60 {
+  border-color: rgb(255 255 255 / 0.6);
+}
+.bg-black {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));
+}
+.bg-transparent {
+  background-color: transparent;
+}
+.bg-white\/40 {
+  background-color: rgb(255 255 255 / 0.4);
+}
+.bg-white\/80 {
+  background-color: rgb(255 255 255 / 0.8);
+}
+.p-1\.5 {
+  padding: 0.375rem;
+}
+.p-4 {
+  padding: 1rem;
+}
+.px-0\.5 {
+  padding-left: 0.125rem;
+  padding-right: 0.125rem;
+}
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.px-5 {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+.px-6 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+.py-1\.5 {
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
+}
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+.py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+.pb-8 {
+  padding-bottom: 2rem;
+}
+.pr-3 {
+  padding-right: 0.75rem;
+}
+.pt-2 {
+  padding-top: 0.5rem;
+}
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+.text-\[10px\] {
+  font-size: 10px;
+}
+.text-\[17px\] {
+  font-size: 17px;
+}
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+.font-bold {
+  font-weight: 700;
+}
+.font-medium {
+  font-weight: 500;
+}
+.font-normal {
+  font-weight: 400;
+}
+.font-semibold {
+  font-weight: 600;
+}
+.leading-relaxed {
+  line-height: 1.625;
+}
+.text-emerald-600 {
+  --tw-text-opacity: 1;
+  color: rgb(5 150 105 / var(--tw-text-opacity, 1));
+}
+.text-gray-500 {
+  --tw-text-opacity: 1;
+  color: rgb(107 114 128 / var(--tw-text-opacity, 1));
+}
+.text-gray-600 {
+  --tw-text-opacity: 1;
+  color: rgb(75 85 99 / var(--tw-text-opacity, 1));
+}
+.text-gray-700 {
+  --tw-text-opacity: 1;
+  color: rgb(55 65 81 / var(--tw-text-opacity, 1));
+}
+.text-gray-800 {
+  --tw-text-opacity: 1;
+  color: rgb(31 41 55 / var(--tw-text-opacity, 1));
+}
+.text-gray-900 {
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39 / var(--tw-text-opacity, 1));
+}
+.placeholder-gray-500::placeholder {
+  --tw-placeholder-opacity: 1;
+  color: rgb(107 114 128 / var(--tw-placeholder-opacity, 1));
+}
+.shadow-lg {
+  --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow-sm {
+  --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.outline-none {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.blur {
+  --tw-blur: blur(8px);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.filter {
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.backdrop-blur-md {
+  --tw-backdrop-blur: blur(12px);
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}
+.backdrop-blur-sm {
+  --tw-backdrop-blur: blur(4px);
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}
+.backdrop-filter {
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}* {
+      -ms-overflow-style: none !important;
+      scrollbar-width: none !important;
+    }
+
+    *::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
+  </style></head>
+
+<body class="w-full h-full">
+  <div class="gradient-bg"><div class="blob blob-1"></div><div class="blob blob-2"></div><div class="blob blob-3"></div></div>
+  <div class="lifeif-app" id="app">
+    <div class="lifeif-status ui" aria-hidden="true">
+      <span class="lifeif-status-time" id="lifeif-status-time">14:29</span>
+      <div class="lifeif-status-icons">
+        <span class="lifeif-signal"><i></i><i></i><i></i><i></i></span>
+        <span class="lifeif-wifi"><i></i></span>
+        <span class="lifeif-battery"><span>95</span><i class="lifeif-battery-fill"></i></span>
+      </div>
+    </div>
+    <header class="lifeif-appbar ui" aria-label="应用导航">
+      <div class="lifeif-appbar-left">
+        <button class="lifeif-menu lifeif-glass" type="button" aria-label="菜单"><i></i></button>
+        <div class="lifeif-model" aria-label="当前模型">
+          <span>逗宝</span>
+          <i class="lifeif-caret"></i>
+        </div>
+      </div>
+      <div class="lifeif-actions">
+        <span class="lifeif-sparkle lifeif-glass" aria-hidden="true"><i></i></span>
+        <button class="lifeif-dots" type="button" aria-label="更多"></button>
+      </div>
+    </header>
+    <section class="screen active" id="screen-cover"></section>
+    <section class="screen" id="screen-chat">
+      <div class="topbar"><div class="topname"><b>逗宝</b><span id="chat-status">正在了解你</span></div></div>
+      <div class="feed" id="feed"></div>
+      <div class="dock" id="dock"></div>
+    </section>
+    <section class="screen ui" id="screen-school">
+      <div class="topbar"><div class="topname"><b>选择 IF 线</b><span id="pick-status">第二步 · 大学</span></div></div>
+      <div class="pick-title" id="pick-title">在另一条人生里，你想进哪所大学？</div>
+      <div class="pick-sub" id="pick-sub">选一所，它的气质会真实地长进你的故事里。</div>
+      <div class="filterbar" id="filterbar"></div>
+      <div class="grid" id="grid"></div>
+      <div class="dock"><button class="btn btn-primary" id="pick-next" style="width:100%;opacity:.4;pointer-events:none;">请先选择</button></div>
+    </section>
+    <section class="screen" id="screen-end">
+      <div class="feed">
+        <div class="ending-head ui"><div class="t" id="end-title">你的人生 IF 线</div><div class="s" id="end-sub"></div></div>
+        <div id="end-body"></div>
+      </div>
+      <div class="endbtns ui">
+        <button class="btn btn-ghost" data-act="mine">提笔，写给自己</button>
+        <button class="btn btn-ghost" data-act="save">保存这一生</button>
+        <button class="btn btn-primary" data-act="replay">换个选择，再活一次</button>
+      </div>
+    </section>
+  </div>
+  <textarea id="lastPrompt" hidden></textarea><textarea id="lastResponse" hidden></textarea>
+  <div class="overlay ui" id="ov-mine"><div class="modal-card"><h3>写给现在的自己</h3><p class="hint">看完了另一种人生，回到当下，有什么话想对自己说？</p><textarea class="mine" id="mine-text" maxlength="120" placeholder="比如：别怕选错，每条路上都有一个我在等你…"></textarea><div style="display:flex;gap:10px;margin-top:16px;"><button class="btn btn-ghost" data-act="mine-cancel" style="flex:1;">再想想</button><button class="btn btn-primary" data-act="mine-make" style="flex:1.4;">生成我的人生海报</button></div></div></div>
+  <div class="overlay ui" id="ov-poster"><button class="poster-exit" data-act="poster-close">退出</button><div class="modal-card" style="background:transparent;border:none;padding:0;"><img class="poster-img" id="poster-img" alt="人生海报"><div class="poster-tip">长按图片即可保存 · 分享你的人生 IF 线</div><div style="text-align:center;margin-top:14px;"><button class="btn btn-ghost" data-act="poster-close">关闭</button></div></div></div>
+  <script src="config.js"></script>
+  <script>
+(function(){
+  "use strict";
+
+  /* 把它换成你部署后的真实地址；离线生成二维码，不联网 */
+  var GAME_URL = "https://aiia.douyin.com/lifeif";
+
+  /* ---------- 学校扩展素材（由 school-feature-extensions.js 内联） ---------- */
+  var SCHOOL_FEATURE_EXTENSIONS = {
+    "北京大学": {
+      keywords: ["未名湖", "博雅塔", "思想自由", "大师讲座", "三角地", "兼容并包"],
+      campusDaily: [
+        "早八路过未名湖时，总有人已经坐在湖边读书或发呆。",
+        "三角地的海报每天都像刷新任务栏，讲座、社团、辩论、放映排得满满当当。",
+        "图书馆闭馆前的灯光里，论文、竞赛和理想主义一起熬夜。",
+        "你可能只是去买杯咖啡，却被同学拉去听一场完全不在课表里的讲座。"
+      ],
+      foodMemory: [
+        "食堂里最常发生的事，是边吃饭边把话题从绩点聊到社会结构。",
+        "夜宵摊前的讨论往往比课堂更松散，也更锋利。",
+        "一顿普通的午饭，可能变成跨院系同学的小型圆桌会。",
+        "考试周的咖啡和面包，是燕园深夜最朴素的补给。"
+      ],
+      studentPersona: [
+        "喜欢追问问题背后的问题，不太满足于标准答案。",
+        "看起来散漫，真正投入时却能把一个议题钻到很深。",
+        "对公共议题、历史、文学、科学都容易突然上头。",
+        "会在理想主义和现实规划之间反复拉扯。"
+      ],
+      clubsAndRituals: [
+        "讲座像校园里的另一套课程表，错过一场总觉得亏了。",
+        "辩论、读书会、戏剧、观影活动把夜晚切成很多种可能。",
+        "社团纳新时，广场像一场大型人格测试。",
+        "毕业前总要认真看一次未名湖和博雅塔，像给青春盖章。"
+      ],
+      cityLink: [
+        "北京的高校、智库、媒体和机构，让校园和更大的世界挨得很近。",
+        "中关村、五道口和各类讲座场域，构成北大学生的第二校园。",
+        "这座城市让人早早意识到，观点、资源和机会都需要自己争取。",
+        "冬天的北京有点冷，但越冷越适合把大问题想清楚。"
+      ],
+      careerFlavor: [
+        "去向很分散，有人做科研，有人进大厂，有人投身公共事务。",
+        "简历上不只看成绩，也看你是否真的有一套自己的问题意识。",
+        "校友网络像一张宽阔的地图，覆盖学术、商业、政策和文化领域。",
+        "很多人毕业时仍然在问：我要做一个怎样的人，而不只是找一份怎样的工作。"
+      ],
+      hiddenDetails: [
+        "校园里有些角落安静得不像北京，适合把自己从喧闹里捞出来。",
+        "老建筑、湖水和讲座海报混在一起，形成一种很难复制的燕园气质。",
+        "你会慢慢记住哪些路适合赶课，哪些路适合思考人生。",
+        "有些争论当时没有结果，几年后反而成了最清晰的大学记忆。"
+      ],
+      campusJokes: [
+        "没有人会承认自己卷，但大家都在用各自的方式用力。",
+        "一次讲座没听懂不要紧，先把问题记下来，回去继续怀疑人生。",
+        "三角地的海报比朋友圈更能暴露一个人的兴趣结构。",
+        "未名湖边不一定遇到爱情，但很容易遇到一个正在想大事的人。"
+      ],
+      randomEvents: [
+        "你被临时拉进一个读书会，结果那本书改变了你选课的方向。",
+        "一位老师在课后多讲了二十分钟，你发现自己第一次真正喜欢上这个学科。",
+        "社团招新时你本想随便看看，最后却负责了一整年的活动策划。",
+        "深夜从图书馆出来，湖边的风让你突然觉得大学不只是通往工作的路。"
+      ]
+    },
+  
+    "清华大学": {
+      keywords: ["水木清华", "工程训练", "自强不息", "实验室", "紫荆", "硬核执行力"],
+      campusDaily: [
+        "自行车流像校园里的潮汐，早晚高峰精准而壮观。",
+        "实验室的灯经常亮到很晚，项目节点比天气预报更受关注。",
+        "操场夜跑的人很多，像是在用配速和压力谈判。",
+        "课程、竞赛、科研和实习叠在一起，日程表很少有真正的空白。"
+      ],
+      foodMemory: [
+        "饭点讨论最多的不是吃什么，而是项目进度还差多少。",
+        "深夜的便利店和食堂窗口，是赶工同学的续航站。",
+        "一顿饭可以快速结束，也可以变成小组任务的现场复盘。",
+        "咖啡、面包和能量饮料，见证过太多 deadline 前夜。"
+      ],
+      studentPersona: [
+        "目标感很强，习惯把大问题拆成可执行的小步骤。",
+        "嘴上自嘲很累，手上却一点也不慢。",
+        "对效率、结构和结果有天然敏感度。",
+        "一边被压力推着走，一边又真心享受解决难题的爽感。"
+      ],
+      clubsAndRituals: [
+        "挑战杯、科创项目和实验室招新，总能吸引一群愿意通宵的人。",
+        "班级和院系活动常带着很强的组织感，连玩也玩得像项目管理。",
+        "体育传统很强，运动在这里既是爱好也是生存技能。",
+        "毕业照里常见主楼、二校门和一群终于松口气的人。"
+      ],
+      cityLink: [
+        "北京的科技公司、研究院和创业圈，让清华学生很早接触真实产业问题。",
+        "中关村像校外实验室，很多想法从课程作业一路走向公司原型。",
+        "这座城市资源密度高，也让竞争感变得更具体。",
+        "从校园到海淀的各类机构，清华人的路线常常连着技术与产业。"
+      ],
+      careerFlavor: [
+        "科技研发、硬件、人工智能、芯片、创业，是很常见的关键词。",
+        "不少人把职业规划做得像技术路线图，节点清楚、迭代迅速。",
+        "校友资源强，但真正被看重的仍然是你能不能把事情做成。",
+        "有人追逐顶尖实验室，有人走向产业一线，也有人直接开始创业。"
+      ],
+      hiddenDetails: [
+        "校园很大，第一次找教室很容易低估路程。",
+        "看似冷峻的工科氛围里，也藏着音乐、戏剧和摄影的柔软角落。",
+        "很多同学的自律不是喊口号，而是默默体现在每天的安排里。",
+        "你会在某个项目结束后突然发现，自己已经变得比入学时坚硬很多。"
+      ],
+      campusJokes: [
+        "清华人的休息方式，可能是换一个项目继续干。",
+        "嘴上说随便做做，提交时往往已经迭代了三版。",
+        "凌晨实验室的灯，是一种不用解释的共同语言。",
+        "在这里，'我不卷'通常只是一个美好的愿望。"
+      ],
+      randomEvents: [
+        "小组项目临时改需求，你们在实验室里把白板写满又擦掉。",
+        "一次失败的实验让你崩溃半小时，之后又冷静地重排参数。",
+        "夜跑时遇到同学，一边喘气一边讨论明天的答辩。",
+        "老师一句'这个问题可以继续做下去'，让你第一次认真考虑科研。"
+      ]
+    },
+  
+    "浙江大学": {
+      keywords: ["求是创新", "紫金港", "大而全", "杭州", "互联网气息", "务实进取"],
+      campusDaily: [
+        "紫金港的校园尺度很大，赶课常常像一次短途迁徙。",
+        "从课堂到社团再到竞赛，浙大总能找到一群正在做事的人。",
+        "周末骑车去西湖，像是在紧张节奏里给自己存档。",
+        "学科门类多到离谱，跨专业聊天常常能打开新世界。"
+      ],
+      foodMemory: [
+        "食堂选择丰富，适合把选择困难症训练成快速决策能力。",
+        "杭州的甜口和校园的忙碌混在一起，形成很特别的生活节奏。",
+        "夜宵时间常听到实习、项目和创业点子的混合讨论。",
+        "一杯奶茶或咖啡，经常陪你从紫金港走到又一个ddl。"
+      ],
+      studentPersona: [
+        "务实、能折腾，习惯把想法落到可见成果上。",
+        "既能埋头学习，也愿意试试竞赛、创业和实习。",
+        "对杭州和长三角机会很敏感，行动力通常不弱。",
+        "看似低调，真正做起事来很有韧性。"
+      ],
+      clubsAndRituals: [
+        "社团、竞赛和创新项目很多，几乎每种兴趣都能找到组织。",
+        "求是精神常被提起，也常体现在一次次踏实推进里。",
+        "校区之间的故事本身就是浙大生活的一部分。",
+        "毕业前去西湖边走一圈，像是给杭州四年做一次收束。"
+      ],
+      cityLink: [
+        "杭州互联网氛围浓，实习和行业信息来得很早。",
+        "西湖让城市显得温柔，科技园区又把节奏拉得很快。",
+        "长三角资源连接紧密，上海、杭州、宁波之间流动感很强。",
+        "这座城市让务实和文艺可以同时存在，不必互相解释。"
+      ],
+      careerFlavor: [
+        "互联网、电商、金融科技、制造和科研都是常见去向。",
+        "很多人大学期间就开始积累项目经历，把简历一点点做厚。",
+        "浙大人的职业气质常是少说多做，结果拿出来再解释。",
+        "杭州的大厂气息让求职规划变得很早，也很具体。"
+      ],
+      hiddenDetails: [
+        "校园的大草坪适合发呆，也适合临时开小组会。",
+        "玉泉的老校园气质和紫金港的开阔形成鲜明对照。",
+        "你会慢慢熟悉不同校区的节奏差异，像掌握几种生活模式。",
+        "在浙大，'大而全'不只是规模，也是选择太多带来的自由和焦虑。"
+      ],
+      campusJokes: [
+        "在紫金港赶课，导航和腿脚都要靠谱。",
+        "什么都有人做，什么都有人做得很强。",
+        "杭州不只会下雨，也会下 deadline。",
+        "求是创新听起来很端正，实际体验是每天都得继续推进。"
+      ],
+      randomEvents: [
+        "一次跨学院组队，让你发现完全不同专业的人也能一起把事做成。",
+        "去西湖散步时，你突然想明白了项目里卡住的一处逻辑。",
+        "实习分享会后，宿舍里开始集体改简历。",
+        "社团活动临时缺人，你被拉去救场，结果认识了一批可靠队友。"
+      ]
+    },
+  
+    "上海交通大学": {
+      keywords: ["闵行", "徐汇", "工程精英", "上海速度", "陆家嘴", "务实野心"],
+      campusDaily: [
+        "闵行校园很大，通勤感和大学感奇妙地叠在一起。",
+        "自习室里常能听到竞赛、实习、保研和创业的并行计划。",
+        "从校园到市区，地铁把学生的日程直接接到上海的快节奏里。",
+        "小组讨论很讲效率，大家习惯快速分工、快速推进。"
+      ],
+      foodMemory: [
+        "食堂饭点像一次高密度信息交换，谁拿了实习、谁投了项目都传得很快。",
+        "去市区吃饭常常顺便变成看展、面试或见校友。",
+        "深夜赶完项目，热汤面比任何鸡汤都实在。",
+        "咖啡在这里不太像小资道具，更像工作流的一部分。"
+      ],
+      studentPersona: [
+        "精英感和务实感并存，目标清楚也愿意吃苦。",
+        "对城市机会非常敏感，早早学会经营简历和人脉。",
+        "表达克制，但行动上很少拖泥带水。",
+        "相信努力要落到成果、offer、论文或项目里。"
+      ],
+      clubsAndRituals: [
+        "科创、创业和行业交流活动很多，校园里常有真实产业的影子。",
+        "工科训练扎实，项目展示和答辩往往很有压迫感。",
+        "校友分享会容易把人从校园心态拉进职场预演。",
+        "毕业前在徐汇老校区和闵行校园都走一遍，像回看两种交大记忆。"
+      ],
+      cityLink: [
+        "上海让机会变得具象：金融、科技、咨询、制造都在附近发生。",
+        "陆家嘴和张江像两种方向，一边是资本，一边是技术。",
+        "城市节奏会催你早做准备，也会奖励清醒的执行力。",
+        "国际化氛围强，很多选择天然带着更大的坐标系。"
+      ],
+      careerFlavor: [
+        "科技、金融、咨询、高端制造和海外深造都是常见路径。",
+        "简历意识很早形成，实习经历常被当成必修课外的必修课。",
+        "交大人的职业气质常是稳、准、狠，少一点空话，多一点结果。",
+        "不少人毕业时已经对行业、岗位和城市有了很具体的判断。"
+      ],
+      hiddenDetails: [
+        "闵行的距离感会把人训练得更会规划时间。",
+        "钱学森图书馆不只是地标，也是一种工程精神的象征。",
+        "校园里的精英压力不总是外显，但会在每个人的日程里留下痕迹。",
+        "你会逐渐习惯上海式的清醒：机会很多，但没有哪一个会自动属于你。"
+      ],
+      campusJokes: [
+        "闵行很大，大到迟到时能怪距离，也能怪自己。",
+        "上海给人的松弛，通常出现在所有事情做完之后。",
+        "交大人的浪漫，可能是把项目排期做得很漂亮。",
+        "别人说随便投投，可能已经改了五版简历。"
+      ],
+      randomEvents: [
+        "室友拿到陆家嘴实习后，你第一次认真研究通勤路线。",
+        "一次校友讲座让你意识到，行业选择比想象中更早开始。",
+        "项目答辩前夜，大家把 PPT 改到凌晨，第二天像没事人一样上台。",
+        "你在地铁上背面试题，窗外的上海提醒你别停下来。"
+      ]
+    },
+  
+    "武汉大学": {
+      keywords: ["珞珈山", "樱花", "东湖", "老斋舍", "浪漫校园", "人文气息"],
+      campusDaily: [
+        "上课路上常要爬坡，珞珈山把校园生活变成轻微的体能训练。",
+        "樱花季一到，校园突然从大学变成热门景区。",
+        "东湖边的风很适合散步，也很适合把烦恼慢慢吹散。",
+        "老建筑和新课堂交错，让日常带着一点历史滤镜。"
+      ],
+      foodMemory: [
+        "热干面、豆皮和夜市，是武大学生绕不开的味觉背景。",
+        "课后约去吃小龙虾或烧烤，很容易把普通一天聊成青春片。",
+        "食堂和校外小店各有拥护者，争论程度不输选课。",
+        "夏天的冰粉和冬天的热汤，都能暂时拯救赶论文的人。"
+      ],
+      studentPersona: [
+        "浪漫、会感受，也不缺认真较劲的时候。",
+        "容易被风景打动，但不会一直停在风景里。",
+        "对文字、影像、公共表达和城市生活有天然亲近感。",
+        "有点松散，有点骄傲，关键时候又能把事扛起来。"
+      ],
+      clubsAndRituals: [
+        "樱花季像校园年度大事件，抱怨和拍照通常同时发生。",
+        "摄影、文学、辩论和传媒类活动很有存在感。",
+        "在珞珈山看日出或在东湖边散步，是很多人的毕业清单。",
+        "校园里的浪漫传统，让很多普通瞬间都显得值得纪念。"
+      ],
+      cityLink: [
+        "武汉高校密集，跨校活动和朋友局很容易发生。",
+        "这座城市热烈、直爽，夏天和人情味都很有冲击力。",
+        "东湖、江滩和地铁，把校园生活接到更大的城市烟火里。",
+        "武汉的中心感让它既像中转站，也像能扎根的地方。"
+      ],
+      careerFlavor: [
+        "传媒、金融、公务员、互联网和科研都是常见方向。",
+        "武大人的表达能力和综合素养，经常在面试和写作里显出来。",
+        "不少人毕业后去北京、深圳、上海，也有人留在武汉发展。",
+        "职业选择里常带着一点理想主义，不愿只算眼前账。"
+      ],
+      hiddenDetails: [
+        "樱花之外，珞珈山的秋天和雨天也很有味道。",
+        "老斋舍的飞檐会让人产生一种穿越感。",
+        "有些路不好走，却因为走了太多遍变成了私人记忆。",
+        "武大的美不是摆拍出来的，它会在赶课、迷路和发呆时突然出现。"
+      ],
+      campusJokes: [
+        "樱花季的武大学生，最熟练的技能是绕路。",
+        "最美校园的代价，是上课路上也可能像爬山。",
+        "游客负责赏樱，学生负责在人潮里抢时间。",
+        "珞珈山的浪漫，常常伴随着汗和迟到风险。"
+      ],
+      randomEvents: [
+        "樱花季你本想低调去上课，结果被游客问了三次路。",
+        "东湖边一次散步，让你和同学把误会聊开了。",
+        "摄影社的夜拍活动后，你第一次认真看见了校园的另一面。",
+        "夏天暴雨后，空气里都是泥土和树叶的味道，你突然很舍不得这里。"
+      ]
+    },
+  
+    "哈尔滨工业大学": {
+      keywords: ["规格严格", "功夫到家", "航天", "冰城", "硬核工科", "国之重器"],
+      campusDaily: [
+        "冬天从宿舍到教学楼的路，像一场意志力测试。",
+        "实验室、图纸、代码和测试报告，构成很多人的日常背景。",
+        "老师讲工程细节时很少花哨，但每一句都像能落到零件上。",
+        "校园气质偏硬朗，连玩笑里都带着一点工程师式准确。"
+      ],
+      foodMemory: [
+        "热汤、炖菜和锅包肉，在寒冷天气里显得格外有说服力。",
+        "冬天的夜宵不只是想吃，更像给身体续命。",
+        "食堂里聊航天、机器人和保研，语气常常朴素得像在聊天气。",
+        "一顿热乎饭能把零下的委屈暂时压下去。"
+      ],
+      studentPersona: [
+        "踏实、抗压、少废话，习惯把复杂问题按步骤拆开。",
+        "对工程可靠性和细节有近乎执拗的尊重。",
+        "不太爱包装自己，但成果往往很硬。",
+        "在寒冷和高强度训练里，慢慢养出一种钝感和韧劲。"
+      ],
+      clubsAndRituals: [
+        "航天、机器人、智能车和工程竞赛是校园里的高频词。",
+        "冬天的集体活动自带冰城滤镜，冷是真的，热闹也是真的。",
+        "实验室传帮带很明显，师兄师姐的经验像隐形教材。",
+        "毕业时说起'规格严格，功夫到家'，很多人已经不觉得只是标语。"
+      ],
+      cityLink: [
+        "哈尔滨的冬天让人记忆深刻，也把同学之间的互相照应变得具体。",
+        "城市的工业底色和学校的工程气质相互加强。",
+        "冰雪、俄式建筑和硬核校园形成一种独特反差。",
+        "离开哈尔滨后，很多人会怀念那种冷到清醒的生活质感。"
+      ],
+      careerFlavor: [
+        "航天、军工、机器人、智能制造和科研院所是强势方向。",
+        "哈工大人的优势常体现在可靠、扎实、能扛事。",
+        "项目经历比漂亮话更有分量，工程能力是硬通货。",
+        "不少人把国家重大工程当作很自然的职业坐标。"
+      ],
+      hiddenDetails: [
+        "冬天的校园很冷，但室内暖气常让人一秒切换季节。",
+        "一些看似普通的实验室，可能正在做非常硬核的项目。",
+        "冰雪天气会改变生活节奏，也会改变一个人的耐心。",
+        "你会慢慢理解，严谨不是气质装饰，而是工程里真正救命的东西。"
+      ],
+      campusJokes: [
+        "在哈工大，浪漫可能是一起调通了一个系统。",
+        "零下二十度的风，会让所有矫情迅速降噪。",
+        "规格严格不是说说，ddl 也很严格。",
+        "别人问你冷不冷，你会先判断这是物理问题还是心理问题。"
+      ],
+      randomEvents: [
+        "一次实验数据异常，让你和队友查到凌晨才发现是一个小参数错了。",
+        "大雪后去上课，你突然觉得自己像在参加工程版生存训练。",
+        "听完航天相关报告，你第一次对'把东西送上天'有了具体想象。",
+        "项目验收通过那一刻，你觉得所有冻手的夜晚都有了回声。"
+      ]
+    },
+  
+    "中山大学": {
+      keywords: ["逸仙", "康乐园", "岭南", "大湾区", "低调务实", "红砖绿荫"],
+      campusDaily: [
+        "康乐园的红砖老楼和榕树，让日常自带岭南旧时光。",
+        "广州的湿热天气会让人学会慢慢走，也学会找阴凉。",
+        "课堂之外，医疗、金融、公共事务和湾区机会常被聊起。",
+        "校园节奏不算张扬，但很多人都在稳稳推进自己的计划。"
+      ],
+      foodMemory: [
+        "早茶、一盅两件和糖水，是广州给中大学生的生活教育。",
+        "食堂之外，校外小店和茶楼常常承担社交功能。",
+        "炎热下午来一碗糖水，比任何安慰都更直接。",
+        "一顿饭能从课程聊到实习，再聊到周末去深圳还是香港。"
+      ],
+      studentPersona: [
+        "低调、务实，做事不一定高声，但结果常常不错。",
+        "有岭南式松弛，也有湾区式进取。",
+        "擅长在生活质量和职业规划之间找到平衡。",
+        "看起来不急，心里其实很清楚自己要去哪。"
+      ],
+      clubsAndRituals: [
+        "校园活动常带着岭南气质，温和但不无聊。",
+        "医学、人文、商科和理工交错，让社交圈层很丰富。",
+        "毕业前在老校区树荫下走一遍，是很多人的私人仪式。",
+        "湾区相关讲座和实习分享，会让未来感变得很具体。"
+      ],
+      cityLink: [
+        "广州的市井气和商业气并存，既能搞事业，也能好好生活。",
+        "深圳、香港和珠三角城市群，让机会有很强的流动性。",
+        "岭南文化让校园气质更温润，不会一味紧绷。",
+        "大湾区的距离感很短，周末跨城并不稀奇。"
+      ],
+      careerFlavor: [
+        "金融、医疗、互联网、公共部门和湾区企业都是常见方向。",
+        "中大人的职业气质常是稳健、细致、抗波动。",
+        "不少人看重长期发展，不急着用一次选择定义自己。",
+        "广州和深圳的双重机会，让求职路径更灵活。"
+      ],
+      hiddenDetails: [
+        "榕树下的阴影是广州夏天最珍贵的公共资源。",
+        "红砖建筑让校园有种不需要用力证明的底气。",
+        "中大的美不尖锐，是慢慢浸出来的。",
+        "你会逐渐理解，松弛和上进并不冲突。"
+      ],
+      campusJokes: [
+        "广州人说不急，往往只是还没到真正出手的时候。",
+        "早茶可以很慢，简历不能太慢。",
+        "湿热天气教会你：人生需要规划，也需要空调。",
+        "低调不是没野心，只是不急着把野心挂出来。"
+      ],
+      randomEvents: [
+        "周末早茶局上，师兄顺手给你讲了半小时实习经验。",
+        "一次去深圳的企业参访，让你意识到湾区机会真的很近。",
+        "雨后校园的红砖和树影让你突然放慢了脚步。",
+        "你在糖水店里改完简历，发现广州很会把压力变得没那么难看。"
+      ]
+    },
+  
+    "华南理工大学": {
+      keywords: ["五山", "工科实干", "老板摇篮", "珠三角制造", "创业", "务实能干"],
+      campusDaily: [
+        "五山校区的老树和实验楼，把生活感和工科感放在一起。",
+        "课堂之外，项目、实习、竞赛和创业想法都很常见。",
+        "同学聊天常从课程作业滑向供应链、产品和市场。",
+        "广州的务实气质，让很多计划都显得可以马上开始。"
+      ],
+      foodMemory: [
+        "食堂饭桌上既聊实验数据，也聊哪里有靠谱实习。",
+        "校外的肠粉、烧鹅和糖水，让赶项目的日子不至于太干。",
+        "夜宵局常常聊着聊着就变成创业头脑风暴。",
+        "一杯凉茶有时比大道理更能压住火气。"
+      ],
+      studentPersona: [
+        "能干、务实、行动快，喜欢把想法变成可卖可用的东西。",
+        "对制造、产品和商业化有天然亲近感。",
+        "不太沉迷空谈，更愿意试试水、跑跑市场。",
+        "带着珠三角式的灵活，遇到问题先想解决办法。"
+      ],
+      clubsAndRituals: [
+        "工程竞赛、创业活动和企业实践存在感很强。",
+        "师兄师姐的创业故事，经常成为饭桌上的励志材料。",
+        "实验室和社团都偏重实操，作品要能跑、能用、能展示。",
+        "毕业前回看五山，会发现这里给人的不是口号，而是动手能力。"
+      ],
+      cityLink: [
+        "广州、佛山、东莞、深圳形成产业走廊，很多想法能找到落地点。",
+        "珠三角的制造和商业生态，让工科生更早理解真实需求。",
+        "城市烟火气很足，但商业敏感度也很高。",
+        "离企业近，离市场近，离'自己干点什么'的冲动也近。"
+      ],
+      careerFlavor: [
+        "制造、互联网、建筑、材料、创业和产品岗位都很典型。",
+        "华工人的优势常在于能落地、懂工程、愿意跑现场。",
+        "不少人毕业后进企业，也有人积累几年后自己创业。",
+        "职业路径常带着实业气质，不虚，讲结果。"
+      ],
+      hiddenDetails: [
+        "五山的树荫里藏着一种老工科校园的沉稳。",
+        "很多看似普通的项目，其实离产业应用并不远。",
+        "你会慢慢把'能不能做出来'放在'说得好不好听'前面。",
+        "华工的气质不张扬，但越接触越能感到一种踏实的强。"
+      ],
+      campusJokes: [
+        "别人做课设，华工人顺便想商业模式。",
+        "老板摇篮这句话听多了，连宿舍小卖部都像创业案例。",
+        "PPT 可以朴素，东西必须能跑。",
+        "一边喊累，一边已经在问供应商报价。"
+      ],
+      randomEvents: [
+        "一次企业参访后，你第一次理解课本里的工艺为什么重要。",
+        "小组项目做到一半，队友突然提出要不要试着做成产品。",
+        "师兄创业分享讲得很接地气，你回宿舍就开始算成本。",
+        "在实验室调通样机那天，你觉得动手的快乐很具体。"
+      ]
+    },
+  
+    "深圳大学": {
+      keywords: ["荔园", "深圳速度", "年轻", "科技园", "敢闯", "搞钱氛围"],
+      campusDaily: [
+        "校园和科技园的距离很近，实习、创业和行业消息来得特别快。",
+        "同学的日程里常有兼职、项目、副业和面试。",
+        "深圳的年轻感会让人觉得很多事情都可以现在开始。",
+        "课堂之外，城市本身像一门关于机会和风险的实践课。"
+      ],
+      foodMemory: [
+        "校外餐厅和咖啡店里，经常能听到创业、产品和流量的讨论。",
+        "夜宵局很容易从吐槽作业变成商业计划草案。",
+        "深圳的快节奏让外卖和便利店成为高频生活搭档。",
+        "周末去海边吹风，像给一周的高密度生活降温。"
+      ],
+      studentPersona: [
+        "年轻、灵活、敢试，失败了也更愿意换个方向继续。",
+        "对钱、机会和效率不避讳，现实感很强。",
+        "社交半径常常越过校园，直接伸向公司、项目和市场。",
+        "一边享受城市自由，一边被城市速度推着成长。"
+      ],
+      clubsAndRituals: [
+        "创新创业活动和行业分享很密集，听完很容易心动。",
+        "社团里做内容、做产品、做商业项目的人不少。",
+        "校友故事常被提起，像一种城市版励志传说。",
+        "毕业前去海边或科技园走一圈，像确认自己和深圳的关系。"
+      ],
+      cityLink: [
+        "深圳把校园生活和产业现场贴得很近，机会几乎没有缓冲区。",
+        "科技园、南山、福田和前海构成学生心里的机会地图。",
+        "城市规则很直接：敢试、能做、跑得快。",
+        "香港和广州也在不远处，让选择带着湾区流动感。"
+      ],
+      careerFlavor: [
+        "互联网、金融科技、创业、产品运营和内容创作很常见。",
+        "深大学生常早早接触真实项目，简历带着城市实战感。",
+        "职业选择里有强烈的市场意识，不太害怕谈收益。",
+        "很多人把深圳当成训练场，也当成可以长期扎根的地方。"
+      ],
+      hiddenDetails: [
+        "荔园的校园气质比城市节奏更柔和，给人一点缓冲。",
+        "海边和高楼之间的切换，是深圳大学生活的独特背景。",
+        "你会发现深圳的机会多，但辨别机会也需要能力。",
+        "年轻不是浅，年轻意味着很多路径还没被写死。"
+      ],
+      campusJokes: [
+        "在深大，副业可能比选修课开始得更早。",
+        "别人的周末是休息，深圳人的周末可能是试运营。",
+        "科技园近到让人不好意思不努力。",
+        "敢闯不是口号，是这座城市每天都在催你交作业。"
+      ],
+      randomEvents: [
+        "你路过科技园时看到熟悉公司的楼，突然决定投一份实习简历。",
+        "宿舍夜谈从游戏聊到创业，最后真的建了一个项目群。",
+        "一次海边骑行后，你把纠结很久的计划重新拆了一遍。",
+        "校友分享会结束，你第一次觉得商业故事不是离自己很远。"
+      ]
+    },
+  
+    "重庆大学": {
+      keywords: ["山城", "虎溪", "建筑底色", "火锅", "8D城市", "扎实豪爽"],
+      campusDaily: [
+        "爬坡、转弯、上梯坎，是重大生活最直观的地理教育。",
+        "虎溪校区开阔，老校区厚重，两种气质都很重庆。",
+        "轻轨、江风和火锅味，把校园日常接到山城烟火里。",
+        "课程压力不小，但同学之间常有一种直爽的互相托底。"
+      ],
+      foodMemory: [
+        "火锅、小面、串串和冰粉，是重大生活的味觉坐标。",
+        "一顿火锅可以庆祝项目通过，也可以安慰考试失利。",
+        "小面馆里的清晨，比闹钟更能叫醒人。",
+        "夜宵摊前的山城方言和热气，会让疲惫变得没那么尖锐。"
+      ],
+      studentPersona: [
+        "豪爽、扎实，遇事不太绕，能扛也能聊。",
+        "被山城地形训练出耐心和腿力，也训练出一点幽默感。",
+        "对建筑、制造、城市和工程问题有天然敏感度。",
+        "生活里有烟火气，做事时又很能沉下去。"
+      ],
+      clubsAndRituals: [
+        "建筑、工程、汽车和城市相关活动很有存在感。",
+        "火锅局是重要社交仪式，很多关系在热气里熟起来。",
+        "跨校区经历常成为共同吐槽素材。",
+        "毕业前坐一次长江索道或看一次山城夜景，像给四年收尾。"
+      ],
+      cityLink: [
+        "重庆的立体地形让人每天都在真实感受城市结构。",
+        "汽车制造、建筑工程和互联网新机会交织在一起。",
+        "这座城市热烈、直接，生活成本和幸福感常被一起讨论。",
+        "江、桥、楼和轻轨，让重大人的城市记忆特别有画面。"
+      ],
+      careerFlavor: [
+        "建筑、土木、汽车制造、互联网和西南区域企业是常见方向。",
+        "重大人的职业气质偏扎实可靠，适合需要长期推进的工程项目。",
+        "不少人留在重庆或成都，也有人去深圳、上海拓展机会。",
+        "选择里常带着一点西南式稳重：先把事情做好，再谈漂亮。"
+      ],
+      hiddenDetails: [
+        "山城的路会让你重新理解'近'和'远'。",
+        "重大校园不只硬朗，也有很多被树影和江风软化的瞬间。",
+        "重庆的夜景很容易让赶论文的人突然产生诗意。",
+        "你会慢慢发现，烟火气也是一种精神补给。"
+      ],
+      campusJokes: [
+        "在重庆，地图显示很近，不代表腿觉得很近。",
+        "重大人的体能，很多时候是被地形逼出来的。",
+        "没有什么烦恼是一顿火锅不能缓解的，除非第二天早八。",
+        "轻轨穿楼不稀奇，赶课穿越地形才是真本事。"
+      ],
+      randomEvents: [
+        "第一次跨校区，你把重庆交通理解成了一门实践课。",
+        "项目结束后全组去吃火锅，锅底翻滚得像你们的情绪。",
+        "夜晚从江边回来，山城灯光让你突然觉得辛苦也有质感。",
+        "一次建筑调研让你开始用新的眼光看桥、楼和城市。"
+      ]
+    },
+  
+    "西南政法大学": {
+      keywords: ["西政", "法学江湖", "模拟法庭", "黄桷树", "思辨", "刚直"],
+      campusDaily: [
+        "图书馆里的法条和案例，总能把人拉回现实世界的复杂。",
+        "课堂讨论常常针锋相对，课后又能一起去吃小面。",
+        "模拟法庭的灯一亮，平时温和的同学也会立刻进入战斗状态。",
+        "校园里经常听到法考、实习、律所和公检法的关键词。"
+      ],
+      foodMemory: [
+        "小面和火锅，是西政人辩完一场后最自然的和解方式。",
+        "饭桌上聊案例，很容易从娱乐八卦变成法律分析。",
+        "夜宵摊前的争论常常没有输赢，只有下一轮观点。",
+        "一碗热辣小面能把背法条的疲惫暂时压下去。"
+      ],
+      studentPersona: [
+        "较真、思辨、有正义感，习惯追问证据和逻辑。",
+        "表达锋利但不一定冷漠，很多人带着江湖气的热心。",
+        "对规则敏感，也对规则背后的人情世故敏感。",
+        "越学越知道世界复杂，但仍不愿轻易放弃判断。"
+      ],
+      clubsAndRituals: [
+        "模拟法庭、辩论、法律援助和案例研讨是高频活动。",
+        "法考备考像一场长期战役，大家互相监督也互相安慰。",
+        "校友在法律圈的存在感，会让职业想象变得很具体。",
+        "毕业前总会对校园里的黄桷树和法庭场景多看几眼。"
+      ],
+      cityLink: [
+        "重庆的江湖气和西政的法学气质很合拍。",
+        "城市烟火让抽象法条落回真实生活。",
+        "法院、律所、政府部门和企业法务构成学生的实习地图。",
+        "山城的直爽，让很多讨论更有火气也更有温度。"
+      ],
+      careerFlavor: [
+        "律所、公检法、公务员、企业法务和合规岗位是典型方向。",
+        "西政人的优势常在表达、逻辑、抗压和实务敏感度。",
+        "很多人既想追求正义，也必须学会处理现实里的灰度。",
+        "职业路径不轻松，但每一步都和'判断'二字有关。"
+      ],
+      hiddenDetails: [
+        "法学训练会改变一个人的说话方式，也会改变看世界的方式。",
+        "校园里的江湖气不是粗糙，而是一种愿意为事情出头的劲。",
+        "你会慢慢发现，背法条只是开始，理解人性才更难。",
+        "西政的特色不只在法律，还在那种敢辩、敢争、敢负责的气质。"
+      ],
+      campusJokes: [
+        "西政人的本能反应：证据呢？依据呢？法条呢？",
+        "饭桌上不要随便讲案情，可能会触发全桌分析。",
+        "吵架不可怕，可怕的是对方开始列举请求和理由。",
+        "模拟法庭结束后，最重要的程序是一起吃小面。"
+      ],
+      randomEvents: [
+        "你在模拟法庭上被对方追问到沉默，回去后把材料重看了一夜。",
+        "一次法律援助活动，让你第一次意识到法条背后是具体的人。",
+        "法考倒计时里，整个自习室像进入同一种呼吸频率。",
+        "和同学争完一个案例后，你发现自己其实更尊重对方了。"
+      ]
+    },
+  
+    "厦门大学": {
+      keywords: ["海边校园", "芙蓉隧道", "白城沙滩", "凤凰花", "文艺松弛", "嘉庚建筑"],
+      campusDaily: [
+        "去上课的路上能看见海，这件事久了也还是有点不真实。",
+        "芙蓉隧道的涂鸦像校园情绪档案，每届学生都留下自己的痕迹。",
+        "游客打卡和学生赶课并行，形成厦大独有的日常反差。",
+        "雨后的红墙、绿树和海风，会让人暂时忘记绩点。"
+      ],
+      foodMemory: [
+        "沙茶面、海蛎煎、花生汤和烧仙草，是厦门生活的味觉背景。",
+        "白城附近的夜晚，适合一边吃小吃一边听海。",
+        "食堂之外，校外小店和海边摊位承包了很多散步后的胃。",
+        "凤凰花开时，一杯冰饮会让毕业季的伤感变得更清亮。"
+      ],
+      studentPersona: [
+        "文艺、松弛、爱生活，也知道该努力时不能真的躺平。",
+        "对美景有免疫力的同时，又会在某个黄昏重新被击中。",
+        "表达方式常带一点柔和，做选择时却不一定犹豫。",
+        "容易把生活品质纳入人生规划，不愿只剩忙碌。"
+      ],
+      clubsAndRituals: [
+        "摄影、音乐、戏剧、公益和海边活动很容易形成记忆点。",
+        "芙蓉隧道打卡不是游客专属，学生也会在特殊时刻认真走一遍。",
+        "凤凰花开的毕业季，是厦大最有仪式感的时间之一。",
+        "海边散步常成为自我修复、约会和深夜谈心的共同场景。"
+      ],
+      cityLink: [
+        "厦门的海、岛、老街和慢节奏，让大学生活更像一段可回味的旅程。",
+        "城市不算特别大，却很适合把生活过得细腻。",
+        "金融、文旅、教育和传媒机会与海边气质并存。",
+        "离开厦门后，很多人会反复想念那种湿润、明亮、带海风的日子。"
+      ],
+      careerFlavor: [
+        "金融、传媒、教育、文旅、公共部门和沿海城市就业较常见。",
+        "厦大学生常带着不错的表达感和审美敏感度。",
+        "职业选择里会考虑生活方式，不太愿意完全牺牲自我感受。",
+        "有人奔赴上海、深圳，也有人选择留在福建和沿海城市。"
+      ],
+      hiddenDetails: [
+        "厦大的美很容易被游客镜头消费，但学生记住的常是更细小的瞬间。",
+        "海风会把焦虑吹淡一点，但不会替你写完论文。",
+        "嘉庚建筑让校园带着稳定的历史感。",
+        "你会明白，松弛不是没有压力，而是压力旁边还有海。"
+      ],
+      campusJokes: [
+        "游客来厦大度假，学生在厦大赶 ddl。",
+        "海景不能提高绩点，但能提高续命能力。",
+        "芙蓉隧道走多了，连焦虑都像有了涂鸦背景。",
+        "在厦大，发呆也可以显得很有正当性。"
+      ],
+      randomEvents: [
+        "你下课后顺路去了海边，本来只想待十分钟，结果看完整场日落。",
+        "毕业季凤凰花开，你突然意识到这里的颜色会记很多年。",
+        "一次游客问路，让你发现自己已经像本地学生一样熟悉校园。",
+        "论文卡住时你去芙蓉隧道走了一圈，回来竟然写出了一段开头。"
+      ]
+    },
+  
+    "四川大学": {
+      keywords: ["望江", "江安", "华西", "成都安逸", "竹林", "巴适"],
+      campusDaily: [
+        "望江的竹林和江安的开阔，像川大生活的两种节奏。",
+        "成都的慢不等于懒，它只是让焦虑没那么容易占上风。",
+        "校园很大，学科很多，常能遇到完全不同世界的同学。",
+        "下课后去吃串串或喝茶，是一种很成都的情绪修复。"
+      ],
+      foodMemory: [
+        "火锅、串串、冒菜、冰粉和蛋蛋面，构成川大学生的胃部地图。",
+        "论文写不动时，室友一句'走嘛，吃点东西'很有杀伤力。",
+        "食堂和校外小店共同承担了大学四年的快乐库存。",
+        "成都的茶馆会让人相信，坐一会儿也是正经事。"
+      ],
+      studentPersona: [
+        "松弛、烟火、会生活，同时也能在关键节点认真冲刺。",
+        "不太喜欢把自己逼得太紧，但并不等于没有目标。",
+        "综合性强，兴趣和专业方向都容易长得很丰富。",
+        "懂得在压力和享受之间找一个能长期活下去的位置。"
+      ],
+      clubsAndRituals: [
+        "美食局、社团活动和校园散步常常比正式会议更能拉近关系。",
+        "华西相关的医学气质，是川大很重要的一部分。",
+        "毕业前在望江楼附近走走，很多记忆会一下子浮起来。",
+        "成都式社交不一定高频热烈，但总有一种让人放松的能力。"
+      ],
+      cityLink: [
+        "成都把大学生活包裹在美食、茶馆、公园和烟火气里。",
+        "城市机会越来越多，但整体节奏仍保留着一点从容。",
+        "重庆、西安、深圳和北京，常出现在川大学生的去向讨论里。",
+        "这座城市会让人认真思考：成功是不是也可以不用那么狼狈。"
+      ],
+      careerFlavor: [
+        "医疗、公务员、互联网、教育、科研和西南区域企业是常见方向。",
+        "川大人的优势在综合性、适应力和生活韧性。",
+        "不少人留在成都，也有人把成都当作精神原乡再去远方。",
+        "职业选择里常带着对生活质量的考量，不愿只剩工作。"
+      ],
+      hiddenDetails: [
+        "竹林里的光影会让忙碌突然慢下来。",
+        "川大的大，不只是校园面积，也是学科和人生路径的丰富。",
+        "你会在成都学会一种能力：事情要做，饭也要好好吃。",
+        "所谓安逸，有时是知道自己能扛，所以不必一直紧绷。"
+      ],
+      campusJokes: [
+        "川大学生的计划表里，吃什么常常和学什么一样重要。",
+        "ddl 很急，但串串也很急。",
+        "成都劝你慢一点，老师提醒你作业还没交。",
+        "巴适不是躺平，是边努力边给自己留口气。"
+      ],
+      randomEvents: [
+        "你被室友拉去吃串串，结果在饭桌上解决了小组矛盾。",
+        "茶馆里改论文时，你第一次觉得慢下来反而写得更清楚。",
+        "华西同学讲起实习经历，让你看到另一种高强度的专业人生。",
+        "毕业前在竹林里散步，你突然明白自己为什么会想念成都。"
+      ]
+    },
+  
+    "中国传媒大学": {
+      keywords: ["定福庄", "广院", "镜头感", "表达欲", "内容创作", "传媒圈"],
+      campusDaily: [
+        "校园里随时可能遇到扛设备、拍作业或录节目的同学。",
+        "课堂之外，选题、脚本、剪辑和流量是高频词。",
+        "大家对热点很敏感，新闻、影视和平台变化都会迅速进入聊天。",
+        "定福庄的日常常带着一种后台感，像很多作品正在同时生成。"
+      ],
+      foodMemory: [
+        "饭桌上聊选题，很容易从吐槽变成策划会。",
+        "熬夜剪片后的早餐，比平时更有现实意义。",
+        "咖啡和外卖陪过很多人从粗剪撑到终稿。",
+        "校外小店常见一桌人围着电脑改片子。"
+      ],
+      studentPersona: [
+        "有表达欲，敏感，关注世界如何被看见和讲述。",
+        "对镜头、声音、文字和舞台有天然兴奋感。",
+        "容易焦虑作品效果，但也享受被看见的瞬间。",
+        "懂传播，也慢慢学会在热闹行业里保护自己。"
+      ],
+      clubsAndRituals: [
+        "拍片、配音、主持、播音、剧组和新媒体项目构成校园活动主线。",
+        "广院之夜、毕业作品和各类展映很有仪式感。",
+        "同学之间互相客串、互相出镜、互相救场，是常态。",
+        "热点来了，全校像同时打开了选题雷达。"
+      ],
+      cityLink: [
+        "北京的影视、媒体、广告和互联网内容行业，为中传提供巨大现场。",
+        "朝阳区的行业气息很近，实习和项目机会常常来得突然。",
+        "这座城市让表达欲面对现实，也让作品有机会被更多人看见。",
+        "从校园到片场、演播厅和平台公司，中传人的地图很有镜头感。"
+      ],
+      careerFlavor: [
+        "影视、传媒、广告、新媒体、内容运营和自媒体是典型方向。",
+        "中传人的优势在表达、审美、叙事和对受众的敏感。",
+        "作品集往往比成绩单更能说明问题。",
+        "职业路径充满不确定，但也因此保留了很多爆发可能。"
+      ],
+      hiddenDetails: [
+        "镜头前的光鲜背后，是大量脚本、沟通和后期细节。",
+        "校园里的每个角落都可能被某届学生拍进作业。",
+        "你会慢慢学会，表达不只是说出来，也是剪掉什么、保留什么。",
+        "中传的热闹背后，也有创作者独自面对空白时间线的孤独。"
+      ],
+      campusJokes: [
+        "在中传，不要随便说一句好玩的话，可能会被发展成选题。",
+        "帮同学客串一场，可能从路人甲演到毕业。",
+        "剪辑软件崩溃，比失恋更容易让人沉默。",
+        "每个人都说自己不想红，但镜头来了都会调整一下角度。"
+      ],
+      randomEvents: [
+        "你原本只是路过，却被同学拉去当采访对象。",
+        "一个临时选题熬了三天，最后成了你作品集里最亮的一项。",
+        "老师一句'这个表达不成立'，让你把片子推倒重剪。",
+        "热点爆发的晚上，宿舍群瞬间变成选题会议室。"
+      ]
+    },
+  
+    "北京邮电大学": {
+      keywords: ["北邮", "通信", "码农气质", "大厂", "刷题", "中关村"],
+      campusDaily: [
+        "机房、自习室和键盘声，是北邮生活里很稳定的背景音。",
+        "大一就有人讨论算法题、实习和技术栈，节奏来得很早。",
+        "课程压力和求职目标常常绑在一起，让人很难完全松下来。",
+        "校园不算特别花哨，但目标感非常清晰。"
+      ],
+      foodMemory: [
+        "饭桌上聊得最多的，可能是题解、offer、项目和面试。",
+        "深夜外卖和咖啡陪过很多人刷完一组又一组题。",
+        "食堂里偶遇同学，寒暄三句后很容易变成技术交流。",
+        "一顿饭的时间，足够分享一个面经，也足够制造新的焦虑。"
+      ],
+      studentPersona: [
+        "目标明确、技术导向，愿意为一份好 offer 持续投入。",
+        "说话直接，常用结果和代码证明自己。",
+        "对互联网行业变化敏感，学习路线更新得很快。",
+        "压力不小，但同侪氛围会推着人不断迭代。"
+      ],
+      clubsAndRituals: [
+        "算法竞赛、开发项目、开源实践和技术社团很有存在感。",
+        "刷题打卡像隐形仪式，群里经常有人分享进度。",
+        "校招季是校园气压最低也最紧张的时间。",
+        "毕业前回看机房，会想起很多被 bug 卡住的夜晚。"
+      ],
+      cityLink: [
+        "北京互联网公司、通信企业和中关村资源，让北邮学生离行业很近。",
+        "海淀的技术氛围会把学习路线变得更现实。",
+        "城市竞争激烈，但信息密度也高，机会来得快。",
+        "北邮人的北京地图常由公司、面试点和技术活动组成。"
+      ],
+      careerFlavor: [
+        "互联网、通信、算法、后端、网络安全和产品技术岗位是主流方向。",
+        "项目、实习、竞赛和面试表现，往往比空泛描述更重要。",
+        "北邮人的优势在技术基础、行业敏感度和求职目标感。",
+        "很多人毕业前已经经历过多轮技术面试的洗礼。"
+      ],
+      hiddenDetails: [
+        "北邮的浪漫不明显，但藏在代码跑通那一刻。",
+        "校园里不缺有趣的人，只是很多人把有趣写进项目里了。",
+        "你会慢慢学会，技术成长不是靠热血，而是靠持续调试。",
+        "刷题之外，也有人在做很有创造力的产品和内容。"
+      ],
+      campusJokes: [
+        "北邮人的寒暄：你最近刷到哪了？",
+        "爱情可能会迟到，面试不会。",
+        "代码能跑的那一刻，比很多仪式都感人。",
+        "说不卷的人，可能只是今天少刷了两题。"
+      ],
+      randomEvents: [
+        "宿舍里有人拿到大厂实习，整个寝室开始集体刷新简历。",
+        "一个 bug 卡了你一晚，第二天发现只是少写了一行配置。",
+        "技术讲座结束后，你把原本的学习路线全部重排。",
+        "校招季的某个深夜，你和同学互相模拟面试到嗓子发干。"
+      ]
+    },
+  
+    "中央美术学院": {
+      keywords: ["央美", "花家地", "画室", "毕业展", "艺术表达", "孤独创作"],
+      campusDaily: [
+        "画室里的颜料味、纸张和灯光，构成央美日常最真实的底色。",
+        "很多人看起来安静，其实脑子里一直在和作品较劲。",
+        "课堂之外，展览、材料、空间和观念是高频词。",
+        "创作没有固定下班时间，灵感和焦虑都可能在深夜出现。"
+      ],
+      foodMemory: [
+        "赶作品时，外卖常常陪你从草图撑到成稿。",
+        "布展前后的饭通常吃得很随便，但聊得很认真。",
+        "咖啡、面包和便利店食物，是很多创作夜晚的现实补给。",
+        "展览结束后的一顿饭，常像给长时间的自我拉扯松绑。"
+      ],
+      studentPersona: [
+        "敏感、执拗、重视自我表达，不太愿意被单一标准定义。",
+        "能为一个颜色、材质或构图反复推翻自己。",
+        "在自由和不确定之间生活，既兴奋也疲惫。",
+        "常常嘴上说随便，作品里却藏着很精确的判断。"
+      ],
+      clubsAndRituals: [
+        "看展、布展、评图和毕业展，是央美生活里的重要仪式。",
+        "同学之间的交流常围绕作品展开，真诚时很有力量，尖锐时也很疼。",
+        "材料实验和跨媒介创作让很多课程不像传统课堂。",
+        "毕业展像一次公开交卷，也是一次和自己的长期对话。"
+      ],
+      cityLink: [
+        "北京的展览、画廊、设计机构和艺术活动，为央美学生提供巨大外部现场。",
+        "城市很现实，艺术很敏感，两者碰撞得很频繁。",
+        "花家地和各类艺术空间，让校园生活天然连接创作生态。",
+        "在北京做艺术，既有资源密度，也有生存压力。"
+      ],
+      careerFlavor: [
+        "艺术创作、设计、策展、视觉传播、教育和自由职业都是常见方向。",
+        "作品集、展览经历和个人语言，比标准化成绩更重要。",
+        "央美人的职业路径常不直线，探索和试错本身就是一部分。",
+        "很多人要同时面对表达冲动和现实成本。"
+      ],
+      hiddenDetails: [
+        "一件作品被看见前，往往经历过很多次孤独的推翻。",
+        "央美的自由不是轻松，而是你必须为自己的选择负责。",
+        "评图现场有时很残酷，但也可能让你突然看清方向。",
+        "你会慢慢理解，艺术不是逃离现实，而是换一种方式进入现实。"
+      ],
+      campusJokes: [
+        "在央美，说'随便弄弄'的人可能已经改到第五版。",
+        "颜料没干，ddl 已经干到眼前了。",
+        "评图前的沉默，是一种全国通用的紧张。",
+        "有没有用这个问题很烦，但房租会让它变得具体。"
+      ],
+      randomEvents: [
+        "评图时老师一句话击中问题，你回去把作品推倒重来。",
+        "毕业展布展到凌晨，你坐在地上突然觉得这几年都浓缩在白墙前。",
+        "一次偶然看展，让你改变了材料选择。",
+        "家里问起未来怎么过，你第一次认真把艺术和生活成本放在一起算。"
+      ]
+    }
+  };
+
+  /* ---------- 校内梗素材（由 合集.md 抽取） ---------- */
+  var SCHOOL_MEME_EXTENSIONS = {
+    "北京大学": {
+      "nicknames": [
+        "圆明园职业技术学院",
+        "中关村文理学院",
+        "五道口职业技术学院"
+      ],
+      "memes": [
+        "一塔湖图：博雅塔、未名湖、图书馆的合称，是北大的标志性景观",
+        "元培：元培学院的简称，以灵活的培养方案和高自由度著称",
+        "未名湖是个海洋：出自北大校歌，也用来形容未名湖的广阔和包容",
+        "隔壁：特指清华大学，两校学生互称对方为 \"隔壁\""
+      ]
+    },
+    "清华大学": {
+      "nicknames": [
+        "五道口男子职业技术学院",
+        "五道口工程技术大学",
+        "清华园男子技工学校"
+      ],
+      "memes": [
+        "贵系：计算机科学与技术系的自称，因为 \"计\" 和 \"贵\" 谐音",
+        "叉院：交叉信息研究院的简称，姚期智院士创办",
+        "紫荆：清华的校花，也是清华人的代称",
+        "隔壁：特指北京大学，两校学生互称对方为 \"隔壁\""
+      ]
+    },
+    "中国人民大学": {
+      "nicknames": [
+        "中共中央第二党校",
+        "海淀财经政法职业高专",
+        "人大附中附属大学"
+      ],
+      "memes": [
+        "实事求是：人大校训，因为和中央党校校训相同，所以有了 \"第二党校\" 的绰号",
+        "一勺池：人大校园内的小水池，是情侣约会的热门地点",
+        "人大附中：人大附中的高考成绩比人大还出名，所以有了 \"人大附中附属大学\" 的梗"
+      ]
+    },
+    "北京师范大学": {
+      "nicknames": [
+        "积水潭女子师专",
+        "北京吃饭大学",
+        "六道口马连洼联合职校"
+      ],
+      "memes": [
+        "木铎：北师大的校徽标志，也是北师大精神的象征",
+        "励耘：出自陈垣校长的 \"励耘书屋\"，是北师大的校训之一",
+        "京师：北师大的前身是京师大学堂师范馆，所以学生常自称 \"京师学子\""
+      ]
+    },
+    "北京航空航天大学": {
+      "nicknames": [
+        "沙河镇飞机修理厂",
+        "学院路小飞机实践基地",
+        "中国人民解放军第二炮兵部队技术研发中心"
+      ],
+      "memes": [
+        "北航男：因为男女比例严重失调，北航男生成为了一个特殊的群体",
+        "绿园：北航校园内的公园，是学生休闲的好去处",
+        "新主楼：北航的标志性建筑，也是亚洲最大的单体教学楼"
+      ]
+    },
+    "北京理工大学": {
+      "nicknames": [
+        "魏公村汽配维修服务站",
+        "百丽宫",
+        "梨专"
+      ],
+      "memes": [
+        "BIT：北京理工大学的英文缩写，被学生戏称为 \"百丽宫\"",
+        "一元大叔：曾经在北理工校园里游走，口头禅是 \"同学，能借我一块钱买烟么？\" 的神秘人物",
+        "徐特立：北理工的前身是延安自然科学院，徐特立是第一任院长，校园内有徐特立图书馆"
+      ]
+    },
+    "北京邮电大学": {
+      "nicknames": [
+        "西二旗码农就业前集中培训中心",
+        "明光村职业技术学校",
+        "油专"
+      ],
+      "memes": [
+        "帝都码农半北邮：形容北邮毕业生在北京互联网行业的影响力",
+        "渣硕膨胀事件：北邮人论坛上，有人自称 \"渣硕\" 却晒出 10 个大厂 offer，导致后来的人只能自称 \"渣土硕\"、\"渣渣硕\"",
+        "信意涵，得 offer：北邮流传的古老传说，很多求职中的应届生会用陈意涵的照片做头像"
+      ]
+    },
+    "北京科技大学": {
+      "nicknames": [
+        "京津唐地区预备炼钢工人培训学院",
+        "贝壳",
+        "北京停水大学"
+      ],
+      "memes": [
+        "钢老三：上个世纪五六十年代，北京地区流传着 \"北大、清华、钢老三\" 的说法，其中的 \"钢老三\" 指的就是北京钢铁工业学院（北科大前身）",
+        "四大天书：北科大的材料科学基础与清华的建筑、北大的考古、北航的空气动力学并称为学院路 \"四大天书\"",
+        "万秀园四楼：扬名北科的江湖传说，有 \"钢铁摇篮\" 之称"
+      ]
+    },
+    "中国农业大学": {
+      "nicknames": [
+        "海淀种猪选育场",
+        "六道口马连洼联合职校",
+        "中国吃饭大学"
+      ],
+      "memes": [
+        "京城第一食堂：农大食堂因饭菜太好吃而得名",
+        "涿州种猪选育场：农大位于河北涿州的种猪选育场，畜牧学全国第一"
+      ]
+    },
+    "中央财经大学": {
+      "nicknames": [
+        "沙河镇大洼村财经专修学院",
+        "菜专",
+        "提篮桥监狱预备班"
+      ],
+      "memes": [
+        "财宝儿：中央财经大学学生的专属昵称",
+        "沙河：央财沙河校区，地理位置偏远，被学生戏称为 \"大洼村\"",
+        "考证大学：央财学生需要考各种证书，被称为 \"上海考证大学\" 的北方版"
+      ]
+    },
+    "北京交通大学": {
+      "nicknames": [
+        "北京地铁公司西直门分公司",
+        "北下关军事基地",
+        "脚大"
+      ],
+      "memes": [
+        "红果园：北交大现址在其搬来前是一片山楂树林，因此得名",
+        "散鲟：北交大特有的散训，在全国非军事院校中独树一帜，由大二大三学长学姐担任教官",
+        "百年交大，思修不挂：北交大学生流传的一句口头禅，但据学生反映并不完全可信"
+      ]
+    },
+    "中国政法大学": {
+      "nicknames": [
+        "昌平法律职业技术培训学校",
+        "军都山政法干校",
+        "蓟门桥下岗再就业培训中心"
+      ],
+      "memes": [
+        "军都山妖风：法大昌平校区位于军都山脚下，妖风刮起来连民法典都能掀飞三页",
+        "法大神球：法大藤球队成立于 1993 年，多次在全国比赛中获奖，被称为 \"法大神球\"",
+        "十平米宿舍塞下八个法律汇编：法大学子人均掌握的神技"
+      ]
+    },
+    "中国传媒大学": {
+      "nicknames": [
+        "海底捞大学",
+        "定福庄二小附属大学",
+        "船大"
+      ],
+      "memes": [
+        "广院：中国传媒大学的前身是北京广播学院，老毕业生仍习惯称其为 \"广院\"",
+        "师哥师姐：在广院，没有学长学姐，只有师哥师姐",
+        "嘘台：广院小礼堂的传统，不管台上是谁，只要表现不好，就会被观众嘘"
+      ]
+    },
+    "北京外国语大学": {
+      "nicknames": [
+        "魏公村女子职业技术学院",
+        "北京永远单身大学",
+        "北京永远放假大学"
+      ],
+      "memes": [
+        "BFSU：北京外国语大学的英文缩写，被学生戏称为 \"Boyfriend Forever Searching University\"（永远寻找男朋友大学）",
+        "小碧池：北外校园内的小池塘，是学生们课余时间休闲的好去处",
+        "国内大厦：西校区新建的教学楼，为了和原来的 \"国际大厦\" 对称而得名"
+      ]
+    },
+    "哈尔滨工业大学": {
+      "nicknames": [
+        "圣马家沟男子职业技术学校",
+        "哈尔滨工地大学",
+        "东北小清华"
+      ],
+      "memes": [
+        "规格严格，功夫到家：哈工大的校训，被学生戏称为 \"规格严格，不让及格；功夫到家，不让回家\"",
+        "紫丁香：哈工大的校花，也是哈工大人的代称",
+        "一校区：哈工大的主校区，位于南岗区，是历史最悠久的校区"
+      ]
+    },
+    "吉林大学": {
+      "nicknames": [
+        "长春市土地开发总公司",
+        "东北人民大学",
+        "中央党校东北军法专校"
+      ],
+      "memes": [
+        "美丽的长春坐落在吉林大学里：形容吉林大学的校区遍布整个长春市",
+        "六大校区：吉林大学有六个校区，分别是前卫、南岭、新民、朝阳、和平、南湖校区",
+        "吉大：吉林大学的简称，学生常自称 \"吉大人\""
+      ]
+    },
+    "大连理工大学": {
+      "nicknames": [
+        "凌水沟职业技术学院",
+        "红凌路职业技术培训中心",
+        "搬家公司人才培训基地"
+      ],
+      "memes": [
+        "拐子桥：又名范伟桥，北门人行天桥，因为台阶高度和间距的 \"神来之笔\"，让每个走上去的人都被迫解锁范伟同款魔性步态",
+        "大黑楼：海山楼的别称，是计算机、电气等多个学院的所在地",
+        "连理：大连理工大学的校名石，\"连理\" 二字成为了情侣拍照的热门地点"
+      ]
+    },
+    "东北大学": {
+      "nicknames": [
+        "沈阳南湖男子职业技术学院",
+        "小汤河职业技术学院（秦皇岛分校）"
+      ],
+      "memes": [
+        "9b5：东北大学被调侃为 985 守门员，因此有了 \"9b5\" 的绰号",
+        "超级钢：东北大学研发的国内第一块超级钢，是学校的骄傲",
+        "浑南：东北大学浑南校区，地理位置较偏，被学生戏称为 \"浑南村\""
+      ]
+    },
+    "复旦大学": {
+      "nicknames": [
+        "五角场文秘职业技术学院",
+        "五角场社区职教中心",
+        "上海第一尼姑庵"
+      ],
+      "memes": [
+        "日月光华，旦复旦兮：出自《尚书大传・虞夏传》，是复旦大学校名的由来",
+        "光华楼：复旦大学的标志性建筑，也是上海最高的教学楼",
+        "邯郸路：复旦大学主校区位于邯郸路 220 号，因此学生常自称 \"邯郸路人\""
+      ]
+    },
+    "上海交通大学": {
+      "nicknames": [
+        "东川路男子职业技术学院",
+        "闵行理工学院",
+        "上海西南某高校"
+      ],
+      "memes": [
+        "饮水思源，爱国荣校：上海交通大学的校训",
+        "闵行：上海交通大学的主校区，位于闵行区，地理位置偏远",
+        "拖鞋门：上海交通大学闵行校区的正门，因为形状像拖鞋而得名"
+      ]
+    },
+    "同济大学": {
+      "nicknames": [
+        "上海市第一建筑施工队",
+        "同济土木施工队",
+        "上海放假大学"
+      ],
+      "memes": [
+        "同舟共济：同济大学的校训",
+        "四平路：同济大学主校区位于四平路 1239 号",
+        "樱花大道：同济大学的樱花大道，每年春天樱花盛开时，吸引众多游客前来观赏"
+      ]
+    },
+    "中国科学技术大学": {
+      "nicknames": [
+        "南七技校",
+        "蜗壳",
+        "妮可",
+        "裤子大"
+      ],
+      "memes": [
+        "我科：中科大的自称，谐音 \"蜗壳\"",
+        "你科：别人对中科大的称呼，谐音 \"妮可\"",
+        "裤子大：合肥人把 \"科技\" 读作 \"裤子\"，所以科大就有了 \"裤子大\" 这个昵称",
+        "玉泉路梗：科大原址在北京玉泉路 19 号甲，后来中科院在原址创办了国科大，老一辈科学家心中玉泉路就是科大"
+      ]
+    },
+    "华东师范大学": {
+      "nicknames": [
+        "闵行女子高等师范专科学校",
+        "普陀师专",
+        "华东失饭大学"
+      ],
+      "memes": [
+        "小花狮：华东师范大学学生的专属昵称，也是学校的吉祥物",
+        "瓦西大：上海话里 \"华师大\" 的意思",
+        "中华第九大菜系：华师大食堂自创的硬核菜系，包括玉米炒葡萄、油条灌蛋、原谅鸡腿等",
+        "校徽挂外卖：闵行校区小北门的校徽十分适合挂外卖，成为了一个野生的外卖存放点"
+      ]
+    },
+    "南京航空航天大学": {
+      "nicknames": [
+        "明故宫小飞机制作和实践基地",
+        "御道街风筝制作与放飞兴趣小组",
+        "翠屏山男子航空技校"
+      ],
+      "memes": [
+        "光棍桥：主楼面前连接着图书馆的那个桥，俗称 \"光棍桥\"",
+        "南航夜总会：东区体育馆的别称",
+        "yi 院：不一定是艺术学院（艺院），也有可能是航空学院（一院）"
+      ]
+    },
+    "南京理工大学": {
+      "nicknames": [
+        "孝陵卫皇家理工大学",
+        "炮专",
+        "孝陵卫烟火鞭炮制造总局"
+      ],
+      "memes": [
+        "兵器博物馆：国内高校唯一的种类齐全、专业性强的兵器博物馆，共计 6000 余件珍贵的藏品",
+        "六号门：南理工校园门牌编号从一号门直排到七号门，唯独六号门最难找",
+        "校花梗：南大抓到一头恐龙，南理工男生跳出来大喊：谁敢动我们校花！"
+      ]
+    },
+    "河海大学": {
+      "nicknames": [
+        "清凉山水利高专",
+        "江苏水利高专",
+        "皇家水利学院"
+      ],
+      "memes": [
+        "河海的流氓满街窜：源于一次河海学生为了维护门卫，与黑人留学生发生冲突并游行的事件",
+        "红帽子大学：河海流淌的红色基因，是南京最早响应五四的高校",
+        "河海蹦迪大学：蹦迪被调侃为河海大学继水利、环境、土木之后的第 4 个 A 类一级学科"
+      ]
+    },
+    "中国海洋大学": {
+      "nicknames": [
+        "皇家每羊大学",
+        "青岛水产基地",
+        "崂山修仙大学"
+      ],
+      "memes": [
+        "每羊大学：因主校区位于青岛但不临海，且经常停水，\"海洋\" 去掉三点水成 \"每羊\"",
+        "猪猪侠：海科楼顶像小猪，被喊 \"猪猪侠\"",
+        "海上图书馆：图书馆像巨轮，叫 \"海上图书馆\""
+      ]
+    },
+    "上海财经大学": {
+      "nicknames": [
+        "国定新村银行综合柜员培训中心",
+        "提篮桥监狱预备班",
+        "小破财"
+      ],
+      "memes": [
+        "上海不睡觉大学：上财学子一到夜晚就精神抖擞，深夜的每个时刻都有熬夜的朋友与你相伴",
+        "上海跳绳大学：上财对学生的体育要求很高，跳绳是必考项目",
+        "考证大学：上财学生需要考各种证书，被称为 \"考证大学\""
+      ]
+    },
+    "华东政法大学": {
+      "nicknames": [
+        "长宁区瓜果副食公司",
+        "华东疗养院",
+        "霍格沃茨法学分院"
+      ],
+      "memes": [
+        "长宁区瓜果副食公司：1972 年华政被撤消，校舍被果品公司、蔬菜公司等八个单位瓜分，1979 年恢复后陆续收回部分校舍",
+        "平时疗养院，考前疯人院：华政校风自由，基本不会有布置作业的情况，但考试周压力很大",
+        "有轨电车上课：松江校区可以坐着有轨电车去上英美法，容易产生骑着扫帚去开庭的幻觉"
+      ]
+    },
+    "南京师范大学": {
+      "nicknames": [
+        "南京吃饭大学",
+        "江苏职教师资培训专科",
+        "南京闹猫大学"
+      ],
+      "memes": [
+        "南京稀饭大学：1995 年南师大随园校区食堂稀饭光可鉴人，早餐可凭此省去起身后的照镜梳妆环节",
+        "拐弯大鸡腿：一食堂的终极奥义，用肥硕的洋鸡鸡腿烧就，大腿小腿兼具，外形拐弯",
+        "97 路美女专线：97 路公交车连接南师大和其他高校，被调侃为 \"美女专线\""
+      ]
+    },
+    "武汉大学": {
+      "nicknames": [
+        "珞珈山综合职业技术培训学院",
+        "国立武汉大学",
+        "国立停水停电大学"
+      ],
+      "memes": [
+        "珞珈山：武汉大学的主校区位于珞珈山，因此学生常自称 \"珞珈山人\"",
+        "樱花：武汉大学的樱花是全国闻名的，每年春天樱花盛开时，吸引众多游客前来观赏",
+        "东湖：武汉大学紧邻东湖，是学生休闲的好去处"
+      ]
+    },
+    "华中科技大学": {
+      "nicknames": [
+        "关山口男子职业技术学院",
+        "国立新屋熊大学",
+        "华中科技大学"
+      ],
+      "memes": [
+        "华科：华中科技大学的简称，学生常自称 \"华科人\"",
+        "新屋熊：华中科技大学南三门外有个叫新屋熊村并设有公交新屋熊站，然后该校官方玩梗，把一只卡通小浣熊命名为新屋熊作为官方吉祥物",
+        "森林大学：华中科技大学校园绿化非常好，被称为 \"森林大学\""
+      ]
+    },
+    "武汉理工大学": {
+      "nicknames": [
+        "公交车大学",
+        "街道口男子技工培训基地",
+        "皇家 984\\.5"
+      ],
+      "memes": [
+        "工交车：由武汉工业大学（工）、武汉交通科技大学（交）和武汉汽车工业大学（车）三所大学合并而来",
+        "37 个校门：武理各个校区的大大小小校门加起来共有 37 个",
+        "异地恋：\"我在马房山，她在余家头，异地恋\""
+      ]
+    },
+    "华中师范大学": {
+      "nicknames": [
+        "广埠屯女子师专",
+        "华中丝袜大学",
+        "华中吃饭大学"
+      ],
+      "memes": [
+        "山民：华中师范大学坐落在桂子山上，来到这里读书，就成了 \"山民\"",
+        "上山：去主校区上课称作 \"上山\"",
+        "华中高等情侣培养技术中心：武汉理工大学和华中师范大学合称"
+      ]
+    },
+    "中南财经政法大学": {
+      "nicknames": [
+        "茶山刘女子财法事务所",
+        "538 路终点站大学",
+        "中共中央党校华中地区二分校"
+      ],
+      "memes": [
+        "茶山刘：学校所在的地方原来是茶山刘村，后来把山崩掉，村子没了，但还有个茶山刘公交站就是北门",
+        "538 路：538 路公交车的另一端终点站就是茶山刘，即财大北门所在地",
+        "文泰楼前作法：临到毕业季还要在文泰楼前作法祈祷财大和法大两位祖师爷别在简历上打架"
+      ]
+    },
+    "中山大学": {
+      "nicknames": [
+        "双鸭山大学",
+        "海珠区青年康乐中心",
+        "山中不放假大学"
+      ],
+      "memes": [
+        "双鸭山大学：源于中山大学的英文名 \"Sun Yat\\-sen University\" 的谐音",
+        "中大：中山大学的简称，学生常自称 \"中大人\"",
+        "康乐园：中山大学的主校区位于康乐园，因此学生常自称 \"康乐园人\""
+      ]
+    },
+    "华南理工大学": {
+      "nicknames": [
+        "华南鲤工芒果莲雾大学",
+        "五山禅院",
+        "华难毕业大学",
+        "广横走大学"
+      ],
+      "memes": [
+        "广横走：华工的毕业生在广东省就业时，可以直接 \"横着走\"",
+        "华难毕业大学：学校规定，学生如果想毕业，必须同时满足体能测试、志愿时、创新学分、实习学分、人文、社科通选课等多方面要求",
+        "大学城蛙泳大澡堂：华工要求学生必须学会游泳，25 米扑腾过去才能毕业",
+        "全鱼宴：学校每隔几年就会打捞一次东西湖的鱼，然后食堂会做全鱼宴，免费给学生吃"
+      ]
+    },
+    "暨南大学": {
+      "nicknames": [
+        "983 大学",
+        "不用军训大学",
+        "明湖楼海鲜酒家"
+      ],
+      "memes": [
+        "983 大学：源于 2020 年东京奥运会上，中国田径运动员苏炳添跑出了 9 秒 83 的成绩，其母校暨南大学被称为 983 大学",
+        "不用军训大学：暨大不对新生举行军训活动，而以新生训练营代替",
+        "爆水管大学：暨大本部经常爆水管，学生调侃 \"有水的地方，就有暨南人\""
+      ]
+    },
+    "四川大学": {
+      "nicknames": [
+        "成都七中附属大学",
+        "磨子桥职业技术学院",
+        "四川谈恋爱大学"
+      ],
+      "memes": [
+        "望江：四川大学的主校区，位于武侯区望江路",
+        "华西：四川大学华西医学中心的简称，是全国著名的医学院",
+        "江安：四川大学的新校区，位于双流区江安镇"
+      ]
+    },
+    "电子科技大学": {
+      "nicknames": [
+        "郫县高级男子技术学院",
+        "清水寺",
+        "电子神技大学"
+      ],
+      "memes": [
+        "一对情侣三对基：形容电子科大男女比例严重失调，曾经达到 7:1",
+        "清水寺：清水河校区地理位置清（pian\\) 幽 \\(pi\\)，培养方案扎实，极其适合修行，又被戏称为清水寺",
+        "成都明星见面会大学：电子科大经常邀请名人来校演讲，许多电影的点映也都会选择成电会堂"
+      ]
+    },
+    "重庆大学": {
+      "nicknames": [
+        "沙正街男子职业技术专修学院",
+        "虫大",
+        "重大"
+      ],
+      "memes": [
+        "沙男职：沙正街男子职业技术专修学院的简称",
+        "七个男生爱一个女生：在重大，一个女生据说有 7 个男生追求，重大就没有单身女生",
+        "重大的痞子满街串：重庆高校顺口溜 \"重师的美女，重邮的汉，重大的痞子满街串\""
+      ]
+    },
+    "西南交通大学": {
+      "nicknames": [
+        "林湾村男子铁道职业技术学校",
+        "脚大",
+        "西南胶带"
+      ],
+      "memes": [
+        "打灰：工程行业自我调侃的一种提法，原指在施工单位浇筑混凝土，成了土木专业学生指称就业去向的代名词",
+        "大白菜：九里堤校区南门那座 \"聚与散\" 雕塑，被胶兵们亲切地称为 \"大白菜\"",
+        "成都地铁里都是自己人：被戏称为交大校车的六号线连接了犀浦和九里，成都的地铁和交通部门好多都是交大校友"
+      ]
+    },
+    "西南政法大学": {
+      "nicknames": [
+        "壮志路街道辩论队",
+        "回兴镇职业律师培训中心",
+        "稀男政法大学"
+      ],
+      "memes": [
+        "绝望坡：西政的绝望坡，几乎重庆的每一所大学都有 \"坡\" 的加持",
+        "没有南北的南北门：西政的南北门却在同一条线上朝着同一方向开放，北门的对面是无边无际的峡谷和宿舍楼",
+        "南少林：南苑学生俗称南少林，因六栋宿舍楼均为男生宿舍而得此佳名"
+      ]
+    },
+    "兰州大学": {
+      "nicknames": [
+        "夏官营镇大学",
+        "兰州牛肉面大学",
+        "西北第一停课大学"
+      ],
+      "memes": [
+        "夏官营：兰州大学榆中校区位于夏官营镇，距离本部足足 40 公里，一出校门便是黄沙漫漫",
+        "骆驼驾驶证：学生们自嘲在这儿上学要 \"人手一本骆驼驾驶证\"",
+        "昆仑堂：兰州大学榆中校区的图书馆，是学校的标志性建筑"
+      ]
+    },
+    "西安交通大学": {
+      "nicknames": [
+        "沙坡村皇家理工学校",
+        "仙交大",
+        "钱图"
+      ],
+      "memes": [
+        "仙交大：西安交通大学的谐音，也因为校内风景优美，四时之景各具韵味",
+        "钱图：钱学森图书馆，学生们说 \"在 ' 钱图 ' 学习，一定有前途\"",
+        "四大发明广场：由于 \"四大发明\" 谐音英文的 star farming，这个可爱的昵称长久以来也深受学子们的喜爱"
+      ]
+    },
+    "西北工业大学": {
+      "nicknames": [
+        "西瓜大",
+        "东大男子职业技术学院",
+        "西北飞机制造园秦岭培训基地"
+      ],
+      "memes": [
+        "西瓜大：由于西北人在读 \"工\" 字时发音听起来像 \"瓜\"，\"西工大\" 就成了 \"西瓜大\"，学生自称 \"西瓜子\"",
+        "校车司机以前是开坦克的：西工大流传的神秘传说之一",
+        "终南山里有武器制造基地：另一个西工大流传的神秘传说"
+      ]
+    },
+    "西安电子科技大学": {
+      "nicknames": [
+        "徐家庄电器装修技术学院",
+        "华为驻大兴国禅寺周边培训基地",
+        "掀垫子柯基大学"
+      ],
+      "memes": [
+        "B 楼迷路：B 楼的下沉式构造太奇怪，4xx 的教室可能只需要爬一层楼，北楼南楼真是让人头大",
+        "西电的汉：西安高校顺口溜 \"外院的美女，西电的汉，交大的痞子满街窜\"",
+        "掀垫子的学霸：西电学霸们的朴实无华，考试前说 \"我太菜了\"，出成绩的时候却名列前茅"
+      ]
+    },
+    "西北政法大学": {
+      "nicknames": [
+        "延安讲武堂西安分堂",
+        "西崔国际辩论队培训中心",
+        "占座技能专科学校"
+      ],
+      "memes": [
+        "拜汤哥，不挂科：张汤墓在西法大长安校区的基建工地被发现，西法大学子考前会来张汤墓拜一拜，祈祷考试顺利通过",
+        "四要件的传世倔强：当全国法学院都在搞三阶层，只有西法大人还在用四要件解构食堂占座纠纷",
+        "蚂蚁上树：一道普通的肉沫炒粉条，在西北政法大学流传了 40 年，让无数校友难以忘怀"
+      ]
+    },
+    "太原理工大学": {
+      "nicknames": [
+        "山西乌金山皇家男子职业技术学院",
+        "迎西煤矿工人培训基地",
+        "皇家理工",
+        "西北王（CUBAL）"
+      ],
+      "memes": [
+        "清华北大太原理工：源于 CUBAL 联赛中太原理工男篮长期稳居全国八强，球迷调侃的口号，后来张凯飞带队晋级四强后成为经典梗",
+        "小白龙：校园内的通勤电瓶车，是明向校区学生赶课的必备交通工具，有详细的乘车指南在学生中流传",
+        "明向皇家理工：明向校区建筑以黄色为主色调，远远望去金碧辉煌，因此得名",
+        "虎峪坡：虎峪校区的坡又陡又长，学生每天爬坡上课，戏称 \"每天都在锻炼身体\""
+      ]
+    },
+    "内蒙古大学": {
+      "nicknames": [
+        "塞外小北大",
+        "内蒙古第一高中",
+        "桃李湖马尔代夫管理处"
+      ],
+      "memes": [
+        "桃李湖马尔代夫：内大桃李湖晴天时波光粼粼，Tiffany 蓝的湖水被学生称为 \"内大版马尔代夫\"，是拍照打卡圣地",
+        "内大的牌子师院的饭：流传于呼和浩特高校的顺口溜，调侃内大名气大但饭菜不如内蒙古师范大学",
+        "绿肥黄瘦：早年中文系学生用李清照的词调侃食堂的韭菜炒鸡蛋，韭菜多鸡蛋少",
+        "黑面馒头插主楼：1980 年学生罢饭运动中，有学生把黑面馒头插上主楼顶端抗议饭菜质量差"
+      ]
+    },
+    "哈尔滨工程大学": {
+      "nicknames": [
+        "马家沟轮船修造高级专科学校",
+        "哈船",
+        "船院",
+        "哈军工传人"
+      ],
+      "memes": [
+        "11 号楼迷宫：原哈军工空军工程系教学楼，结构极其复杂，新生进去很容易迷路，有 \"进去了就出不来\" 的传说",
+        "三海一核：学校的王牌特色领域（船舶工业、海军装备、海洋开发、核能应用），是哈工程人的骄傲",
+        "飞檐上的军舰：31 号楼（原海军工程系）的飞檐上有一排军舰雕塑，是哈军工留下的独特印记",
+        "首批 211 唯一没进 985：哈工程是首批 27 所 211 高校之一，其余 26 所全部晋级 985，成为学生自嘲的梗"
+      ]
+    },
+    "东北师范大学": {
+      "nicknames": [
+        "东北皇家女子学院",
+        "奶牛大学",
+        "教育部赴日留学预校"
+      ],
+      "memes": [
+        "小奶牛：源于学校英文校名 NENU 的谐音，学生自称 \"奶牛菌\"，学校也被称为 \"奶牛大学\"",
+        "净月女子修道院：净月校区女生比例极高，男生稀缺，被调侃为 \"修道院\"",
+        "东师打卡：学生日常需要背单词、练字、做各种学习打卡，是东师的特色传统",
+        "长春妖风：长春春天风力极大，学生调侃 \"天气真好\" 特指东师晴空万里没有大风的日子"
+      ]
+    },
+    "东南大学": {
+      "nicknames": [
+        "福建大三本",
+        "九龙湖高级技工学校",
+        "四牌楼高等绘图技术培训学校",
+        "车南大学"
+      ],
+      "memes": [
+        "SEU=Study Everyday University：东南大学英文缩写的自嘲，形容学校学习氛围浓厚，课多假少",
+        "钢菊：九龙湖校区体育馆的别称，因为外形酷似菊花而得名",
+        "不如自挂东南枝：源于网络表情包，被东大学子用来调侃考试压力大",
+        "东大影视基地：四牌楼校区的民国建筑经常被用作影视剧取景地，《人民的名义》中的反贪局大楼就是东大四牌楼的大礼堂"
+      ]
+    },
+    "苏州大学": {
+      "nicknames": [
+        "苏大强",
+        "中国纳米大学",
+        "东吴大学"
+      ],
+      "memes": [
+        "阳澄湖遥遥无妻，独墅湖死而无汉：阳澄湖校区以工科为主，男生多；独墅湖校区以文科、医学为主，女生多，形成鲜明对比",
+        "冬至加餐券：连续 30 余年，苏大在冬至向全校学生发放 10 元加餐券，供应苏式糕点和水饺，是苏大的暖心传统",
+        "基蟹工程：阳澄湖校区机械工程专业的自嘲，谐音 \"机械工程\"",
+        "苏哇哇：因为苏州政府经费充足，苏大四处挖优秀师资，被调侃为 \"苏哇哇\""
+      ]
+    },
+    "江南大学": {
+      "nicknames": [
+        "无锡市吃喝穿用技术学院",
+        "太湖街道轻工技校",
+        "民办 F4 之一",
+        "食品界清华"
+      ],
+      "memes": [
+        "曲水桥漂移：曲水桥是江南大学的标志性建筑，坡度大且有减速带，学生骑自行车上下桥经常上演 \"漂移\"，被称为 \"江南第一坡\"",
+        "江南妖风：无锡的风特别大，曲水桥顶端是妖风最猖狂的地方，学生调侃 \"上不去下不来还有减速带\"",
+        "酿酒界黄埔军校：江南大学的食品科学与工程全国第一，茅台、五粮液等酒企的技术骨干很多毕业于此",
+        "小鼋：江南大学的吉祥物，源于学校位于太湖边，鼋是太湖的特色动物，毕业时很多学生都会抱着小鼋拍照"
+      ]
+    },
+    "合肥工业大学": {
+      "nicknames": [
+        "屯溪路男子职业技术学院",
+        "肥工",
+        "胶通大学",
+        "汽车工业黄埔军校"
+      ],
+      "memes": [
+        "胶通大学：源于 2025 年一名学生在宿舍焚烧硅胶娃娃引发火警，事件火遍全网，合工大因此被调侃为 \"胶通大学\"",
+        "天鹅外交：合工大养了很多黑天鹅，经常作为礼物送给其他高校，校庆时一言不合就送黑天鹅",
+        "斛兵塘：老校区内的三国遗址，相传是曹操清点士兵的地方，现在是学生晨读和约会的圣地",
+        "吃在工大：合工大食堂美食众多，中秋会发手工月饼，端午会发粽子，多次登上央视"
+      ]
+    },
+    "厦门大学": {
+      "nicknames": [
+        "厦门市第一人民公园",
+        "南方之强",
+        "花开不败大学",
+        "虾大"
+      ],
+      "memes": [
+        "南校门在最北边：厦大的南校门其实是最北的校门，是 \"大南校门\" 的简称，新生经常搞混",
+        "猪头楼：建文楼因为外形酷似猪头而得名，是厦大的标志性建筑之一",
+        "芙蓉隧道涂鸦战：芙蓉隧道的学生涂鸦经常被覆盖或修改，引发学生之间的 \"艺术攻防战\"，甚至出现过 \"盗墓笔记\" 主题涂鸦被改成 \"社会主义核心价值观\" 的乌龙",
+        "情人谷：厦大水库的别称，有一片迷你热带雨林，是情侣约会的热门地点"
+      ]
+    },
+    "福州大学": {
+      "nicknames": [
+        "浮舟大学",
+        "旗山第一高等理工职业技术学院",
+        "电击小子训练基地",
+        "南方小清华"
+      ],
+      "memes": [
+        "浮舟大学：福州经常下雨，旗山校区地势低洼，一下雨就积水，学生调侃 \"上学要划船\"",
+        "福大七匹狼：指福大的七个工科专业，实力强劲，毕业生在就业市场很受欢迎",
+        "和四区不再是异地恋：福大校区分散，以前不同校区之间谈恋爱被称为 \"异地恋\"，现在交通改善后这个梗逐渐淡化",
+        "单身狗 1 号楼：某栋男生宿舍楼因为单身男生多而得名，是福大男生的自嘲"
+      ]
+    },
+    "南昌大学": {
+      "nicknames": [
+        "红谷滩老年活动中心附属大学",
+        "南昌断水断电大学",
+        "摸鱼大学",
+        "亚洲第一大门大学"
+      ],
+      "memes": [
+        "亚洲第一大门：前湖校区的校门全长 323 米，是模仿原国立中正大学校门建成，被称为 \"亚洲第一大门\"",
+        "真・摸鱼大学：校园内有很多湖泊，学生真的可以在湖里摸鱼，因此得名",
+        "华东养猪场：南昌大学食堂饭菜好吃且便宜，学生调侃 \"来了昌大，胖了十斤\"",
+        "最没存在感的 211：外省人经常不知道南昌大学在哪里，被调侃为 \"最没存在感的 211\""
+      ]
+    },
+    "湖南大学": {
+      "nicknames": [
+        "岳麓山管理处附属学院",
+        "千年学府",
+        "5A 级景区大学"
+      ],
+      "memes": [
+        "冒得门：湖南大学没有正式的校门和围墙，岳麓山大门就在校园内，新生入学第一天都会问 \"我们学校校门在哪\"",
+        "岳麓山没有鹿，天马山没有马，桃子湖没有桃子：湖大周边地名的调侃",
+        "游客比学生多：因为位于岳麓山景区，每天有大量游客涌入校园，学生戏称 \"我们是景区的工作人员\"",
+        "fú 大：长沙话里 \"湖\" 读 \"fú\"，所以湖南大学被称为 \"fú 大\""
+      ]
+    },
+    "中南大学": {
+      "nicknames": [
+        "左家垅男子职业技术学院",
+        "众男大学",
+        "中国冶金地质大学"
+      ],
+      "memes": [
+        "师大的花，湖大的草，中南的和尚满街跑：长沙高校流传的顺口溜，调侃中南大学男女比例严重失调",
+        "D 座迷路：新校区 D 座教学楼结构复杂，指向牌混乱，学生经常找不到教室",
+        "合并校名梗：中南和湖大互相调侃合并后的校名，中南说取 \"中南\" 的 \"中\" 和 \"湖南大学\" 的 \"南\" 叫 \"中南大学\"，湖大说取 \"湖南大学\" 的 \"湖\" 和 \"中南\" 的 \"南\" 叫 \"湖南大学\"",
+        "《爽爽的中南》：流行多年的非官方校歌，魔性洗脑，是中南人的集体记忆"
+      ]
+    },
+    "湖南师范大学": {
+      "nicknames": [
+        "二里半女子学院",
+        "桃子湖女子职业技术专修学院",
+        "岳麓山女子师范学校"
+      ],
+      "memes": [
+        "望妹坡：原六、七舍门前的坡，以前手机不普及，男生找女生只能在坡下等，宿管阿姨戏称 \"等妹坡\"，后来演变成 \"望妹坡\"",
+        "二里半大熊猫：全校女生比例约 73%，部分文科专业达 90%\\+，男生极其稀缺，被称为 \"二里半大熊猫\"",
+        "堕落街：师大旁边的堕落街是长沙著名的美食街，承载了无数师大学子的青春记忆，后来拆迁重建，但名字一直流传",
+        "木门长蘑菇：2025 年医学院研究生宿舍因扩招导致住宿紧张，墙体发霉、木门长蘑菇，引发全网热议，学生自嘲 \"主打一个活着毕业\""
+      ]
+    },
+    "郑州大学": {
+      "nicknames": [
+        "沟赵职业技术学院",
+        "国立郑州西郊公园",
+        "祥萤村附属学院",
+        "河南唯一 211"
+      ],
+      "memes": [
+        "周一到周五是沟赵职业技术学院，周六周日是国立郑州西郊公园：郑大主校区位于沟赵乡，平时是学校，周末有大量市民来游玩，变成了公园",
+        "风筝哥：郑大校园里的传奇人物李雪成，常年在操场放风筝，被学生称为 \"风筝哥\"、\"老顽童\"、\"爱因斯坦\"，毕业前很多学生都会找他合影",
+        "亚洲最大医院附属大学：郑大一附院是亚洲最大的医院，郑大医学院实力强劲，因此得名",
+        "卷王大学：郑大学生人数众多，保研和就业竞争激烈，被调侃为 \"卷王大学\""
+      ]
+    },
+    "广西大学": {
+      "nicknames": [
+        "调剂小清华",
+        "西乡塘职业技术学院",
+        "广西大学果园"
+      ],
+      "memes": [
+        "狗洞：西校园的一个美食街，因最初是围墙打开的一个仅容一人进出的通道，学生钻来钻去而得名，后来拆除重建，但 \"狗洞\" 的名字一直流传",
+        "校园大果园：西大校园里种满了芒果、荔枝、龙眼、菠萝蜜等水果，成熟时学生可以免费采摘，被称为 \"校园大果园\"",
+        "崇左桥分界线：崇左桥是东校园和西校园的分界线，学生调侃 \"过了崇左桥，就是另一个世界\"",
+        "西伯利亚：校园西南角的自考生宿舍区域，因位置偏僻而得名"
+      ]
+    },
+    "海南大学": {
+      "nicknames": [
+        "海甸岛人民免费公园",
+        "海南岛人民公园",
+        "海甸岛欧陆风学院"
+      ],
+      "memes": [
+        "海大是公园，公园是海大：海甸校区对游客开放，风景优美，有大片草坪和欧式建筑，被称为 \"海甸岛人民免费公园\"",
+        "东坡湖：校园内的人工湖，是情侣约会和学生晨读的热门地点，湖边经常有白鹭栖息",
+        "美洲大蠊：海南气候潮湿，宿舍里经常会出现大蟑螂，被学生调侃为 \"海大特产\"",
+        "南门清补凉：海大南门小吃街的清补凉是海口著名的美食，是海大学子的深夜灵魂慰藉"
+      ]
+    },
+    "云南大学": {
+      "nicknames": [
+        "园西路吃货培训学校",
+        "云大",
+        "☁️大"
+      ],
+      "memes": [
+        "大象驾驶证：外省人经常调侃云大学子是不是人手一本 \"大象驾驶证\"，学生顺着话说 \"我们不止能骑大象，还能骑孔雀，摸小熊猫\"",
+        "九五台阶：会泽院前的 95 级台阶，又称龙门道，相传走上去就能学业有成",
+        "圆西路美食街：从云大本部到东二院的圆西路聚集了各种特色小吃，不到一公里的路学生要走一个小时，很多人都是被这条街养胖的",
+        "银杏大道：秋天时银杏大道金黄一片，是昆明著名的打卡景点，游客比学生还多"
+      ]
+    },
+    "贵州大学": {
+      "nicknames": [
+        "花溪养牛村职业技术学校",
+        "停水停电大学",
+        "贵大"
+      ],
+      "memes": [
+        "养牛村职业技术学校：花溪校区所在地旧名 \"养牛村\"，因此得名",
+        "贾秀楼论文泪：贾秀楼是贵大的主教学楼，很多学生在这里熬夜写论文，调侃 \"为贾秀楼流过的泪，是脑子里进的水\"",
+        "强哥表情包：郑强教授担任贵大校长期间，深受学生喜爱，他的表情包在学生中广泛流传",
+        "折耳根血脉：贵大学生几乎都爱吃折耳根，被调侃为 \"刻在 DNA 里的折耳根血脉\""
+      ]
+    },
+    "新疆大学": {
+      "nicknames": [
+        "乌鲁木齐职业技术学院",
+        "新大",
+        "新乡大学（谐音梗）"
+      ],
+      "memes": [
+        "带饭暗号：当有人说 \"我出去一下\"，全寝瞬间条件反射接话：\"带份饭！别辣 / 多醋 / 少麻！\"，是刻进 DNA 的接头暗号",
+        "红湖：校本部的红湖是新疆大学的标志性景观，湖边有很多柳树，是学生休闲的好去处",
+        "大盘鸡抓饭：新疆大学食堂的大盘鸡和抓饭是特色美食，深受学生喜爱",
+        "民族团结一家亲：学校有很多民族学生，各民族学生和睦相处，形成了独特的校园文化"
+      ]
+    },
+    "石河子大学": {
+      "nicknames": [
+        "戈壁滩上的明珠",
+        "石大",
+        "石河子华子大学"
+      ],
+      "memes": [
+        "馕言文：学生模仿新疆口音说话，比如 \"外江诶！食堂的抓饭呢，羊腿和米饭在踢毽子的呢！\"，被称为 \"馕言文\"",
+        "戈壁滩上的 211：石河子大学位于戈壁滩上，是新疆生产建设兵团唯一的 211 高校，被称为 \"戈壁滩上的明珠\"",
+        "胡杨精神：学校倡导 \"胡杨精神\"，鼓励学生像胡杨树一样坚韧不拔",
+        "对口支援：北京大学等高校对口支援石河子大学，学生可以共享部分师资资源"
+      ]
+    },
+    "宁夏大学": {
+      "nicknames": [
+        "调剂小清华",
+        "夏大（与厦门大学撞简称）",
+        "宁大"
+      ],
+      "memes": [
+        "西瓜枸杞砸新生：调侃新生没骑骆驼来上学，会被用西瓜和枸杞追着砸",
+        "拐角楼：又名小红楼、鸳鸯楼，是上世纪六十年代的建筑，现在仍然在使用",
+        "沙坡头：学校离沙坡头景区很近，学生周末经常去沙坡头游玩",
+        "压分梗：宁夏大学在考研改卷过程中多次被爆出 \"压分\" 情况，成为考研圈的热门话题"
+      ]
+    },
+    "青海大学": {
+      "nicknames": [
+        "高原卷王",
+        "饿不死大学",
+        "烫土大学（青海话谐音）"
+      ],
+      "memes": [
+        "天然空调：西宁夏天平均气温只有 18 摄氏度，被称为 \"天然空调\"，是避暑胜地",
+        "清华帮扶：清华大学等 6 所知名高校对口支援青海大学，学生可以享受清华的师资资源",
+        "卫星球：校园内的标志性建筑，由清华援建，科技感爆棚，是新生必打卡的地方",
+        "干饭天堂：青海大学有三大食堂和唐梨路步行街，美食众多，被称为 \"饿不死大学\""
+      ]
+    },
+    "西藏大学": {
+      "nicknames": [
+        "拉萨职业技术学院",
+        "藏大"
+      ],
+      "memes": [
+        "鸟儿不怕人：因为信仰原因普遍不杀生，校园里的鸟儿很多，而且完全不怕人，新生军训累了会和鸟儿一起躺在草地上",
+        "锅庄舞比赛：藏大的特色活动，每年都会举办锅庄舞比赛，各学院都会派出代表队参加",
+        "高原反应：新生刚到拉萨时都会有不同程度的高原反应，学校会贴心地提供氧气和药品",
+        "藏汉双语：很多课程都是藏汉双语教学，学生可以同时学习两种语言"
+      ]
+    }
+  };
+
+  /* ---------- 合集.md 中新增院校的基础标签 ---------- */
+  var SCHOOL_SUPPLEMENTAL_META = {
+    "中国人民大学": {
+      "city": "北京",
+      "region": "华北",
+      "admit": 5,
+      "type": [
+        "人文",
+        "财经",
+        "政法"
+      ],
+      "vibe": "厚重、务实、公共议题感强",
+      "study": "high",
+      "industries": [
+        "公共政策",
+        "金融",
+        "传媒"
+      ],
+      "regions": [
+        "北京",
+        "上海",
+        "深圳"
+      ]
+    },
+    "北京师范大学": {
+      "city": "北京",
+      "region": "华北",
+      "admit": 5,
+      "type": [
+        "人文",
+        "师范"
+      ],
+      "vibe": "温厚、学术、教育底色深",
+      "study": "high",
+      "industries": [
+        "教育",
+        "公共政策",
+        "学术科研"
+      ],
+      "regions": [
+        "北京",
+        "上海",
+        "深圳"
+      ]
+    },
+    "北京航空航天大学": {
+      "city": "北京",
+      "region": "华北",
+      "admit": 5,
+      "type": [
+        "理工"
+      ],
+      "vibe": "硬核、航天底色、工程感强",
+      "study": "high",
+      "industries": [
+        "航空航天",
+        "军工",
+        "科技研发"
+      ],
+      "regions": [
+        "北京",
+        "上海",
+        "深圳"
+      ]
+    },
+    "北京理工大学": {
+      "city": "北京",
+      "region": "华北",
+      "admit": 4,
+      "type": [
+        "理工"
+      ],
+      "vibe": "低调、硬核、国防工业气质",
+      "study": "high",
+      "industries": [
+        "军工",
+        "汽车",
+        "科技研发"
+      ],
+      "regions": [
+        "北京",
+        "上海",
+        "深圳"
+      ]
+    },
+    "北京科技大学": {
+      "city": "北京",
+      "region": "华北",
+      "admit": 3,
+      "type": [
+        "理工"
+      ],
+      "vibe": "扎实、材料底色、钢铁气质",
+      "study": "mid",
+      "industries": [
+        "材料",
+        "制造",
+        "能源"
+      ],
+      "regions": [
+        "北京",
+        "天津",
+        "上海"
+      ]
+    },
+    "中国农业大学": {
+      "city": "北京",
+      "region": "华北",
+      "admit": 4,
+      "type": [
+        "理工",
+        "综合"
+      ],
+      "vibe": "朴素、生命科学与土地气息并存",
+      "study": "high",
+      "industries": [
+        "农业科技",
+        "食品",
+        "生物医药"
+      ],
+      "regions": [
+        "北京",
+        "上海",
+        "深圳"
+      ]
+    },
+    "中央财经大学": {
+      "city": "北京",
+      "region": "华北",
+      "admit": 4,
+      "type": [
+        "人文",
+        "财经"
+      ],
+      "vibe": "精算、务实、金融目标感强",
+      "study": "mid",
+      "industries": [
+        "金融",
+        "咨询",
+        "公务员"
+      ],
+      "regions": [
+        "北京",
+        "上海",
+        "深圳"
+      ]
+    },
+    "北京交通大学": {
+      "city": "北京",
+      "region": "华北",
+      "admit": 3,
+      "type": [
+        "理工"
+      ],
+      "vibe": "交通底色、务实、节奏稳定",
+      "study": "mid",
+      "industries": [
+        "交通",
+        "通信",
+        "互联网"
+      ],
+      "regions": [
+        "北京",
+        "上海",
+        "深圳"
+      ]
+    },
+    "中国政法大学": {
+      "city": "北京",
+      "region": "华北",
+      "admit": 4,
+      "type": [
+        "人文",
+        "政法"
+      ],
+      "vibe": "锋利、理性、法律共同体感强",
+      "study": "high",
+      "industries": [
+        "律所",
+        "公务员",
+        "法务"
+      ],
+      "regions": [
+        "北京",
+        "上海",
+        "深圳"
+      ]
+    },
+    "北京外国语大学": {
+      "city": "北京",
+      "region": "华北",
+      "admit": 4,
+      "type": [
+        "人文"
+      ],
+      "vibe": "国际化、语言天赋、表达感强",
+      "study": "mid",
+      "industries": [
+        "外交外事",
+        "翻译",
+        "传媒"
+      ],
+      "regions": [
+        "北京",
+        "上海",
+        "海外"
+      ]
+    },
+    "吉林大学": {
+      "city": "长春",
+      "region": "东北",
+      "admit": 4,
+      "type": [
+        "综合"
+      ],
+      "vibe": "庞大、厚实、东北烟火气",
+      "study": "high",
+      "industries": [
+        "汽车",
+        "公务员",
+        "学术科研"
+      ],
+      "regions": [
+        "长春",
+        "北京",
+        "上海"
+      ]
+    },
+    "大连理工大学": {
+      "city": "大连",
+      "region": "东北",
+      "admit": 4,
+      "type": [
+        "理工"
+      ],
+      "vibe": "工科扎实、海风里带着硬度",
+      "study": "high",
+      "industries": [
+        "制造",
+        "化工",
+        "科技研发"
+      ],
+      "regions": [
+        "大连",
+        "北京",
+        "上海"
+      ]
+    },
+    "东北大学": {
+      "city": "沈阳",
+      "region": "东北",
+      "admit": 4,
+      "type": [
+        "理工"
+      ],
+      "vibe": "务实、自动化强、东北工业底色",
+      "study": "mid",
+      "industries": [
+        "自动化",
+        "材料",
+        "制造"
+      ],
+      "regions": [
+        "沈阳",
+        "北京",
+        "上海"
+      ]
+    },
+    "复旦大学": {
+      "city": "上海",
+      "region": "华东",
+      "admit": 5,
+      "type": [
+        "综合",
+        "人文"
+      ],
+      "vibe": "自由、精英、人文与城市感并重",
+      "study": "high",
+      "industries": [
+        "金融",
+        "传媒",
+        "学术科研"
+      ],
+      "regions": [
+        "上海",
+        "北京",
+        "海外"
+      ]
+    },
+    "同济大学": {
+      "city": "上海",
+      "region": "华东",
+      "admit": 5,
+      "type": [
+        "理工",
+        "综合"
+      ],
+      "vibe": "建筑、设计与工程气质浓",
+      "study": "high",
+      "industries": [
+        "建筑规划",
+        "汽车",
+        "设计"
+      ],
+      "regions": [
+        "上海",
+        "北京",
+        "深圳"
+      ]
+    },
+    "中国科学技术大学": {
+      "city": "合肥",
+      "region": "华东",
+      "admit": 5,
+      "type": [
+        "理工"
+      ],
+      "vibe": "纯粹、硬核、科研浓度极高",
+      "study": "high",
+      "industries": [
+        "学术科研",
+        "科技研发",
+        "人工智能"
+      ],
+      "regions": [
+        "合肥",
+        "北京",
+        "上海"
+      ]
+    },
+    "华东师范大学": {
+      "city": "上海",
+      "region": "华东",
+      "admit": 4,
+      "type": [
+        "人文",
+        "师范"
+      ],
+      "vibe": "细腻、教育底色、上海气质",
+      "study": "high",
+      "industries": [
+        "教育",
+        "心理",
+        "公共政策"
+      ],
+      "regions": [
+        "上海",
+        "北京",
+        "杭州"
+      ]
+    },
+    "南京航空航天大学": {
+      "city": "南京",
+      "region": "华东",
+      "admit": 3,
+      "type": [
+        "理工"
+      ],
+      "vibe": "航空底色、严谨、工程感强",
+      "study": "mid",
+      "industries": [
+        "航空航天",
+        "制造",
+        "军工"
+      ],
+      "regions": [
+        "南京",
+        "上海",
+        "北京"
+      ]
+    },
+    "南京理工大学": {
+      "city": "南京",
+      "region": "华东",
+      "admit": 3,
+      "type": [
+        "理工"
+      ],
+      "vibe": "低调硬核、军工底色、执行力强",
+      "study": "mid",
+      "industries": [
+        "军工",
+        "制造",
+        "科技研发"
+      ],
+      "regions": [
+        "南京",
+        "上海",
+        "北京"
+      ]
+    },
+    "河海大学": {
+      "city": "南京",
+      "region": "华东",
+      "admit": 3,
+      "type": [
+        "理工"
+      ],
+      "vibe": "水利底色、踏实、工程气质",
+      "study": "mid",
+      "industries": [
+        "水利",
+        "能源",
+        "工程建设"
+      ],
+      "regions": [
+        "南京",
+        "上海",
+        "杭州"
+      ]
+    },
+    "中国海洋大学": {
+      "city": "青岛",
+      "region": "华东",
+      "admit": 4,
+      "type": [
+        "综合",
+        "理工"
+      ],
+      "vibe": "海风、科研、松弛里有专业性",
+      "study": "mid",
+      "industries": [
+        "海洋科学",
+        "食品",
+        "科研"
+      ],
+      "regions": [
+        "青岛",
+        "上海",
+        "北京"
+      ]
+    },
+    "上海财经大学": {
+      "city": "上海",
+      "region": "华东",
+      "admit": 4,
+      "type": [
+        "人文",
+        "财经"
+      ],
+      "vibe": "金融浓度高、现实、目标感强",
+      "study": "mid",
+      "industries": [
+        "金融",
+        "咨询",
+        "审计"
+      ],
+      "regions": [
+        "上海",
+        "北京",
+        "深圳"
+      ]
+    },
+    "华东政法大学": {
+      "city": "上海",
+      "region": "华东",
+      "admit": 3,
+      "type": [
+        "人文",
+        "政法"
+      ],
+      "vibe": "法律人气质、上海城市感、细密",
+      "study": "mid",
+      "industries": [
+        "律所",
+        "法务",
+        "公务员"
+      ],
+      "regions": [
+        "上海",
+        "北京",
+        "深圳"
+      ]
+    },
+    "南京师范大学": {
+      "city": "南京",
+      "region": "华东",
+      "admit": 3,
+      "type": [
+        "人文",
+        "师范"
+      ],
+      "vibe": "温和、人文、师范底色",
+      "study": "mid",
+      "industries": [
+        "教育",
+        "传媒",
+        "公务员"
+      ],
+      "regions": [
+        "南京",
+        "上海",
+        "杭州"
+      ]
+    },
+    "华中科技大学": {
+      "city": "武汉",
+      "region": "华中",
+      "admit": 5,
+      "type": [
+        "理工",
+        "综合"
+      ],
+      "vibe": "硬核、务实、光谷速度",
+      "study": "high",
+      "industries": [
+        "科技研发",
+        "医疗",
+        "制造"
+      ],
+      "regions": [
+        "武汉",
+        "深圳",
+        "上海"
+      ]
+    },
+    "武汉理工大学": {
+      "city": "武汉",
+      "region": "华中",
+      "admit": 3,
+      "type": [
+        "理工"
+      ],
+      "vibe": "材料交通底色、务实、行动派",
+      "study": "mid",
+      "industries": [
+        "材料",
+        "汽车",
+        "交通"
+      ],
+      "regions": [
+        "武汉",
+        "深圳",
+        "上海"
+      ]
+    },
+    "华中师范大学": {
+      "city": "武汉",
+      "region": "华中",
+      "admit": 3,
+      "type": [
+        "人文",
+        "师范"
+      ],
+      "vibe": "温柔、教育气质、烟火感",
+      "study": "mid",
+      "industries": [
+        "教育",
+        "公务员",
+        "传媒"
+      ],
+      "regions": [
+        "武汉",
+        "深圳",
+        "北京"
+      ]
+    },
+    "中南财经政法大学": {
+      "city": "武汉",
+      "region": "华中",
+      "admit": 3,
+      "type": [
+        "人文",
+        "财经",
+        "政法"
+      ],
+      "vibe": "财法交织、现实、辩论气强",
+      "study": "mid",
+      "industries": [
+        "金融",
+        "律所",
+        "公务员"
+      ],
+      "regions": [
+        "武汉",
+        "深圳",
+        "上海"
+      ]
+    },
+    "暨南大学": {
+      "city": "广州",
+      "region": "华南",
+      "admit": 3,
+      "type": [
+        "综合",
+        "人文"
+      ],
+      "vibe": "侨校气质、开放、湾区连接强",
+      "study": "mid",
+      "industries": [
+        "传媒",
+        "金融",
+        "医疗"
+      ],
+      "regions": [
+        "广州",
+        "深圳",
+        "香港"
+      ]
+    },
+    "电子科技大学": {
+      "city": "成都",
+      "region": "西南",
+      "admit": 4,
+      "type": [
+        "理工"
+      ],
+      "vibe": "电子信息硬核、技术目标感强",
+      "study": "high",
+      "industries": [
+        "电子信息",
+        "通信",
+        "互联网"
+      ],
+      "regions": [
+        "成都",
+        "深圳",
+        "北京"
+      ]
+    },
+    "西南交通大学": {
+      "city": "成都",
+      "region": "西南",
+      "admit": 3,
+      "type": [
+        "理工"
+      ],
+      "vibe": "轨道交通底色、踏实、工程感",
+      "study": "mid",
+      "industries": [
+        "轨道交通",
+        "土木",
+        "制造"
+      ],
+      "regions": [
+        "成都",
+        "重庆",
+        "深圳"
+      ]
+    },
+    "兰州大学": {
+      "city": "兰州",
+      "region": "西北",
+      "admit": 4,
+      "type": [
+        "综合",
+        "理工"
+      ],
+      "vibe": "孤勇、扎实、西北风骨",
+      "study": "high",
+      "industries": [
+        "学术科研",
+        "公务员",
+        "生态环境"
+      ],
+      "regions": [
+        "兰州",
+        "北京",
+        "西安"
+      ]
+    },
+    "西安交通大学": {
+      "city": "西安",
+      "region": "西北",
+      "admit": 5,
+      "type": [
+        "理工",
+        "综合"
+      ],
+      "vibe": "厚重、工程强校、西迁精神",
+      "study": "high",
+      "industries": [
+        "能源",
+        "制造",
+        "科技研发"
+      ],
+      "regions": [
+        "西安",
+        "上海",
+        "深圳"
+      ]
+    },
+    "西北工业大学": {
+      "city": "西安",
+      "region": "西北",
+      "admit": 4,
+      "type": [
+        "理工"
+      ],
+      "vibe": "三航硬核、低调、国防底色",
+      "study": "high",
+      "industries": [
+        "航空航天",
+        "军工",
+        "材料"
+      ],
+      "regions": [
+        "西安",
+        "北京",
+        "上海"
+      ]
+    },
+    "西安电子科技大学": {
+      "city": "西安",
+      "region": "西北",
+      "admit": 4,
+      "type": [
+        "理工"
+      ],
+      "vibe": "通信电子硬核、就业目标明确",
+      "study": "mid",
+      "industries": [
+        "通信",
+        "互联网",
+        "电子信息"
+      ],
+      "regions": [
+        "西安",
+        "深圳",
+        "北京"
+      ]
+    },
+    "西北政法大学": {
+      "city": "西安",
+      "region": "西北",
+      "admit": 3,
+      "type": [
+        "人文",
+        "政法"
+      ],
+      "vibe": "法学底色、锋利、江湖气",
+      "study": "mid",
+      "industries": [
+        "律所",
+        "公务员",
+        "法务"
+      ],
+      "regions": [
+        "西安",
+        "北京",
+        "深圳"
+      ]
+    },
+    "太原理工大学": {
+      "city": "太原",
+      "region": "华北",
+      "admit": 3,
+      "type": [
+        "理工"
+      ],
+      "vibe": "能源与工程底色、务实、稳扎稳打",
+      "study": "mid",
+      "industries": [
+        "能源",
+        "化工",
+        "制造"
+      ],
+      "regions": [
+        "太原",
+        "北京",
+        "西安"
+      ]
+    },
+    "内蒙古大学": {
+      "city": "呼和浩特",
+      "region": "华北",
+      "admit": 3,
+      "type": [
+        "综合"
+      ],
+      "vibe": "辽阔、朴素、边疆高校气质",
+      "study": "mid",
+      "industries": [
+        "公务员",
+        "能源",
+        "生态环境"
+      ],
+      "regions": [
+        "呼和浩特",
+        "北京",
+        "西安"
+      ]
+    },
+    "哈尔滨工程大学": {
+      "city": "哈尔滨",
+      "region": "东北",
+      "admit": 3,
+      "type": [
+        "理工"
+      ],
+      "vibe": "船海核底色、低调硬核、军工感强",
+      "study": "high",
+      "industries": [
+        "船舶海工",
+        "军工",
+        "核工程"
+      ],
+      "regions": [
+        "哈尔滨",
+        "北京",
+        "上海"
+      ]
+    },
+    "东北师范大学": {
+      "city": "长春",
+      "region": "东北",
+      "admit": 3,
+      "type": [
+        "人文",
+        "师范"
+      ],
+      "vibe": "师范底色、沉稳、东北温度",
+      "study": "mid",
+      "industries": [
+        "教育",
+        "公务员",
+        "学术科研"
+      ],
+      "regions": [
+        "长春",
+        "北京",
+        "沈阳"
+      ]
+    },
+    "东南大学": {
+      "city": "南京",
+      "region": "华东",
+      "admit": 5,
+      "type": [
+        "理工",
+        "综合"
+      ],
+      "vibe": "建筑电子强、低调、工科美学",
+      "study": "high",
+      "industries": [
+        "建筑规划",
+        "电子信息",
+        "交通"
+      ],
+      "regions": [
+        "南京",
+        "上海",
+        "杭州"
+      ]
+    },
+    "苏州大学": {
+      "city": "苏州",
+      "region": "华东",
+      "admit": 3,
+      "type": [
+        "综合",
+        "人文"
+      ],
+      "vibe": "江南、细腻、城市机会近",
+      "study": "mid",
+      "industries": [
+        "医疗",
+        "教育",
+        "制造"
+      ],
+      "regions": [
+        "苏州",
+        "上海",
+        "杭州"
+      ]
+    },
+    "江南大学": {
+      "city": "无锡",
+      "region": "华东",
+      "admit": 3,
+      "type": [
+        "综合",
+        "理工",
+        "艺术"
+      ],
+      "vibe": "食品设计强、温和、生活感浓",
+      "study": "mid",
+      "industries": [
+        "食品",
+        "设计",
+        "轻工"
+      ],
+      "regions": [
+        "无锡",
+        "上海",
+        "苏州"
+      ]
+    },
+    "合肥工业大学": {
+      "city": "合肥",
+      "region": "华东",
+      "admit": 3,
+      "type": [
+        "理工"
+      ],
+      "vibe": "车辆制造底色、务实、工科感",
+      "study": "mid",
+      "industries": [
+        "汽车",
+        "制造",
+        "科技研发"
+      ],
+      "regions": [
+        "合肥",
+        "上海",
+        "南京"
+      ]
+    },
+    "福州大学": {
+      "city": "福州",
+      "region": "华东",
+      "admit": 3,
+      "type": [
+        "理工",
+        "综合"
+      ],
+      "vibe": "低调、南方工科、闽地烟火",
+      "study": "mid",
+      "industries": [
+        "化工",
+        "制造",
+        "互联网"
+      ],
+      "regions": [
+        "福州",
+        "厦门",
+        "深圳"
+      ]
+    },
+    "南昌大学": {
+      "city": "南昌",
+      "region": "华东",
+      "admit": 3,
+      "type": [
+        "综合"
+      ],
+      "vibe": "体量大、务实、地方连接强",
+      "study": "mid",
+      "industries": [
+        "医疗",
+        "食品",
+        "公务员"
+      ],
+      "regions": [
+        "南昌",
+        "上海",
+        "深圳"
+      ]
+    },
+    "湖南大学": {
+      "city": "长沙",
+      "region": "华中",
+      "admit": 4,
+      "type": [
+        "综合",
+        "理工"
+      ],
+      "vibe": "千年学府、岳麓山下、松弛又厚重",
+      "study": "high",
+      "industries": [
+        "金融",
+        "汽车",
+        "建筑"
+      ],
+      "regions": [
+        "长沙",
+        "深圳",
+        "上海"
+      ]
+    },
+    "中南大学": {
+      "city": "长沙",
+      "region": "华中",
+      "admit": 4,
+      "type": [
+        "综合",
+        "理工"
+      ],
+      "vibe": "医学矿冶强、务实、能扛事",
+      "study": "high",
+      "industries": [
+        "医疗",
+        "材料",
+        "制造"
+      ],
+      "regions": [
+        "长沙",
+        "深圳",
+        "上海"
+      ]
+    },
+    "湖南师范大学": {
+      "city": "长沙",
+      "region": "华中",
+      "admit": 3,
+      "type": [
+        "人文",
+        "师范"
+      ],
+      "vibe": "温柔、师范底色、长沙烟火",
+      "study": "mid",
+      "industries": [
+        "教育",
+        "传媒",
+        "公务员"
+      ],
+      "regions": [
+        "长沙",
+        "深圳",
+        "广州"
+      ]
+    },
+    "郑州大学": {
+      "city": "郑州",
+      "region": "华中",
+      "admit": 3,
+      "type": [
+        "综合"
+      ],
+      "vibe": "体量巨大、竞争真实、中原腹地",
+      "study": "mid",
+      "industries": [
+        "医疗",
+        "公务员",
+        "制造"
+      ],
+      "regions": [
+        "郑州",
+        "北京",
+        "上海"
+      ]
+    },
+    "广西大学": {
+      "city": "南宁",
+      "region": "华南",
+      "admit": 3,
+      "type": [
+        "综合"
+      ],
+      "vibe": "热带、开放、边疆与城市并存",
+      "study": "mid",
+      "industries": [
+        "农业",
+        "公务员",
+        "能源"
+      ],
+      "regions": [
+        "南宁",
+        "广州",
+        "深圳"
+      ]
+    },
+    "海南大学": {
+      "city": "海口",
+      "region": "华南",
+      "admit": 3,
+      "type": [
+        "综合"
+      ],
+      "vibe": "海岛、松弛、热带生活感",
+      "study": "mid",
+      "industries": [
+        "旅游",
+        "农业",
+        "公务员"
+      ],
+      "regions": [
+        "海口",
+        "广州",
+        "深圳"
+      ]
+    },
+    "云南大学": {
+      "city": "昆明",
+      "region": "西南",
+      "admit": 3,
+      "type": [
+        "综合"
+      ],
+      "vibe": "自由、多元、春城气息",
+      "study": "mid",
+      "industries": [
+        "生态环境",
+        "公务员",
+        "文旅"
+      ],
+      "regions": [
+        "昆明",
+        "成都",
+        "深圳"
+      ]
+    },
+    "贵州大学": {
+      "city": "贵阳",
+      "region": "西南",
+      "admit": 3,
+      "type": [
+        "综合"
+      ],
+      "vibe": "朴素、山地城市、烟火感强",
+      "study": "mid",
+      "industries": [
+        "大数据",
+        "公务员",
+        "农业"
+      ],
+      "regions": [
+        "贵阳",
+        "重庆",
+        "深圳"
+      ]
+    },
+    "新疆大学": {
+      "city": "乌鲁木齐",
+      "region": "西北",
+      "admit": 3,
+      "type": [
+        "综合"
+      ],
+      "vibe": "辽阔、多元、边疆气质",
+      "study": "mid",
+      "industries": [
+        "能源",
+        "公务员",
+        "文旅"
+      ],
+      "regions": [
+        "乌鲁木齐",
+        "西安",
+        "北京"
+      ]
+    },
+    "石河子大学": {
+      "city": "石河子",
+      "region": "西北",
+      "admit": 2,
+      "type": [
+        "综合"
+      ],
+      "vibe": "兵团精神、坚韧、戈壁生长感",
+      "study": "mid",
+      "industries": [
+        "农业",
+        "医疗",
+        "公务员"
+      ],
+      "regions": [
+        "石河子",
+        "乌鲁木齐",
+        "西安"
+      ]
+    },
+    "宁夏大学": {
+      "city": "银川",
+      "region": "西北",
+      "admit": 2,
+      "type": [
+        "综合"
+      ],
+      "vibe": "西北、朴素、安静生长",
+      "study": "mid",
+      "industries": [
+        "农业",
+        "能源",
+        "公务员"
+      ],
+      "regions": [
+        "银川",
+        "西安",
+        "北京"
+      ]
+    },
+    "青海大学": {
+      "city": "西宁",
+      "region": "西北",
+      "admit": 2,
+      "type": [
+        "综合",
+        "理工"
+      ],
+      "vibe": "高原、坚韧、清爽而开阔",
+      "study": "mid",
+      "industries": [
+        "医疗",
+        "生态环境",
+        "能源"
+      ],
+      "regions": [
+        "西宁",
+        "兰州",
+        "西安"
+      ]
+    },
+    "西藏大学": {
+      "city": "拉萨",
+      "region": "西南",
+      "admit": 2,
+      "type": [
+        "综合"
+      ],
+      "vibe": "高原、信仰、缓慢而辽阔",
+      "study": "mid",
+      "industries": [
+        "教育",
+        "公务员",
+        "文旅"
+      ],
+      "regions": [
+        "拉萨",
+        "成都",
+        "重庆"
+      ]
+    }
+  };
+
+  /* ---------- RNG ---------- */
+  var _seed=1;
+  function seedRng(s){ _seed=(s>>>0)||1; }
+  function rng(){ _seed|=0;_seed=_seed+0x6D2B79F5|0;var t=Math.imul(_seed^_seed>>>15,1|_seed);t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296; }
+  function pick(a){ return a[Math.floor(rng()*a.length)]; }
+  function R(){ return arguments[Math.floor(rng()*arguments.length)]; }
+  function chance(p){ return rng()<p; }
+  function clamp(v){ return Math.max(0,Math.min(100,v)); }
+
+  /* ---------- 同义多变体，避免连续重复（跨场次记忆） ---------- */
+  function say(key, arr){
+    if(!arr||!arr.length) return "";
+    if(arr.length===1) return arr[0];
+    var mk='lifeif_v_'+key, recent=[];
+    try{ recent=JSON.parse(localStorage.getItem(mk)||'[]'); }catch(e){}
+    var avoidN=Math.min(2, arr.length-1), avoid=recent.slice(-avoidN), cand=[];
+    for(var i=0;i<arr.length;i++){ if(avoid.indexOf(i)<0) cand.push(i); }
+    if(!cand.length){ for(i=0;i<arr.length;i++)cand.push(i); }
+    var idx=cand[Math.floor(rng()*cand.length)];
+    recent.push(idx); if(recent.length>3) recent=recent.slice(-3);
+    try{ localStorage.setItem(mk, JSON.stringify(recent)); }catch(e){}
+    return arr[idx];
+  }
+
+  /* ---------- STATE ---------- */
+  var S=null;
+  function freshState(){
+    return { era:null, userLevel:0, reach:0,
+      p:{social:0,risk:0,head:0,grit:0}, talent:"", talentLabel:"", family:"普通",
+      pref:{ambition:0,security:0,meaning:0,money:0,freedom:0,belonging:0},
+      school:null, major:null, answers:{}, profile:null, apiSchools:[], story:[], stageIndex:0, ending:null,
+      stats:{academic:50,social:50,romance:40,research:40,wellbeing:55,money:50,grit:50},
+      cast:{}, log:[], path:"", outcome:"", mine:"", usedNarr:{}, usedSchoolPick:{}, schoolSecretUsed:false,
+      seedSalt:Math.floor(Math.random()*1e9) };
+  }
+  function he(){ return "你"; }
+  function addP(d){ if(!d)return; for(var k in d){ S.p[k]=Math.max(-2,Math.min(2,(S.p[k]||0)+d[k])); } }
+  function addPref(d){ if(!d)return; for(var k in d){ S.pref[k]=Math.max(-3,Math.min(3,(S.pref[k]||0)+d[k])); } }
+  function applyProfile(o){ if(!o)return; addP(o.d); addPref(o.v); }
+  function pref(k){ return (S.pref&&S.pref[k])||0; }
+
+  /* ---------- API ---------- */
+  var SYSTEM_PROMPT=[
+    "你是《人生 IF 线》的互动叙事引擎，负责为用户生成另一条大学人生。",
+    "写作要求：二人称“你”；中文；文学夜读感；具体、克制、可信；不要像招生广告，不要像算命。",
+    "称呼要求：不得生成、猜测或显示用户真实姓名；只用“你”称呼用户，其他人物也用关系称谓，不使用具体人名。",
+    "安全要求：这是虚构互动叙事，不做真实预测；不输出歧视、羞辱、宿命论；不收集或推断敏感身份。",
+    "事实要求：学校、专业、时代只能使用公开、常识化、低争议描述；不编造校徽、官方排名、具体个人隐私。校内梗必须像真实学生会知道的微细节，但如果不确定，只写低争议的校园生活细节，不伪造具体传闻。",
+    "结构要求：最终内容只输出合法 JSON，不要 Markdown，不要解释 JSON 外的任何文字。"
+  ].join("\n");
+  var PROMPTS={
+    profile:[
+      "任务：根据用户选择的高考时间和画像问答，生成一个可用于后续推荐与叙事的人物画像。",
+      "输出 JSON schema：",
+      "{\"title\":\"12字以内画像名\",\"summary\":\"80-120字画像总结\",\"traits\":[\"3-5个短标签\"],\"needs\":[\"学校/专业推荐应关注的3个点\"],\"tension\":\"这个人大学四年最可能面对的内在拉扯\"}",
+      "要求：画像要温柔但准确，避免简单复述选项。"
+    ].join("\n"),
+    recommend:[
+      "任务：基于用户画像、分数段、兴趣和高考时间，推荐 4 所学校，并为每所学校推荐 2 个专业方向。",
+      "输出 JSON schema：",
+      "{\"schools\":[{\"name\":\"学校名\",\"city\":\"城市\",\"fit\":\"匹配度短语\",\"reason\":\"50-80字理由\",\"lore\":[\"只有本校学生/熟悉校园的人才会会心一笑的梗或微细节，3-5条\"],\"majors\":[{\"name\":\"专业方向\",\"reason\":\"30-50字理由\"}]}]}",
+      "要求：学校推荐要有梯度，不能全是顶尖校；如果分数段未透露，用“稳妥/冲刺/城市/专业气质”混合推荐。lore 必须具体到地点、日常、课程/社团/城市连接或校园口头禅层面，避免泛泛写“图书馆很安静”。"
+    ].join("\n"),
+    story:[
+      "任务：生成下一段大学互动剧情。你会拿到用户画像、学校、专业、历史选择和当前阶段。",
+      "输出 JSON schema：",
+      "{\"stage\":\"阶段名\",\"title\":\"场景标题\",\"usedLore\":\"本段使用的学校梗\",\"text\":\"180-260字场景正文\",\"choices\":[{\"label\":\"选择按钮文案，16字以内\",\"consequence\":\"选择后的80-130字后续叙事\",\"impact\":[\"影响标签1\",\"影响标签2\"]}]}",
+      "流程要求：阶段顺序固定为大一上初到校园、大一下专业分流、大二上深入专业、大三下升学就业准备、大四毕业选择。专业分流只发生在大一下或大二上；大三下写考研、保研、求职、考公、留学等准备，不再称为分流。",
+      "硬性要求：每段 text 必须自然使用 selectedSchool.lore 里的至少 1 条，像本校学生讲给本校学生听，而不是游客介绍。usedLore 填实际使用的那条。choices 必须 3 个；选择之间要有真实价值冲突，不能只是好/坏。"
+    ].join("\n"),
+    transition:[
+      "任务：为两个大学阶段之间生成一段自然转场。你会拿到上一阶段、下一阶段、用户刚做的选择和历史。",
+      "输出 JSON schema：",
+      "{\"text\":\"60-90字转场正文\"}",
+      "要求：承接上一选择的余波，引出下一阶段；不要使用固定翻页句式；不要把阶段写成机械标题；不要提到真实姓名。"
+    ].join("\n"),
+    ending:[
+      "任务：基于用户画像、学校、专业、全部剧情和选择，生成结局内容。",
+      "输出 JSON schema：",
+      "{\"outcomeTitle\":\"12字以内结局名\",\"summary\":\"90-110字四年总结\",\"letter\":\"70-90字写给十年后的信，以亲爱的你开头\",\"books\":[{\"title\":\"书名\",\"author\":\"作者\",\"reason\":\"推荐理由，30字以内\"}],\"quote\":{\"text\":\"一句哲学家说过或可归因的短句\",\"philosopher\":\"哲学家\"}}",
+      "要求：总字数控制在200字左右；books 给 1 本；quote 简短，不要鸡汤；summary 或 letter 必须回调至少一个学校 lore 和一个用户做过的选择；不得生成、猜测或显示用户真实姓名，只用“你”称呼用户。"
+    ].join("\n")
+  };
+  var config=loadConfig(), activeAiText="";
+
+  function defaultConfig(){
+    var builtin=window.LIFEIF_BUILTIN_API_CONFIG||{};
+    return {
+      mockMode:!!builtin.mockMode,
+      streamMode:!!builtin.streamMode,
+      jsonMode:!!builtin.jsonMode,
+      apiUrl:builtin.apiUrl||"",
+      apiModel:builtin.apiModel||"",
+      apiKey:builtin.apiKey||"",
+      thinkingType:builtin.thinkingType,
+      reasoningEffort:builtin.reasoningEffort
+    };
+  }
+  function loadConfig(){
+    return defaultConfig();
+  }
+  function normalizeApiUrl(url){
+    url=String(url||"").trim().replace(/\/+$/,"");
+    if(!url) return "";
+    if(/\/chat\/completions$/i.test(url)) return url;
+    if(/\/v1$/i.test(url)) return url+"/chat/completions";
+    return url+"/v1/chat/completions";
+  }
+  function contextForPrompt(extra){
+    return Object.assign({
+      examEra:S&&S.era,
+      answers:S&&S.answers,
+      profile:S&&S.profile,
+      selectedSchool:S&&S.school,
+      selectedMajor:S&&S.major,
+      storyHistory:S&&S.story,
+      profileNumbers:S?{p:S.p,pref:S.pref,talent:S.talent,family:S.family,userLevel:S.userLevel}:null,
+      currentPage:"2020年代专属页"
+    }, extra||{});
+  }
+  function buildUserPrompt(task,extra){
+    return PROMPTS[task]+"\n\n上下文：\n"+JSON.stringify(contextForPrompt(extra),null,2);
+  }
+  function savePrompt(prompt,response){
+    document.getElementById("lastPrompt").value=prompt||"";
+    document.getElementById("lastResponse").value=response||"";
+  }
+  function displayText(value){
+    if(value==null) return "";
+    if(typeof value==="string"||typeof value==="number"||typeof value==="boolean") return String(value);
+    if(typeof value==="function") return displayText(value());
+    if(Array.isArray(value)) return value.map(displayText).filter(Boolean).join(" / ");
+    if(typeof value==="object"){
+      var keys=["text","label","title","name","summary","consequence","reason","fit","stage","choice","message","value"];
+      for(var i=0;i<keys.length;i++){
+        var s=displayText(value[keys[i]]);
+        if(s) return s;
+      }
+      try{ var json=JSON.stringify(value); return json&&json!=="{}"?json:""; }catch(e){}
+    }
+    return "";
+  }
+  function limitText(text,max){
+    var s=displayText(text).trim();
+    if(!max||s.length<=max) return s;
+    return limitAtSentence(s,max);
+  }
+  function limitAtSentence(s,max){
+    s=displayText(s).trim();
+    if(!max||s.length<=max) return s;
+    var cut=s.slice(0,max), idx=Math.max(cut.lastIndexOf("。"),cut.lastIndexOf("！"),cut.lastIndexOf("？"));
+    if(idx>=Math.min(18,max*.45)) return cut.slice(0,idx+1);
+    return cut.replace(/[，。！？；：、\s]+$/,"")+"。";
+  }
+  function parseJson(text){
+    var raw=String(text||"").trim();
+    raw=raw.replace(/^```(?:json)?/i,"").replace(/```$/,"").trim();
+    try{return JSON.parse(raw);}catch(e){}
+    var s=raw.indexOf("{"), e=raw.lastIndexOf("}");
+    if(s>=0&&e>s) return JSON.parse(raw.slice(s,e+1));
+    throw new Error("模型没有返回合法 JSON");
+  }
+  function parseSseChunk(chunk,onDelta){
+    chunk.split(/\r?\n/).forEach(function(line){
+      line=line.trim();
+      if(line.indexOf("data:")!==0) return;
+      var data=line.slice(5).trim();
+      if(!data||data==="[DONE]") return;
+      try{
+        var payload=JSON.parse(data);
+        var d=(payload.choices&&payload.choices[0]&&payload.choices[0].delta)||{};
+        onDelta({content:d.content||""});
+      }catch(e){}
+    });
+  }
+  function requestBody(task,prompt,stream){
+    var body={model:config.apiModel,temperature:.86,stream:!!stream,thinking:{type:config.thinkingType},messages:[{role:"system",content:SYSTEM_PROMPT},{role:"user",content:prompt}]};
+    if(config.thinkingType&&config.thinkingType!=="disabled"&&config.reasoningEffort) body.reasoning_effort=config.reasoningEffort;
+    if(config.jsonMode) body.response_format={type:"json_object"};
+    return body;
+  }
+  function callAi(task,extra){
+    var prompt=buildUserPrompt(task,extra);
+    savePrompt(prompt,"");
+    if(config.mockMode||!config.apiUrl||!config.apiKey) return Promise.reject(new Error("未启用真实 API"));
+    activeAiText="";
+    var endpoint=normalizeApiUrl(config.apiUrl);
+    if(config.streamMode&&window.ReadableStream){
+      return fetch(endpoint,{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+config.apiKey},body:JSON.stringify(requestBody(task,prompt,true))}).then(function(res){
+        if(!res.ok) throw new Error("API 请求失败：HTTP "+res.status+" @ "+endpoint);
+        var reader=res.body.getReader(), decoder=new TextDecoder("utf-8"), buffer="";
+        function pump(){
+          return reader.read().then(function(r){
+            if(r.done){
+              savePrompt(prompt,activeAiText);
+              return parseJson(activeAiText);
+            }
+            buffer+=decoder.decode(r.value,{stream:true});
+            var parts=buffer.split(/\r?\n\r?\n/);
+            buffer=parts.pop()||"";
+            parts.forEach(function(part){
+              parseSseChunk(part,function(d){
+                if(d.content){ activeAiText+=d.content; savePrompt(prompt,activeAiText); }
+              });
+            });
+            return pump();
+          });
+        }
+        return pump();
+      });
+    }
+    return fetch(endpoint,{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+config.apiKey},body:JSON.stringify(requestBody(task,prompt,false))}).then(function(res){
+      if(!res.ok) throw new Error("API 请求失败：HTTP "+res.status+" @ "+endpoint);
+      return res.json();
+    }).then(function(payload){
+      var msg=(payload.choices&&payload.choices[0]&&payload.choices[0].message)||{};
+      savePrompt(prompt,msg.content||JSON.stringify(payload,null,2));
+      return parseJson(msg.content||"");
+    });
+  }
+  var WAITING_COPY="正在输入";
+  function aiBusy(){
+    document.getElementById("chat-status").innerHTML=WAITING_COPY+'<span class="ai-live"><i></i>AI</span>';
+  }
+  function normalizeApiSchool(s,idx){
+    var base=SCHOOLS.filter(function(x){return x.name===s.name;})[0]||{};
+    var lore=(s.lore&&s.lore.length?s.lore:(base.feature&&base.feature.hiddenDetails)||base.special||base.lines||[]).slice(0,5);
+    return Object.assign({},base,{
+      name:s.name||base.name||("推荐大学"+(idx+1)), city:s.city||base.city||"一座城市", region:base.region||"AI推荐", admit:base.admit||3, type:base.type||["综合"],
+      vibe:s.fit||base.vibe||"和你的画像相互照亮", reason:s.reason||"这所学校与当前画像有稳定的气质匹配。", fit:s.fit||"AI 推荐", lore:lore,
+      scenes:base.scenes||lore||["校园里的某个黄昏"], tradition:base.tradition||lore||["普通却真实的校园日常"], industries:base.industries||["互联网","公共服务","教育"], regions:base.regions||[s.city||"一座城市"], lines:base.lines||lore, special:base.special||lore,
+      feature:Object.assign({},base.feature||{},{hiddenDetails:lore,campusDaily:lore}),
+      apiMajors:(s.majors||[]).map(function(m){return {name:m.name||"通识方向",reason:m.reason||"适合当前画像",lean:m.name||"探索",ind:[m.name||"行业"],flavor:[m.reason||"在真实问题里慢慢确定自己"]};})
+    });
+  }
+  function generateApiProfile(done){
+    aiBusy();
+    callAi("profile",{}).then(function(p){
+      S.profile=p;
+      addNarr("我先读到了一个你："+(p.title||"另一种可能")+"。"+(p.summary||""),{tag:"AI 画像"},done);
+    }).catch(function(){ done(); });
+  }
+  function generateApiRecommendations(done){
+    if(!S.profile){ done(); return; }
+    aiBusy();
+    callAi("recommend",{}).then(function(data){
+      S.apiSchools=((data&&data.schools)||[]).slice(0,4).map(normalizeApiSchool);
+      if(S.apiSchools.length) addNarr("我根据画像先挑了几所学校。你仍然可以切到其它地区，自己选择。",{tag:"AI 推荐"},done);
+      else done();
+    }).catch(function(){ done(); });
+  }
+  function generateApiStoryStage(done){
+    var stages=["大一上 · 初到校园","大一下 · 专业分流","大二上 · 深入专业","大三下 · 升学就业准备","大四 · 毕业选择"];
+    var currentStage=stages[S.stageIndex];
+    if(!currentStage){ generateApiEnding(done); return; }
+    aiBusy();
+    callAi("story",{currentStage:currentStage}).then(function(scene){
+      scene=scene||{};
+      scene.stage=scene.stage||currentStage;
+      scene.choices=(scene.choices||[]).slice(0,3);
+      S.story.push({stage:scene.stage,title:scene.title,text:scene.text,usedLore:scene.usedLore});
+      addNarr((scene.title?scene.title+"\n":"")+(scene.text||"这一段校园生活安静地展开。"),{tag:scene.stage,slow:true},function(){
+        var choices=scene.choices.length?scene.choices:[
+          {label:"继续向前",consequence:"你把这个选择收进行囊，继续往前走。",impact:["成长"]},
+          {label:"先慢下来",consequence:"你没有急着证明什么，给自己留了一点空间。",impact:["自我"]},
+          {label:"换个方向",consequence:"你试着把路线拧开一点，生活因此露出新的缝隙。",impact:["转向"]}
+        ];
+        addNarr(storyChoicePrompt(scene,currentStage),{fast:true},function(){
+          setChoices(choices.map(function(c){return {t:c.label+(c.impact&&c.impact.length?" · "+c.impact.join(" / "):""),c:c};}),function(o){
+            addUser(o.c.label);
+            S.story.push({choice:o.c.label,consequence:o.c.consequence,impact:o.c.impact});
+            clearDock();
+            addNarr(o.c.consequence||"这个选择落下之后，你听见生活轻轻换了声部。",{},function(){
+            S.stageIndex++;
+            setTapNext("稍后继续",function(){ clearDock();
+                if(stages[S.stageIndex]) generateApiTransition(stages[S.stageIndex],function(text){ addNarr(text,{tag:"转场",fast:true},function(){ generateApiStoryStage(done); }); });
+                else generateApiStoryStage(done);
+              });
+            });
+          });
+        });
+      });
+    }).catch(function(err){
+      toast(err.message+"，切回本地叙事");
+      beginStory();
+    });
+  }
+  function beginAiStory(){
+    if(config.mockMode||!config.apiUrl||!config.apiKey){ beginStory(); return; }
+    S.stageIndex=0;
+    S.story=[];
+    generateApiStoryStage(function(){});
+  }
+  function generateApiTransition(nextStage,done){
+    var last=S.story[S.story.length-1]||{};
+    callAi("transition",{fromStage:bridgeText(last),toStage:nextStage,lastChoice:last.choice||"",lastConsequence:last.consequence||""}).then(function(data){
+      done((data&&data.text)||semesterBridge(bridgeText(last),nextStage));
+    }).catch(function(){ done(semesterBridge(bridgeText(last),nextStage)); });
+  }
+  function generateApiEnding(done){
+    aiBusy();
+    callAi("ending",{}).then(function(e){
+      S.ending=e||{};
+      var finalIntro="全部对话完成。我把这条 IF 线收束成最后的总结。";
+      addNarr(finalIntro,{tag:"最终总结",ending:true},function(){ renderApiEnding(); if(done)done(); });
+    }).catch(function(err){
+      toast(err.message+"，使用本地结局");
+      finish();
+    });
+  }
+  function renderApiEnding(){
+    var e=S.ending||{};
+    document.getElementById('end-title').textContent=e.outcomeTitle||"你的人生 IF 线";
+    document.getElementById('end-sub').textContent=S.era.label+" · "+S.school.name+" · "+S.major.name+" · AI 生成";
+    var body=document.getElementById('end-body');
+    body.innerHTML='';
+    var tl=document.createElement('div');
+    tl.className='timeline';
+    S.story.filter(function(x){return x.text;}).forEach(function(it){
+      var d=document.createElement('div');
+      d.className='tl';
+      d.innerHTML='<b>'+escapeHtml(it.stage||'片段')+'</b>'+escapeHtml(it.text||'');
+      tl.appendChild(d);
+    });
+    body.appendChild(tl);
+    var w=document.createElement('div');
+    w.className='bubble narr';
+    w.style.maxWidth='100%';
+    w.textContent=limitText(e.summary||"这条人生在许多小选择里慢慢成形。",110);
+    body.appendChild(w);
+    var L=document.createElement('div');
+    L.className='letter';
+    L.textContent=limitText((e.letter||"亲爱的你，愿你带着这条 IF 线回到真实生活。").replace(/^亲爱的你[：:]?/,""),90);
+    body.appendChild(L);
+    var books=(e.books||[]).slice(0,3);
+    if(books.length){
+      var b=document.createElement('div');
+      b.className='bubble narr';
+      b.style.maxWidth='100%';
+      b.textContent='荐书：'+books.map(function(x){return '《'+x.title+'》'+(x.author?' - '+x.author:'')+'：'+(x.reason||'');}).join('\n');
+      body.appendChild(b);
+    }
+    if(e.quote){
+      var q=document.createElement('div');
+      q.className='bubble narr';
+      q.style.maxWidth='100%';
+      q.textContent='“'+(e.quote.text||'')+'” '+(e.quote.philosopher?'——'+e.quote.philosopher:'');
+      body.appendChild(q);
+    }
+    show('screen-end');
+    document.getElementById('screen-end').querySelector('.feed').scrollTop=0;
+  }
+  function escapeHtml(s){
+    return displayText(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});
+  }
+
+  /* ---------- 时代背景 ---------- */
+  var ERAS = [
+    {key:"80s",label:"八十年代",admitEra:"那是大学生还被叫做'天之骄子'的年头",
+      intro:[
+        "那是上世纪八十年代。改革开放的春风刚吹起，整个国家都鼓着一股向前的劲。考上大学，几乎等于一只脚踏进了崭新的人生——毕业还包分配，干部'四化'正缺年轻人，前途明晃晃地铺在脚下。",
+        "八十年代的大学校园，理想主义浓得化不开。诗社、思潮、彻夜的辩论；大学生是稀罕的'天之骄子'，毕业有分配、有干部身份。那是一个相信'知识改变命运'毫不含糊的年代。"],
+      jobLine:["毕业那年，"+'国家一纸分配，把你送进了一家单位——铁饭碗，体面，安稳。那个年代的工作，是'+"被'分'到的，而不是抢来的。",
+        "凭着大学生的身份，你被分配到了一个不错的单位。在八十年代，这几乎是顺理成章的事。"],
+      studyHard:true, riskBonus:0.1},
+    {key:"90s",label:"九十年代",admitEra:"市场经济的大潮正轰隆隆开来",
+      intro:[
+        "九十年代。'下海'成了最热的词，市场经济的大潮轰隆隆开来。有人辞了铁饭碗去经商一夜暴富，也有人在国企改革里第一次听到'下岗'两个字。机会和风险，第一次同时摆上了桌面。",
+        "那是九十年代，一个躁动又充满可能的年代。股票、外企、个体户、第一批互联网……世界正在被重新洗牌，而你恰好年轻。"],
+      jobLine:["毕业时，铁饭碗的神话正在松动。你在国企、外企和'下海'之间反复掂量，最终选了一条当时看不太清、后来却庆幸的路。",
+        "九十年代末的就业市场，新旧交替。你赶上了外企进入中国的浪潮，拿到了一份让人羡慕的offer。"],
+      studyHard:false, riskBonus:0.15},
+    {key:"00s",label:"世纪初",admitEra:"中国刚加入世贸，互联网正悄悄改变一切",
+      intro:[
+        "二十一世纪初。中国刚刚加入WTO，世界向你打开；网吧里挤满了人，OO的提示音此起彼伏，互联网正从一个新鲜词变成一种生活。大学扩招让校园空前热闹，外企是无数人眼里的金饭碗。",
+        "那是世纪之交。入世的红利、第一批门户网站、刚普及的手机和OO……一切都在变快。扩招后的校园里挤满了人，每个人都觉得未来有无限可能。"],
+      jobLine:["毕业季，你赶上了入世后外企与互联网扩张的好时候，offer来得不算太难，薪水也颇有想象空间。",
+        "世纪初的就业市场机会很多。你在外企、国企和刚兴起的互联网公司之间，挑了一条最合心意的。"],
+      studyHard:false, riskBonus:0.1},
+    {key:"10s",label:"一零年代",admitEra:"移动互联网与'双创'风口正盛",
+      intro:[
+        "二零一零年代。智能手机几乎一夜之间长在了每个人手上，移动互联网把生活搬进了屏幕。'大众创业、万众创新'的口号下，到处是融资、风口和一夜成名的故事，大厂的招聘海报贴满了校园。",
+        "那是移动互联网的黄金十年。外卖、打车、短视频接连改写日常；创业是最性感的词，大厂offer是同学间的硬通货。风口上，连犹豫都显得奢侈。"],
+      jobLine:["毕业时正逢互联网红利期，大厂疯狂招人。你投出简历，很快拿到了几个让同学眼红的offer。",
+        "那几年大厂扩张迅猛，你顺势挤进了一家明星公司，薪水和加班一样多。"],
+      studyHard:false, riskBonus:0.15},
+    {key:"20s",label:"当下",admitEra:"就业与考公的压力，是这一代绕不开的底色",
+      intro:[
+        "这是当下。毕业生人数年年创新高，互联网从'扩张'转向了'降本增效'，考研考公的队伍排成了长龙，AI又在悄悄改写很多行业的规则。机会还在，只是这一代人，要更用力地去够。",
+        "这是你正身处的年代。'毕业即就业'不再是默认选项，考公考研内卷、大厂裁员、AI冲击，构成了这一代人共同的焦虑底色。但也正因为难，每一步走稳都格外有分量。"],
+      jobLine:["毕业季，你和数百万同届生一起挤上了就业的独木桥。投出去的简历石沉大海是常事，但你最终还是抓住了一个机会。",
+        "在这个就业压力巨大的年份，你海投、面试、被拒、再面试，终于在反复的拉锯里落了脚。一份offer，来得并不容易。"],
+      studyHard:false, riskBonus:0.05}
+  ];
+  ERAS=["20s","10s","00s"].map(function(key){return ERAS.filter(function(e){return e.key===key;})[0];});
+
+  /* ---------- 高校（含录取层级 admit 1..5、地区、特色与社会热点事件） ---------- */
+  var SCHOOLS = [
+    {name:"北京大学",city:"北京",region:"华北",admit:5,type:["综合","人文"],vibe:"自由而理想主义",study:"high",
+      scenes:["未名湖边的长椅","博雅塔的影子","深夜还亮着灯的图书馆","三角地的讲座海报"],
+      tradition:["听不完的大师讲座","在草坪上为一个抽象问题争到天黑"],
+      industries:["学术科研","互联网","公共政策"],regions:["北京","海外"],
+      lines:["这里的人好像永远在谈论一些和分数无关的大问题。"],
+      special:["一次旁听经济学的讲座后，你和一个素不相识的博士生在未名湖边争论到午夜——在这里，思想是会传染的。"]},
+    {name:"清华大学",city:"北京",region:"华北",admit:5,type:["理工","综合"],vibe:"严谨、硬核又拼命",study:"high",
+      scenes:["紫荆操场的夜跑人群","主楼前的自行车海","实验室里凌晨的灯"],
+      tradition:["人人都在卷又都在自嘲","为一个项目通宵的挑战杯"],
+      industries:["科技研发","芯片硬件","创业"],regions:["北京","深圳","海外"],
+      lines:["这里默认每个人都很强，于是每个人都更拼。"],
+      special:["你所在的院系藏龙卧虎，身边随便一个同学都是省状元。第一次月考排名出来，你才真正懂得什么叫'天外有天'。"]},
+    {name:"浙江大学",city:"杭州",region:"华东",admit:5,type:["综合","理工"],vibe:"大而全、务实进取",study:"high",
+      scenes:["紫金港的大草坪","玉泉的老梧桐","西湖边骑车的周末"],
+      tradition:["什么社团竞赛都能找到","离互联网大厂很近的气场"],
+      industries:["互联网","电商","金融"],regions:["杭州","上海","深圳"],
+      lines:["求是创新四个字，被这里的人当真。"],
+      special:["学长在饭桌上聊起某互联网大厂的实习，语气稀松平常。在杭州，大厂仿佛就在校门口，触手可及。"]},
+    {name:"上海交通大学",city:"上海",region:"华东",admit:5,type:["理工","综合"],vibe:"精英、务实、节奏快",study:"high",
+      scenes:["闵行的巨大校园","钱学森图书馆","通往陆家嘴的地铁"],
+      tradition:["工科生也谈创业","离金融与科技的核心很近"],
+      industries:["科技","金融","咨询"],regions:["上海","深圳","海外"],
+      lines:["在这座城市里，野心是一件不必藏起来的事。"],
+      special:["室友每天西装革履去陆家嘴实习，你也被这股劲推着，早早开始规划简历。上海这座城市，自带一种催人向前的引力。"]},
+    {name:"武汉大学",city:"武汉",region:"华中",admit:4,type:["综合","人文"],vibe:"浪漫又有点散漫",study:"high",
+      scenes:["樱花大道的三月","珞珈山的石阶","老斋舍的飞檐","东湖边的黄昏"],
+      tradition:["三月赏樱的人潮","在最美校园里谈一场恋爱"],
+      industries:["传媒","金融","公务员"],regions:["武汉","深圳","北京"],
+      lines:["据说在这里待久了，人会变得很会拍照、也很会想念。"],
+      special:["三月樱花一开，校园被游客挤得水泄不通，连去上课都要绕路。你一边抱怨，一边又忍不住在花下拍了张照——这就是珞珈山的浪漫与甜蜜的负担。"]},
+    {name:"哈尔滨工业大学",city:"哈尔滨",region:"东北",admit:4,type:["理工"],vibe:"冷峻、硬核、航天底色",study:"high",
+      scenes:["零下二十度的清晨长廊","航天馆里的卫星模型","结冰的松花江"],
+      tradition:["冬天靠一锅锅炉续命","把'规格严格'刻进骨子里"],
+      industries:["航天军工","制造","机器人"],regions:["哈尔滨","北京","深圳"],
+      lines:["这里的浪漫是把一颗螺丝拧到完美。"],
+      special:["你读的是电子信息这类硬核专业。听说想出国深造的师兄因为众所周知的限制卡了签证，最后转向了国内的航天院所——在工大，'把卫星送上天'比'出国'更被当成正经事。"]},
+    {name:"中山大学",city:"广州",region:"华南",admit:4,type:["综合"],vibe:"务实、低调、湾区气息",study:"mid",
+      scenes:["康乐园的红砖老楼","中轴线的大草坪","榕树下的早茶约会"],
+      tradition:["逸仙风骨被反复提起","离大湾区的机会很近"],
+      industries:["金融","医疗","互联网"],regions:["广州","深圳","香港"],
+      lines:["不张扬，但毕业后好像都过得不错。"],
+      special:["周末和同学去喝早茶，一盅两件聊一上午。广州把'搞钱'和'叹生活'奇妙地揉在了一起，务实又松弛。"]},
+    {name:"华南理工大学",city:"广州",region:"华南",admit:4,type:["理工","综合"],vibe:"务实、能干、'老板摇篮'",study:"mid",
+      scenes:["五山校区的老树","北区的实验楼","通往珠江新城的地铁"],
+      tradition:["传说中走出过很多企业老板","工科生早早琢磨着创业"],
+      industries:["制造","互联网","创业"],regions:["广州","深圳","佛山"],
+      lines:["在这里，'毕业自己当老板'不是玩笑话。"],
+      special:["师兄里出了好几个创业做实业的老板，'华南理工出老板'的说法你听了无数遍。耳濡目染，你也开始盘算：要不要自己干点什么。"]},
+    {name:"深圳大学",city:"深圳",region:"华南",admit:3,type:["综合"],vibe:"年轻、有钱、搞钱氛围浓",study:"mid",
+      scenes:["荔园里的荔枝树","对面就是科技园","海边骑行的周末"],
+      tradition:["校友里有商业传奇","身边人很早就开始搞副业"],
+      industries:["互联网","金融科技","创业"],regions:["深圳","广州","香港"],
+      lines:["这座最年轻的城市，把'敢闯'写进了校训。"],
+      special:["学校对面就是科技园，腾讯的大楼抬头可见。'校友里出过商业大佬'的故事激励着每个人，连宿舍夜谈都在聊创业和搞钱。深圳的年轻和野心，是会传染的。"]},
+    {name:"重庆大学",city:"重庆",region:"西南",admit:4,type:["综合","理工"],vibe:"豪爽、扎实、山城烟火",study:"mid",
+      scenes:["爬不完的坡和梯坎","虎溪校区的开阔","跨江索道与轻轨穿楼"],
+      tradition:["在8D魔幻城市里找路","课余约着吃遍火锅与小面"],
+      industries:["建筑","汽车制造","互联网"],regions:["重庆","成都","深圳"],
+      lines:["在这座立体的城市里，连上学都像在闯关。"],
+      special:["第一次从老校区去虎溪校区，你被重庆的'8D魔幻'结结实实上了一课——轻轨穿楼、索道过江、地图导航直接失灵。爬坡上坎久了，腿脚和心性都练硬了。"]},
+    {name:"西南政法大学",city:"重庆",region:"西南",admit:3,type:["人文","政法"],vibe:"思辨、刚直、法律人的江湖",study:"mid",
+      scenes:["毓才楼的模拟法庭","老校区的黄桷树","图书馆里堆成山的法条"],
+      tradition:["'西政'校友遍布法律界","为一个案子辩到面红耳赤"],
+      industries:["律所","公务员","法务"],regions:["重庆","北京","深圳"],
+      lines:["这里的人相信，逻辑和正义都值得较真。"],
+      special:["模拟法庭上，你为一个观点和同学针锋相对，散场后又勾肩搭背去吃小面。'西政人'的江湖气和较真劲，就这样一点点长进了你身上。"]},
+    {name:"厦门大学",city:"厦门",region:"华东",admit:4,type:["综合","人文"],vibe:"文艺、小资、海边的松弛",study:"mid",
+      scenes:["白城海滩的日落","芙蓉隧道的涂鸦","上弦场看海的台阶","凤凰花开的夏天"],
+      tradition:["在最像度假村的校园里读书","沿着海岸线骑行"],
+      industries:["金融","传媒","教育"],regions:["厦门","上海","深圳"],
+      lines:["在这里，连发呆都显得理直气壮。"],
+      special:["你们的自习室窗外就是海。游客排队来打卡，而你只是日常地走过芙蓉隧道去上课——在厦大，美景是会让人忘记焦虑的。"]},
+    {name:"四川大学",city:"成都",region:"西南",admit:4,type:["综合"],vibe:"安逸、烟火、慢一点也没关系",study:"mid",
+      scenes:["望江楼的竹林","江安河边的散步道","校门口数不清的火锅与串串"],
+      tradition:["把'巴适'过成一种能力","在美食与论文之间反复横跳"],
+      industries:["公务员","医疗","互联网"],regions:["成都","重庆","深圳"],
+      lines:["这座城市会温柔地劝你：何必那么急。"],
+      special:["论文还没写完，室友已经喊你去吃串串了。成都用火锅和茶馆，温柔地消解着你的焦虑——在这里，'松弛'本身也是一种本事。"]},
+    {name:"中国传媒大学",city:"北京",region:"华北",admit:4,type:["艺术","传媒"],vibe:"星光、表达欲、镜头感",study:"mid",
+      scenes:["定福庄的演播厅","广院之夜的舞台","随处可见的拍摄机位"],
+      tradition:["走两步就遇到在拍片的同学","为一个作品熬到天亮"],
+      industries:["传媒","影视","内容创作"],regions:["北京","上海","横店"],
+      lines:["这里每个人都觉得自己将来会站在某个镜头前。"],
+      special:["短视频火起来后，身边不少同学开始做自媒体、当UP主，有人粉丝已经几十万。你也心动过：要不要也对着镜头，讲讲自己的故事？"]},
+    {name:"北京邮电大学",city:"北京",region:"华北",admit:4,type:["理工"],vibe:"码农气质、通信底色、目标感强",study:"mid",
+      scenes:["教三楼的机房","堆满键盘声的自习室","通往中关村的那条路"],
+      tradition:["大一就有人开始刷题准备进大厂","项目和实习是硬通货"],
+      industries:["互联网","通信","算法"],regions:["北京","杭州","深圳"],
+      lines:["这里离一份大厂 offer，好像只隔着几千道题。"],
+      special:["宿舍里大一就有人开始刷力扣、备战大厂。在北邮，'进大厂'是一种集体目标，键盘声从早响到深夜，卷得真实又坦诚。"]},
+    {name:"中央美术学院",city:"北京",region:"华北",admit:3,type:["艺术"],vibe:"纯粹、孤独、自我表达",study:"mid",
+      scenes:["画室里干掉的颜料味","毕业展的白墙","花家地深夜的灯"],
+      tradition:["为一张画跟自己较劲一整晚","在展览里寻找同类"],
+      industries:["艺术","设计","自由职业"],regions:["北京","上海","海外"],
+      lines:["在这里，'有没有用'是一个不太被提起的问题。"],
+      special:["毕业展布展那几天，你在白墙前反复挪动自己的作品。'画这个能当饭吃吗'——家里的疑问你听过太多次，但在美院，总有人懂你为什么非画不可。"]}
+  ];
+  var CUSTOM={name:"我的大学",city:"一座城市",region:"其他",admit:3,type:["综合"],vibe:"平凡却独一无二",study:"mid",
+      scenes:["教学楼之间的那条路","食堂二楼靠窗的位置","操场边的傍晚","图书馆固定的那个座位"],
+      tradition:["和室友把寻常日子过成回忆","在普通里慢慢长大"],
+      industries:["各行各业"],regions:["本地","沿海城市"],
+      lines:["它也许不出名，但那是你的四年。"],
+      special:["它没有名校的光环，却有专属于你的角落：那个总坐的座位，那条走了四年的路。普通的校园里，也藏着只属于你的故事。"]};
+  function uniq(a){ var seen={},out=[];for(var i=0;i<a.length;i++){var v=a[i];if(v&&!seen[v]){seen[v]=1;out.push(v);}}return out; }
+  function firstMeme(name){
+    var m=SCHOOL_MEME_EXTENSIONS[name]||{};
+    return (m.memes&&m.memes[0])||((m.nicknames&&m.nicknames[0])?("学生也会用"+m.nicknames[0]+"这样的绰号调侃学校。"):"");
+  }
+  function makeFeatureFromMeta(name, meta){
+    var meme=SCHOOL_MEME_EXTENSIONS[name]||{}, nick=(meme.nicknames&&meme.nicknames[0])||name, m0=firstMeme(name);
+    return {
+      keywords:uniq([name,meta.city,meta.vibe,nick].concat(meta.type||[])),
+      campusDaily:[
+        "在"+name+"的日子，从"+meta.city+"的风、食堂饭点和赶课路上的人声里慢慢展开。",
+        "校园不一定总是热闹，但"+meta.vibe+"的气质会在一节课、一次排队和一场活动里冒出来。",
+        "你很快学会用本校人的方式判断距离、饭点、考试周和社团消息。",
+        "那些校内暗号一开始只是段子，后来变成判断自己是否真正融入的标记。"
+      ],
+      foodMemory:[
+        "一顿普通的饭，常常会聊到绩点、实习、家乡和毕业后要去哪里。",
+        "考试周的食堂和夜宵，是"+name+"最朴素也最真实的补给站。",
+        meta.city+"的口味慢慢进入生活，连赶作业的夜晚都有了具体味道。",
+        "多年后想起这所学校，最先浮出来的也许不是校训，而是一顿匆忙却踏实的饭。"
+      ],
+      studentPersona:[
+        "带着"+meta.vibe+"的气质，嘴上会自嘲，真正做事时却很认真。",
+        "习惯在学校的传统、城市的机会和自己的现实压力之间找平衡。",
+        "不一定张扬，但会在一次次选择里慢慢长出属于自己的判断。",
+        "对本校的梗很熟，笑完之后也知道那里面有共同经历。"
+      ],
+      clubsAndRituals:[
+        "社团、讲座、竞赛和考试周，把四年切成很多个可回忆的节点。",
+        "新生时听不懂的校内说法，到了毕业前会变成一听就懂的暗号。",
+        "总有一些地点和活动，被一届届学生反复讲起，最后像传统一样留下来。",
+        "毕业前回头看，很多仪式并不宏大，却确实给青春盖了章。"
+      ],
+      cityLink:[
+        meta.city+"给这所学校提供了另一层底色，也把课堂外的机会推到眼前。",
+        "从校园到城市，"+he()+"会慢慢明白专业、行业和生活成本并不是三件分开的事。",
+        "这座城市未必总温柔，却会训练人更早理解现实。",
+        meta.city+"的节奏，和"+name+"的气质一起，塑造了这条 IF 线的走向。"
+      ],
+      careerFlavor:[
+        "常见去向绕不开"+meta.industries.join("、")+"，选择看似分散，其实都和学校气质有关。",
+        "校友经验和城市资源，会让职业规划比想象中更早具体起来。",
+        "这所学校给人的不只是学历，也是一套看待行业和机会的方法。",
+        "毕业时，"+he()+"会发现自己已经学会用更现实的方式谈理想。"
+      ],
+      hiddenDetails:[
+        "有些校内细节只有待久了才懂，比如哪条路最适合赶课，哪些说法只有本校人一听就明白。",
+        m0||("一个普通角落，也可能成为"+he()+"多年后最清楚的大学记忆。"),
+        "那些被反复调侃的绰号，背后其实是学生和学校之间的亲密关系。",
+        "很多当时以为无关紧要的小事，后来都变成了这所学校的专属滤镜。"
+      ],
+      campusJokes:(meme.memes&&meme.memes.length)?meme.memes:[
+        "学生偶尔会用"+nick+"调侃学校，玩笑里其实藏着亲近。",
+        "本校人的自嘲往往很精准，外人听个热闹，自己人才知道哪里好笑。"
+      ],
+      randomEvents:[
+        m0?("你第一次听懂了这个校内梗："+m0+"。那一刻，"+name+"忽然不再只是录取通知书上的名字。"):"你在一次活动里听懂了只有本校人明白的暗号，突然觉得自己真的属于这里。",
+        "一次讲座、社团活动或小组作业，把"+he()+"带进了一群很像本校气质的人中间。",
+        "临近考试周，"+he()+"和同学一起复习到很晚，笑着吐槽学校，也认真撑过压力。",
+        "毕业前某个傍晚，"+he()+"走过熟悉的路，发现很多段子已经变成了真正的回忆。"
+      ]
+    };
+  }
+  function makeSupplementalSchool(name, meta){
+    var meme=SCHOOL_MEME_EXTENSIONS[name]||{}, nick=(meme.nicknames&&meme.nicknames[0])||name, main=firstMeme(name);
+    return {name:name,city:meta.city,region:meta.region,admit:meta.admit,type:meta.type,vibe:meta.vibe,study:meta.study,
+      scenes:[meta.city+"的校园路口","图书馆的固定座位","食堂门口","校园里被反复提起的角落"],
+      tradition:["那些只在本校流传的暗号","在"+meta.city+"的城市节奏里长大","把"+meta.vibe+"慢慢过成自己的气质"],
+      industries:meta.industries,regions:meta.regions,
+      lines:["在"+name+"待久了，很多看似普通的细节都会变得有意义。"],
+      special:[main||("第一次听见同学用"+nick+"调侃学校，"+he()+"才发现这里有一套只有本校人懂的语言。")],
+      feature:makeFeatureFromMeta(name,meta)};
+  }
+  function appendSupplementalSchools(){
+    var exists={};
+    SCHOOLS.forEach(function(sc){exists[sc.name]=1;});
+    Object.keys(SCHOOL_SUPPLEMENTAL_META).forEach(function(name){
+      if(!exists[name]){SCHOOLS.push(makeSupplementalSchool(name,SCHOOL_SUPPLEMENTAL_META[name]));exists[name]=1;}
+    });
+  }
+  function mergeFeature(a,b){
+    var out={},keys={},k;
+    a=a||{};b=b||{};
+    for(k in a)keys[k]=1;for(k in b)keys[k]=1;
+    for(k in keys){
+      if(Array.isArray(a[k])||Array.isArray(b[k])) out[k]=uniq((a[k]||[]).concat(b[k]||[]));
+      else out[k]=b[k]||a[k];
+    }
+    return out;
+  }
+  function hydrateSchoolData(){
+    appendSupplementalSchools();
+    SCHOOLS.forEach(function(sc){
+      var ext=mergeFeature(sc.feature,SCHOOL_FEATURE_EXTENSIONS[sc.name]), meme=SCHOOL_MEME_EXTENSIONS[sc.name]||{};
+      sc.feature=ext;
+      sc.keywords=uniq((sc.keywords||[]).concat(ext.keywords||[]));
+      sc.nicknames=meme.nicknames||[];
+      sc.memes=meme.memes||[];
+      if(ext.randomEvents) sc.special=sc.special.concat(ext.randomEvents);
+    });
+  }
+  hydrateSchoolData();
+
+  /* ---------- 专业 ---------- */
+  var MAJORS=[
+    {name:"计算机 / 软件",load:"高",lean:"就业",ind:["互联网","算法","创业"],flavor:["在通宵的项目和报错里","对着一块屏幕和一行行代码"]},
+    {name:"临床医学",load:"极高",lean:"考研",ind:["医院","医疗"],flavor:["在厚得吓人的课本和早八的解剖课里","在白大褂和无尽的背诵之间"]},
+    {name:"法学",load:"高",lean:"考公",ind:["律所","公务员","法务"],flavor:["在法条与案例的辩论里","在一次次模拟法庭上"]},
+    {name:"中文 / 新闻传播",load:"中",lean:"就业",ind:["传媒","内容","公务员"],flavor:["在写不完的稿子和读不完的书里","在一篇篇评论与采访之间"]},
+    {name:"经济 / 金融",load:"中",lean:"就业",ind:["金融","咨询","互联网"],flavor:["在密密麻麻的模型和实习面试里","在Excel与路演之间"]},
+    {name:"机械 / 工科",load:"高",lean:"就业",ind:["制造","汽车","能源"],flavor:["在图纸、车间和实验数据里","在一次次拆装与计算之间"]},
+    {name:"艺术 / 设计",load:"中",lean:"就业",ind:["设计","影视","自由职业"],flavor:["在一稿稿被推翻的方案里","在灵感与截稿日的拉扯之间"]},
+    {name:"师范 / 教育",load:"中",lean:"考公",ind:["学校","教育"],flavor:["在试讲与教案的反复打磨里","在粉笔与讲台之间"]}
+  ];
+
+  /* ---------- 摸底问题（含可跳过的尊重式设计） ---------- */
+  var QUESTIONS=[
+    {essential:true, ask:"嗨，我是 IF。在动笔之前，我想先认识你。\n\n（随时可以跳过你不想回答的问题，这是你的故事。）\n\n先选一个——你的高考，发生在哪个年代？",
+     opts:ERAS.map(function(e){return {t:e.label+"（"+e.admitEra+"）",era:e};}),
+     apply:function(o){S.era=o.era;}},
+    {skippable:true, ask:"你的高考成绩，大概在什么水平？（这会影响你够不够得着想去的学校。不想说可以跳过）",
+     opts:[{t:"顶尖，全省名列前茅",y:5},{t:"很高，重点线以上不少",y:4},{t:"中上，能上个一本",y:3},{t:"中等，二本左右",y:2},{t:"普通，压线或更低",y:1}],
+     apply:function(o){S.userLevel=o.y;}},
+    {ask:"周末一整天空着，没有任何任务。你更可能——",
+     opts:[{t:"约一群人出去，热闹一整天",d:{social:2},v:{belonging:1,freedom:1}},
+       {t:"叫上一两个最好的朋友",d:{social:1},v:{belonging:2,security:1}},
+       {t:"自己待着，看书、打游戏、发呆",d:{social:-2},v:{freedom:2,meaning:1}},
+       {t:"看心情，但更想一个人",d:{social:-1},v:{freedom:1}}],
+     apply:function(o){applyProfile(o);}},
+    {ask:"一个机会摆在面前，结果完全未知，可能很棒也可能搞砸——",
+     opts:[{t:"冲，先试了再说",d:{risk:2},v:{ambition:2,freedom:1}},
+       {t:"会试，但先想好退路",d:{risk:1},v:{ambition:1,security:1}},
+       {t:"更愿意选稳妥的那条路",d:{risk:-2},v:{security:2}},
+       {t:"纠结很久，常常错过",d:{risk:-1},v:{security:1,belonging:1}}],
+     apply:function(o){applyProfile(o);}},
+    {ask:"做重要决定时，你更相信——",
+     opts:[{t:"数据、逻辑和利弊",d:{head:2},v:{security:1,ambition:1}},
+       {t:"理性为主，留一半给直觉",d:{head:1},v:{freedom:1}},
+       {t:"当下的感觉和内心的声音",d:{head:-2},v:{meaning:2,freedom:1}},
+       {t:"问问在乎的人怎么想",d:{head:-1},v:{belonging:2,security:1}}],
+     apply:function(o){applyProfile(o);}},
+    {ask:"面对需要长期坚持、又有点枯燥的事——",
+     opts:[{t:"能咬牙啃下来，自律是底色",d:{grit:2},v:{ambition:1,security:1}},
+       {t:"大多数时候能坚持",d:{grit:1},v:{ambition:1}},
+       {t:"三分钟热度，常半途而废",d:{grit:-2},v:{freedom:1}},
+       {t:"要靠deadline推着走",d:{grit:-1},v:{security:1}}],
+     apply:function(o){applyProfile(o);}},
+    {skippable:true, ask:"如果未来必须先解决一个问题，你最绕不开的是——",
+     opts:[{t:"尽快挣钱，先让生活有底气",v:{money:2,security:1}},
+       {t:"让家里放心，别让他们太担心",v:{security:2,belonging:1}},
+       {t:"证明自己，我不想只是普通地过完",v:{ambition:2,money:1}},
+       {t:"找到真正喜欢的事，不然会很空",v:{meaning:2,freedom:1}},
+       {t:"别被标准答案推着走，想保留自己的节奏",v:{freedom:2,meaning:1}}],
+     apply:function(o){applyProfile(o);}},
+    {skippable:true, ask:"大学四年如果只能重点保住两样，你最想保住的是——",
+     opts:[{t:"绩点、证书和确定的上升通道",v:{security:2,ambition:1}},
+       {t:"朋友、恋爱和有人同行的感觉",d:{social:1},v:{belonging:2}},
+       {t:"作品、研究或一个真正相信的方向",v:{meaning:2,ambition:1}},
+       {t:"体验、城市和不被安排的自由",d:{risk:1},v:{freedom:2}},
+       {t:"实习、收入和更早进入真实世界",v:{money:2,ambition:1}}],
+     apply:function(o){applyProfile(o);}},
+    {skippable:true, ask:"选一样最像你的特长或热爱——（可跳过）",
+     opts:[{t:"钻研、思考、学术",y:"学术",l:"擅长钻研",v:{meaning:1,ambition:1}},
+       {t:"写作、艺术、表达",y:"文艺",l:"心里有表达欲",v:{meaning:2,freedom:1}},
+       {t:"动手、技术、捣鼓东西",y:"技术",l:"爱动手捣鼓",v:{ambition:1,money:1}},
+       {t:"组织、社交、把人聚起来",y:"社交",l:"擅长把人聚起来",d:{social:1},v:{belonging:1,ambition:1}}],
+     apply:function(o){S.talent=o.y;S.talentLabel=o.l;applyProfile(o);}},
+    {skippable:true, ask:"最后一个，完全可以跳过——你成长的家庭——",
+     opts:[{t:"普通家庭，够用就好",y:"普通",v:{security:1}},
+       {t:"条件不错，没太为钱发愁",y:"宽裕",v:{freedom:1}},
+       {t:"过得比较紧，懂事得早",y:"清苦",v:{money:2,security:1}}],
+     apply:function(o){S.family=o.y;if(o.y==="宽裕")S.stats.money=70;else if(o.y==="清苦")S.stats.money=32;applyProfile(o);}}
+  ];
+  function defaultEra(){
+    return ERAS.filter(function(e){return e&&e.key==="20s";})[0]||ERAS[0];
+  }
+  QUESTIONS=QUESTIONS.slice(1);
+
+  /* ---------- 角色名 ---------- */
+  function genCast(){
+    S.cast.roommate=pick(["室友","同寝的人","同班同学","隔壁寝室的人"]);
+    S.cast.friend=pick(["朋友","熟悉的同学","社团里同行的人","一直走得近的人"]);
+    S.cast.crush=pick(["坐你前排的那个人","总在图书馆同一个位置的那个人","让你心动过的人","后来常和你同行的人"]);
+    S.cast.mentor=pick(["你的导师","一位很较真的教授","实验室的师兄","一位很温柔的辅导员"]);
+  }
+  function logBeat(label,text){ S.log.push({label:label,text:text}); }
+  function cleanNarrValue(value){
+    return displayText(value);
+  }
+  function bridgeText(value){
+    return cleanNarrValue(value)||"这一段";
+  }
+  function semesterBridge(from,to){
+    var fromText=bridgeText(from);
+    var toText=bridgeText(to)||"下一段";
+    return pick([
+      fromText+"慢慢收尾。几次晚归、几张新课表之后，"+toText+"就这样接了上来。",
+      fromText+"的余波还留在课表、消息和夜路里，"+toText+"已经悄悄把新的问题递到面前。",
+      "中间隔着一段普通得容易忘记的时间：上课、赶路、回消息。再抬头时，故事走进了"+toText+"。"
+    ]);
+  }
+  function storyChoicePrompt(scene,stage){
+    var title=cleanNarrValue(scene&&scene.title);
+    var stageText=cleanNarrValue(stage)||cleanNarrValue(scene&&scene.stage)||"这一段";
+    if(title) return title+"之后，你在"+stageText+"会怎么选？";
+    return stageText+"走到这里，你会怎么选？";
+  }
+  function typeMatch(tags){ for(var i=0;i<tags.length;i++){ if(S.school.type.indexOf(tags[i])>=0) return true; } return false; }
+  function schoolFeature(){ return (S.school&&S.school.feature)||{}; }
+  function schoolList(key){
+    var ext=schoolFeature(), arr=ext[key];
+    return arr&&arr.length?arr:[];
+  }
+  function schoolPick(key, fallback){
+    var arr=schoolList(key);
+    if(arr.length){
+      var used=(S.usedSchoolPick[key]||(S.usedSchoolPick[key]={})), cand=[];
+      for(var i=0;i<arr.length;i++){ if(!used[normLine(arr[i])]) cand.push(arr[i]); }
+      if(!cand.length) cand=arr;
+      var item=pick(cand);
+      used[normLine(item)]=1;
+      return item;
+    }
+    return fallback||"";
+  }
+  function schoolSecretTokens(){
+    if(!S||!S.school) return [];
+    var tokens=[];
+    if(S.school.nicknames) tokens=tokens.concat(S.school.nicknames);
+    if(S.school.memes){
+      S.school.memes.forEach(function(m){
+        var t=String(m).split("：")[0].trim();
+        if(t) tokens.push(t);
+      });
+    }
+    return uniq(tokens).filter(function(t){return t&&t.length>=2;});
+  }
+  function hasSchoolSecret(text){
+    var tokens=schoolSecretTokens(), s=String(text||"");
+    for(var i=0;i<tokens.length;i++){ if(s.indexOf(tokens[i])>=0) return true; }
+    return false;
+  }
+  function schoolMeme(){
+    if(!S.school) return "";
+    if(S.schoolSecretUsed) return "";
+    var arr=[];
+    if(S.school.memes) arr=arr.concat(S.school.memes);
+    if(S.school.nicknames&&S.school.nicknames.length) arr.push("学生偶尔会用"+pick(S.school.nicknames)+"调侃学校，玩笑里其实有亲近感。");
+    if(!arr.length) arr=schoolList("campusJokes");
+    if(!arr.length) return "";
+    return pick(arr);
+  }
+
+  /* ---------- 强制注入的每年三拍：时代/学校/性格/落差 ---------- */
+  function schoolBeat(year){
+    var sc=S.school, scene=pick(sc.scenes), trad=pick(sc.tradition);
+    var daily=schoolPick("campusDaily"), city=schoolPick("cityLink"), hidden=schoolPick("hiddenDetails");
+    var dailyText=daily?(/^在/.test(daily)?daily:("在"+sc.name+"，"+daily)):("在"+sc.name+"，日子从"+scene+"慢慢展开");
+    S.stats.wellbeing=clamp(S.stats.wellbeing+3);
+    return say('sbeat_'+year,[
+      dailyText+" "+(hidden||("这些细节让"+he()+"慢慢靠近这所学校。")),
+      sc.city+"把自己的节奏递给了"+he()+"。"+(city||sc.lines[0])+" "+he()+"也开始像这里的人一样安排生活。",
+      "在"+sc.name+"的日子里，"+he()+"渐渐熟悉了"+scene+"。"+he()+"也慢慢熟悉了这里的日常："+trad+"。这是属于这里的频率，"+he()+"也慢慢有了它的样子。",
+      "有一阵子，"+scene+"成了"+he()+"最熟悉的校园记忆。"+sc.lines[0]+"这里的日常，比如"+trad+"，也悄悄变成了"+he()+"理解这所学校的入口。",
+      sc.name+"把它的气质一点点交给了"+he()+"。"+he()+"记住了"+scene+"，也记住了那些日常："+trad+"。后来"+he()+"开始明白，人们为什么说这里"+sc.vibe+"。",
+      "这一年，"+sc.city+"的四季慢慢轮转，"+scene+"也渐渐被"+he()+"记住。"+he()+"越来越像一个真正的"+sc.name+"人，也越来越习惯这里的"+sc.vibe+"。"]);
+  }
+  function specialBeat(){
+    var joke=schoolMeme();
+    if(joke&&chance(.35)) return "校园里的说法也开始变得熟悉："+joke+"。起初只是听个热闹，后来竟成了"+he()+"理解这所学校的暗号。";
+    return pick(S.school.special);
+  }
+  function personaBeat(year){
+    var p=S.p,t;
+    if(p.social>=1){ t=say('soc_hi',[ "作为外向的人，"+he()+"很快成了寝室和班级的中心，"+S.cast.roommate+"说有"+he()+"在就不会冷场。",
+        he()+"闲不下来，社团、活动、饭局把生活塞得满满当当，认识的人越来越多。",
+        "热闹是"+he()+"的舒适区。这一年"+he()+"组过局、当过头，朋友多到记不清名字。"]); S.stats.social=clamp(S.stats.social+8); }
+    else if(p.social<=-1){ t=say('soc_lo',[ "人多的场合"+he()+"总有点累，"+he()+"更愿意和"+S.cast.friend+"这样为数不多的人深聊。",
+        "比起呼朋引伴，"+he()+"把更多时间留给了自己——一个人也能过得很完整。",
+        he()+"不爱凑热闹，却在安静里攒下了别人没有的专注。"]); S.stats.social=clamp(S.stats.social-3); S.stats.academic=clamp(S.stats.academic+4); }
+    else { t=say('soc_mid',["不算活跃，也不孤僻，"+he()+"在自己舒服的节奏里慢慢往前走。",""+he()+"和谁都能聊两句，又不黏着谁，分寸刚好。"]); }
+    if(p.grit>=1){ t+=" "+say('grit_hi',["而骨子里的自律开始显现：别人还在赖床，"+he()+"已经把一天安排好了。","那股能啃硬骨头的劲，让"+he()+"在很多事上多走了一步。"]); S.stats.academic=clamp(S.stats.academic+7); S.stats.grit=clamp(S.stats.grit+6); }
+    else if(p.grit<=-1){ t+=" "+say('grit_lo',["只是那点三分钟热度也跟着来了，很多计划开了头就搁置。","拖延像影子跟着"+he()+"，deadline永远是最后的救兵。"]); S.stats.academic=clamp(S.stats.academic-4); S.stats.grit=clamp(S.stats.grit-5); }
+    var sp=schoolPick("studentPersona");
+    if(sp&&chance(.55)) t+=" 慢慢地，"+he()+"也染上了这所学校的某种气质："+sp;
+    return t;
+  }
+  function reachBeat(){
+    if(S.reach<=-2){ S.stats.academic=clamp(S.stats.academic-6); S.stats.wellbeing=clamp(S.stats.wellbeing-4);
+      return say('reach_over',[
+        "课堂上有点跟不上。周围的同学分数本就比"+he()+"高出一截，"+he()+"得花双倍的力气，才能勉强不掉队。那种'我是不是不配在这里'的念头，时不时冒出来。",
+        "这所学校的节奏，对踩线进来的"+he()+"并不友好。第一学期"+he()+"就尝到了吃力的滋味——别人轻松的东西，"+he()+"要熬夜才追得上。"]); }
+    if(S.reach>=2){ S.stats.academic=clamp(S.stats.academic+6); S.stats.wellbeing=clamp(S.stats.wellbeing+3);
+      return say('reach_under',[
+        "凭着比录取线高出不少的底子，"+he()+"在这里学得相当从容，甚至有余力去当助教、拿奖学金，成了老师眼里的'潜力股'。",
+        he()+"的分数本可以去更高的地方。在这里，"+he()+"是那个学有余力、被同学请教的人。"]); }
+    return null;
+  }
+
+  /* ---------- 事件池 ---------- */
+  function profileFit(tags){
+    if(!tags) return 1;
+    var score=0,count=0;
+    for(var k in tags){
+      var need=tags[k], got=pref(k);
+      if(!need) continue;
+      count++;
+      score += need*got;
+    }
+    if(!count) return 1;
+    return Math.max(.28, Math.min(3.2, 1+score*.16));
+  }
+  function eventWeight(e){
+    var base=typeof e.w==="function"?e.w(S):(e.w||1);
+    return Math.max(.05, base*profileFit(e.tags));
+  }
+  var EVENTS=[
+    {stage:"大一",w:1,tags:{security:1},text:function(){ var f=S.major.flavor[0];
+      return say('m1',[ "开学没多久，"+he()+"就尝到了"+S.major.name+"的滋味——"+f+"，"+he()+"第一次意识到大学和高中是两回事。",
+        S.major.name+"的第一学期来得猝不及防。"+f+"，"+he()+"在新鲜和手忙脚乱之间找平衡。"]);
+      },eff:function(){ if(S.major.load==="极高"||S.major.load==="高") S.stats.academic=clamp(S.stats.academic-2); }},
+    {stage:"大一",w:1,tags:{belonging:2,freedom:1},choice:{prompt:"军训刚结束，社团招新的摊位摆满整条路。"+he()+"会——",skippable:true,
+      opts:[
+        {t:"一口气报三四个，先体验",d:{social:1},v:{freedom:1,belonging:1},text:function(){return he()+"一口气报了好几个社团。后来大多没坚持，但在"+(S.school.type.indexOf("艺术")>=0?"剧社":"辩论队")+"，"+he()+"认识了"+S.cast.friend+"，成了一直走下去的朋友。";},eff:function(){S.stats.social=clamp(S.stats.social+10);S.stats.wellbeing=clamp(S.stats.wellbeing+4);}},
+        {t:"只挑一个，认真做",d:{grit:1},v:{meaning:1,security:1},text:function(){return he()+"只选了一个真正喜欢的社团，沉下心做。一年后，"+he()+"成了里面最被信任的人之一。";},eff:function(){S.stats.social=clamp(S.stats.social+5);S.stats.grit=clamp(S.stats.grit+5);}},
+        {t:"都没报，先稳住学习",d:{social:-1,grit:1},v:{security:2,ambition:1},text:function(){return he()+"婉拒了所有摊位，把第一年交给图书馆。绩点很好看，只是热闹好像都发生在别处。";},eff:function(){S.stats.academic=clamp(S.stats.academic+9);S.stats.social=clamp(S.stats.social-6);}}
+      ]}},
+    {stage:"大一",cond:function(){return S.p.head<=-1||pref("belonging")>=1||chance(.5);},w:1,tags:{belonging:2,meaning:1},text:function(){
+      return say('crush1',[ "一次班级聚会上，"+he()+"注意到了"+S.cast.crush+"。没什么惊天动地，只是从那天起，"+he()+"开始期待某些不期而遇。",
+        "大一某个傍晚，"+he()+"和"+S.cast.crush+"在"+pick(S.school.scenes)+"聊了很久。心里有什么悄悄发了芽。"]);
+      },eff:function(){S.stats.romance=clamp(S.stats.romance+12);}},
+    {stage:"大一",cond:function(){return S.family==="清苦"||pref("money")>=1||chance(.35);},w:1.1,tags:{money:2,security:1},choice:{prompt:"生活费快见底时，"+he()+"看到一份校内兼职和奖学金申请通知。"+he()+"会——",skippable:true,
+      opts:[
+        {t:"去兼职，先把钱的问题稳住",v:{money:1,security:1},text:function(){return he()+"接下了图书馆或机房的兼职。钱不多，但每个月到账那天，心里会踏实一点。";},eff:function(){S.stats.money=clamp(S.stats.money+12);S.stats.wellbeing=clamp(S.stats.wellbeing+2);}},
+        {t:"冲奖学金，把压力变成绩点",d:{grit:1},v:{ambition:1,security:1},text:function(){return he()+"把压力压进课表里，开始认真盯绩点。后来奖学金到账时，"+he()+"第一次觉得努力能换来具体的安全感。";},eff:function(){S.stats.academic=clamp(S.stats.academic+8);S.stats.money=clamp(S.stats.money+6);}},
+        {t:"先不管，大学不能只剩下钱",v:{freedom:1,meaning:1},text:function(){return he()+"没有立刻把自己塞进兼职表。那段自由的时间没带来钱，却让"+he()+"保住了对生活的好奇。";},eff:function(){S.stats.wellbeing=clamp(S.stats.wellbeing+5);}}
+      ]}},
+    {stage:"大一",w:.9,tags:{meaning:2,freedom:1},text:function(){
+      return say('meaning1',[ "某个晚上，"+he()+"听了一场并不热门的讲座。散场后风很凉，"+he()+"忽然意识到，大学不只是为了找工作，也是在确认自己相信什么。",
+        he()+"加入了一次支教、调研或创作小组。事情很小，却让"+he()+"第一次把'意义感'从词语变成了行动。"]);
+      },eff:function(){S.stats.wellbeing=clamp(S.stats.wellbeing+5);S.stats.research=clamp(S.stats.research+4);}},
+
+    {stage:"大二",cond:function(){return typeMatch(["理工"])||S.major.lean!=="就业"||pref("meaning")>=1||chance(.4);},w:1.2,tags:{ambition:1,meaning:1,security:1},text:function(){
+      return say('res2',[ "大二，"+he()+"第一次走进"+S.cast.mentor+"的实验室／项目组。术语像潮水，但"+he()+"咬牙跟上了。",
+        "一个偶然的机会，"+he()+"加入了"+S.cast.mentor+"带的项目，第一次离'做研究'这么近。"]);
+      },eff:function(){S.stats.research=clamp(S.stats.research+12);S.stats.academic=clamp(S.stats.academic+4);}},
+    {stage:"大二",cond:function(){return S.p.risk>=1||pref("ambition")>=1||pref("freedom")>=2;},w:1.3,tags:{ambition:2,freedom:1,money:1},choice:{prompt:"学长拉"+he()+"一起做点'课外的事'——可能创业，可能比赛。投入不小，结果难说。",skippable:true,
+      opts:[
+        {t:"干！不能错过",d:{risk:1},v:{ambition:1,freedom:1},text:function(){return chance(.5+S.stats.grit/300)?(he()+"一头扎进去，熬了无数个夜。项目最后小有成绩，"+he()+"第一次尝到把想法变成真东西的快感。"):(he()+"全力以赴，项目却中途散了。复盘那晚"+he()+"有点丧，却第一次懂了'输得起'。");},eff:function(){if(chance(.5+S.stats.grit/300)){S.stats.research=clamp(S.stats.research+10);S.stats.social=clamp(S.stats.social+6);}else{S.stats.wellbeing=clamp(S.stats.wellbeing-5);S.stats.grit=clamp(S.stats.grit+8);}}},
+        {t:"算了，先做好本分",d:{risk:-1},v:{security:1},text:function(){return he()+"想了想，回到自己的节奏。后来听说那项目黄了，"+he()+"暗自庆幸，又有一点说不清的遗憾。";},eff:function(){S.stats.academic=clamp(S.stats.academic+5);}}
+      ]}},
+    {stage:"大二",cond:function(){return S.stats.romance>=50||pref("belonging")>=2;},w:1,tags:{belonging:2},text:function(){
+      return say('love2',[ "和"+S.cast.crush+"的关系，在大二有了答案。那段日子，连"+pick(S.school.scenes)+"都格外温柔。",
+        "大二这年，"+he()+"谈了一场认真的恋爱。一起自习、一起逛"+S.school.city+"，平凡得发光。"]);
+      },eff:function(){S.stats.romance=clamp(S.stats.romance+15);S.stats.wellbeing=clamp(S.stats.wellbeing+6);}},
+    {stage:"大二",w:.85,tags:{security:1,ambition:1},text:function(){
+      return say('low2',[ "也有撑不住的时候。某门课"+he()+"挂了科，那阵子"+he()+"开始怀疑是不是选错了路。",
+        "大二中段，"+he()+"经历了一次小低谷——熬夜、迷茫、和家里通话时的沉默。好在它最终过去了。"]);
+      },eff:function(){S.stats.wellbeing=clamp(S.stats.wellbeing-8);S.stats.academic=clamp(S.stats.academic-3);S.stats.grit=clamp(S.stats.grit+4);}},
+    {stage:"大二",w:1,tags:{ambition:2,belonging:1},text:function(){
+      return say('lead2',[ S.cast.friend+"拉"+he()+"一起负责一场活动。预算、场地、临时变卦的人把"+he()+"折腾得够呛，但活动结束那晚，"+he()+"第一次知道自己也能把一群人带起来。",
+        he()+"竞选了班委、社团负责人或项目组长。事情琐碎得要命，却把"+he()+"推到了人群中央。"]);
+      },eff:function(){S.stats.social=clamp(S.stats.social+9);S.stats.grit=clamp(S.stats.grit+4);}},
+    {stage:"大二",w:1,tags:{security:2,ambition:1},text:function(){
+      return say('cert2',[ "身边人开始考证、刷绩点、准备保研材料。"+he()+"也被这种确定感吸引，给自己列了一张很长的清单。",
+        he()+"没有去追最热闹的风口，而是把时间投向证书、绩点和一条更稳的路径。那种慢慢攒筹码的感觉，让人安心。"]);
+      },eff:function(){S.stats.academic=clamp(S.stats.academic+6);S.stats.grit=clamp(S.stats.grit+6);}},
+
+    {stage:"大三",w:1.2,tags:{ambition:1,meaning:1},text:function(){ var f=S.major.flavor[1]||S.major.flavor[0];
+      return say('m3',[ "大三，"+S.major.name+"的专业课进入深水区，"+f+"，"+he()+"对未来终于有了模糊的轮廓。",
+        "到了大三，"+he()+"越来越确定自己喜欢什么、不喜欢什么。"+f+"，那些选择题开始变得具体。"]);
+      },eff:function(){S.stats.academic=clamp(S.stats.academic+5);}},
+    {stage:"大三",cond:function(){return S.stats.academic>=58&&S.reach>-2;},w:1.2,tags:{ambition:2,money:1,security:1},text:function(){
+      return say('intern3',[ he()+"争取到一个含金量不错的实习／科研机会，第一次把课堂上的东西用在真实世界里，既紧张又兴奋。",
+        "大三这年，"+he()+"拿到一份让同学羡慕的实习。在更大的城市里，"+he()+"开始想象毕业后的样子。"]);
+      },eff:function(){S.stats.research=clamp(S.stats.research+8);S.stats.academic=clamp(S.stats.academic+5);S.stats.social=clamp(S.stats.social+5);}},
+    {stage:"大三",cond:function(){return S.reach<=-2;},w:1.1,tags:{security:2},text:function(){
+      return say('strug3',[ "投实习时，"+he()+"才发现简历上的学校名字撑不起空荡荡的绩点。几次面试碰壁后，"+he()+"开始重新认识自己的处境。",
+        "身边人忙着秋招、保研，"+he()+"却被偏低的成绩绊住了脚步。这一年，"+he()+"学会了和'没那么顺'的自己和解。"]);
+      },eff:function(){S.stats.wellbeing=clamp(S.stats.wellbeing-4);S.stats.grit=clamp(S.stats.grit+5);}},
+    {stage:"大三",cond:function(){return pref("freedom")>=1||S.family==="宽裕"||chance(.35);},w:1,tags:{freedom:2,meaning:1},text:function(){
+      return say('free3',[ "大三下，"+he()+"忽然很想离开熟悉的轨道，去交换、旅行、实习或只是换一座城市生活一阵。不是逃避，而是想确认世界不止眼前这一种样子。",
+        "有段时间，"+he()+"把地图看了很久。那些没去过的地方像在召唤，提醒"+he()+"：人生不一定只能按表格推进。"]);
+      },eff:function(){S.stats.wellbeing=clamp(S.stats.wellbeing+6);S.stats.social=clamp(S.stats.social+3);}},
+    {stage:"大三",cond:function(){return pref("money")>=1||pref("security")>=2||S.family==="清苦";},w:1.05,tags:{money:2,security:2,belonging:1},text:function(){
+      return say('pressure3',[ "临近毕业，家里的期待和现实账单一起压过来。"+he()+"开始更认真地比较薪水、城市和稳定性，理想没有消失，只是第一次被生活标上了价格。",
+        "这一年，"+he()+"比以前更在意'落脚'这件事。不是变俗了，而是终于明白，安全感也需要一点点攒出来。"]);
+      },eff:function(){S.stats.money=clamp(S.stats.money+4);S.stats.wellbeing=clamp(S.stats.wellbeing-3);}},
+    {stage:"大三",w:1,tags:{ambition:1,security:1,money:1,meaning:1},choice:{prompt:"大三下，升学和就业准备一起压到眼前：有人考研，有人投简历，有人备考公务员或准备出国。"+he()+"心里那杆秤，更偏向——",skippable:true,
+      opts:[
+        {t:"继续深造，往上走",d:{grit:1},v:{ambition:1,meaning:1},text:function(){return he()+"把目标定在更高的地方，买了一摞书，开始早起。";},eff:function(){S._lean="深造";S.stats.academic=clamp(S.stats.academic+6);S.stats.grit=clamp(S.stats.grit+4);}},
+        {t:"早点工作，自己挣钱",v:{money:1,security:1},text:function(){return he()+"更想快点进入社会，开始认真打磨简历、跑招聘会。";},eff:function(){S._lean="就业";S.stats.social=clamp(S.stats.social+5);}}
+      ]}}
+  ];
+
+  function eligible(stage){ return EVENTS.filter(function(e){return e.stage===stage&&(!e.cond||e.cond());}); }
+  function wpick(list){ var tot=0,i;for(i=0;i<list.length;i++)tot+=eventWeight(list[i]);var r=rng()*tot,a=0;for(i=0;i<list.length;i++){a+=eventWeight(list[i]);if(r<=a)return i;}return list.length-1; }
+
+  /* ---------- UI ---------- */
+  var feed=document.getElementById('feed'), dock=document.getElementById('dock');
+  var NARR_CHARS=70, AUTO_NEXT_MS=0;
+  var CHOICE_DELAY_MIN_MS = 1000;
+  var CHOICE_DELAY_JITTER_MS = 1000;
+  var ENDING_PACE = { slow:true, ending:true };
+  var choiceTimer = null;
+  function choiceDelayMs(){ return CHOICE_DELAY_MIN_MS + Math.floor(Math.random() * CHOICE_DELAY_JITTER_MS); }
+  function clearChoiceTimer(){ if(choiceTimer){ clearTimeout(choiceTimer); choiceTimer=null; } }
+  function show(id){ var ss=document.querySelectorAll('.screen');for(var i=0;i<ss.length;i++){ss[i].classList.remove('active');ss[i].setAttribute('aria-hidden','true');}var t=document.getElementById(id);if(t){t.classList.add('active');t.setAttribute('aria-hidden','false');} }
+  function scrollFeed(){ feed.scrollTop=feed.scrollHeight; }
+  function addUser(text){ var b=document.createElement('div');b.className='bubble user';b.textContent=displayText(text);feed.appendChild(b);scrollFeed(); }
+  function sentenceParts(text){
+    var s=displayText(text).replace(/\s*\n+\s*/g,"\n"), parts=[], re=/[^。！？；\n]+[。！？；]?|\n/g, m;
+    while((m=re.exec(s))){
+      var part=m[0].trim();
+      if(part) parts.push(part);
+    }
+    return parts.length?parts:[""];
+  }
+  function normLine(s){ return String(s||"").replace(/[，。！？；：、“”‘’'\"（）()\s]/g,""); }
+  function sanitizeNarrText(text){
+    if(!S) return text;
+    var parts=sentenceParts(text), out=[];
+    for(var i=0;i<parts.length;i++){
+      var p=parts[i], n=normLine(p);
+      if(!n) continue;
+      var secret=hasSchoolSecret(p);
+      if(secret&&S.schoolSecretUsed) continue;
+      if(n.length>=12&&S.usedNarr[n]) continue;
+      if(secret) S.schoolSecretUsed=true;
+      if(n.length>=12) S.usedNarr[n]=1;
+      out.push(p);
+    }
+    return out.join("");
+  }
+  function splitNarrText(text){
+    var parts=sentenceParts(text), chunks=[],buf='',limit=NARR_CHARS;
+    function pushBuf(){ var s=buf.trim();if(s)chunks.push(s);buf=''; }
+    for(var i=0;i<parts.length;i++){
+      var p=parts[i];
+      if(buf&&buf.length+p.length>limit) pushBuf();
+      buf+=p;
+      if(buf.length>=limit) pushBuf();
+    }
+    pushBuf();
+    return chunks.length?chunks:[""];
+  }
+  function addNarr(text,opts,done){ opts=opts||{};
+    text=sanitizeNarrText(text);
+    if(!text){ if(done)done(); return; }
+    var chunks=splitNarrText(text), ci=0;
+    function showChunk(){
+      var chunk=chunks[ci];
+      var typing=document.createElement('div');typing.className='bubble';typing.innerHTML='<span class="typing"><span class="typing-copy">'+WAITING_COPY+'</span><span class="typing-dots"><i></i><i></i><i></i></span></span>';
+      feed.appendChild(typing);scrollFeed();
+      setTimeout(function(){ if(typing.parentNode)feed.removeChild(typing);
+        var b=document.createElement('div');b.className='bubble narr'+(opts.cls?(' '+opts.cls):'');
+        if(opts.tag&&ci===0){var tg=document.createElement('span');tg.className='stage-tag';tg.textContent=opts.tag;b.appendChild(tg);b.appendChild(document.createElement('br'));}
+        var span=document.createElement('span');b.appendChild(span);feed.appendChild(b);scrollFeed();
+        var i=0,speed=opts.ending?34:(opts.slow?28:18);
+        (function tick(){
+          i+=1;span.textContent=chunk.slice(0,i);
+          if(i>=chunk.length){scrollFeed();ci++;if(ci<chunks.length)setTimeout(showChunk,AUTO_NEXT_MS);else if(done)done();return;}
+          if(i%2===0)scrollFeed();setTimeout(tick,speed);
+        })();
+      }, opts.ending?900:(opts.fast?220:420));
+    }
+    showChunk();
+  }
+  function clearDock(){ clearChoiceTimer(); dock.innerHTML=''; }
+  function setTapNext(label,cb){ clearDock();var d=document.createElement('div');d.className='tapnext';d.textContent='稍后继续';dock.appendChild(d);setTimeout(function(){clearDock();cb();},AUTO_NEXT_MS); }
+  function setChoices(opts,cb,skipLabel){ clearChoiceTimer(); clearDock();var wrap=document.createElement('div');wrap.className='choices';
+    opts.forEach(function(o,idx){ var c=document.createElement('button');c.type='button';c.className='choice';
+      c.innerHTML='<span class="k ui">'+String.fromCharCode(65+idx)+'</span>'+escapeHtml(o.t||o.label);
+      c.addEventListener('click',function(){cb(o,idx);});wrap.appendChild(c); });
+    if(skipLabel){ var sk=document.createElement('button');sk.type='button';sk.className='choice skip';sk.textContent=skipLabel;
+      sk.addEventListener('click',function(){cb({__skip:true},-1);});wrap.appendChild(sk); }
+    choiceTimer = setTimeout(function(){
+      choiceTimer=null;
+      dock.appendChild(wrap);
+      requestAnimationFrame(function(){ scrollFeed(); try{ dock.scrollIntoView({block:"end"}); }catch(e){} });
+    }, choiceDelayMs());
+  }
+
+  /* ---------- FLOW ---------- */
+  var qi=0;
+  function startProfiling(){ S=freshState();S.era=defaultEra();qi=0;document.getElementById('chat-status').textContent='正在了解你';feed.innerHTML='';clearDock();show('screen-chat');askQuestion(); }
+  function askQuestion(){
+    if(qi>=QUESTIONS.length){ generateApiProfile(function(){ generateApiRecommendations(goSchool); });return; }
+    var q=QUESTIONS[qi];
+    addNarr(q.ask,{fast:qi>0,slow:qi===0},function(){
+      setChoices(q.opts,function(o){
+        if(o.__skip){ addUser("（跳过）"); S.answers[q.ask]="跳过"; }
+        else { addUser(o.t); S.answers[q.ask]=o.t; if(q.apply)q.apply(o); }
+        clearDock();qi++;setTimeout(askQuestion,340);
+      }, q.skippable?"跳过这题":null);
+    });
+  }
+
+  var grid=document.getElementById('grid'),filterbar=document.getElementById('filterbar'),selectedSchool=null,activeRegion='全部';
+  var REGIONS=['AI推荐','全部','华北','华东','华南','华中','西南','西北','东北'];
+  function buildFilter(){ filterbar.innerHTML='';
+    REGIONS.filter(function(rg){return rg!=='AI推荐'||(S.apiSchools&&S.apiSchools.length);}).forEach(function(rg){ var c=document.createElement('button');c.type='button';c.className='chip'+(rg===activeRegion?' on':'');c.textContent=rg;
+      c.addEventListener('click',function(){activeRegion=rg;buildFilter();buildGrid();});filterbar.appendChild(c); });
+  }
+  function buildGrid(){ grid.innerHTML='';
+    var list=(activeRegion==='AI推荐'?(S.apiSchools||[]):SCHOOLS.filter(function(s){return activeRegion==='全部'||s.region===activeRegion;}).concat(activeRegion==='全部'||activeRegion==='其他'?[CUSTOM]:[]));
+    list.forEach(function(sc){ var t=document.createElement('div');t.className='tile';
+      t.innerHTML='<div class="n">'+sc.name+'</div><div class="c">'+sc.city+' · '+sc.type.join('/')+'</div><div class="d">'+(sc.reason||sc.vibe)+'</div>';
+      t.addEventListener('click',function(){ var all=grid.querySelectorAll('.tile');for(var i=0;i<all.length;i++)all[i].classList.remove('sel');
+        t.classList.add('sel');selectedSchool=sc;var nb=document.getElementById('pick-next');nb.style.opacity='1';nb.style.pointerEvents='auto';nb.textContent=(sc===CUSTOM?'输入校名并继续 ›':'选好了，下一步 ›'); });
+      grid.appendChild(t); });
+  }
+  function goSchool(){ document.getElementById('chat-status').textContent='了解完成';activeRegion=(S.apiSchools&&S.apiSchools.length)?'AI推荐':'全部';selectedSchool=null;
+    buildFilter();buildGrid();
+    document.getElementById('pick-title').textContent='在这条 '+S.era.label+' 的人生里，你想进哪所大学？';
+    var nb=document.getElementById('pick-next');nb.style.opacity='.4';nb.style.pointerEvents='none';nb.textContent='请先选择';show('screen-school'); }
+
+  function askCustomName(cb){ clearDock();feed.innerHTML='';show('screen-chat');document.getElementById('chat-status').textContent='你的大学';
+    addNarr('好，那这条 IF 线里，你的大学叫什么名字？',{},function(){
+      var wrap=document.createElement('div');wrap.className='choices';
+      var inp=document.createElement('input');inp.type='text';inp.maxLength=16;inp.placeholder='写下校名…';
+      inp.style.cssText='font-family:inherit;font-size:16px;padding:13px 15px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.92);color:var(--text);outline:none;';
+      var go=document.createElement('button');go.type='button';go.className='btn btn-primary';go.style.width='100%';go.textContent='就叫它';
+      go.addEventListener('click',function(){var v=(inp.value||'').trim()||'我的大学';CUSTOM.name=v;addUser(v);cb();});
+      wrap.appendChild(inp);wrap.appendChild(go);dock.appendChild(wrap);setTimeout(function(){try{inp.focus();}catch(e){}},200);
+    });
+  }
+  function applyMajorBias(m){
+    if(!m) return;
+    if(m.name.indexOf("计算机")>=0) addPref({money:1,ambition:1});
+    else if(m.name.indexOf("医学")>=0) addPref({security:1,meaning:1});
+    else if(m.name.indexOf("法学")>=0) addPref({security:1,meaning:1});
+    else if(m.name.indexOf("中文")>=0) addPref({meaning:1,freedom:1});
+    else if(m.name.indexOf("经济")>=0) addPref({money:1,ambition:1});
+    else if(m.name.indexOf("艺术")>=0) addPref({meaning:1,freedom:1});
+    else if(m.name.indexOf("师范")>=0) addPref({security:1,belonging:1});
+  }
+  function goMajor(){ feed.innerHTML='';clearDock();show('screen-chat');document.getElementById('chat-status').textContent='第三步 · 专业';
+    addNarr('进了 '+S.school.name+'。那么在这条 IF 线里，'+he()+'读的是什么专业？',{},function(){
+      var majorList=(S.school.apiMajors&&S.school.apiMajors.length)?S.school.apiMajors:MAJORS;
+      setChoices(majorList.map(function(m){return {t:m.name+(m.lean?'（'+m.lean+'倾向）':''),m:m};}),function(o){
+        if(o.__skip){ S.major=pick(majorList); addUser("（随缘）"); applyProfile({v:{freedom:1}}); } else { addUser(o.m.name);S.major=o.m; }
+        applyMajorBias(S.major);
+        clearDock();beginAiStory();
+      },"还没想好，随缘");
+    });
+  }
+
+  /* ---------- 跑完人生 ---------- */
+  function beginStory(){
+    S.reach = (S.userLevel? (S.userLevel - S.school.admit) : 0);
+    var seedBase=(S.p.social+3)*7+(S.p.risk+3)*13+(S.p.head+3)*17+(S.p.grit+3)*23
+      +(pref("ambition")+4)*29+(pref("security")+4)*31+(pref("meaning")+4)*37+(pref("money")+4)*41+(pref("freedom")+4)*43+(pref("belonging")+4)*47
+      +(SCHOOLS.indexOf(S.school)+2)*131+(MAJORS.indexOf(S.major)+2)*311+(ERAS.indexOf(S.era)+2)*97+(S.talent.length)*53;
+    seedRng(seedBase*1000+(S.seedSalt%1000));
+    genCast();
+    document.getElementById('chat-status').textContent='正在书写'+he()+'的人生';
+
+    var preludes=[];
+    preludes.push({tag:"时代", slow:true, fn:function(){ return say('era_'+S.era.key, S.era.intro); }});
+    var rb=reachBeatFraming();
+    if(rb) preludes.push({tag:"起点", fn:function(){ return rb; }});
+
+    var stages=[
+      {label:"大一上 · 初到校园",event:"大一"},
+      {label:"大一下 · 专业分流",event:"大一"},
+      {label:"大二上 · 深入专业",event:"大二"},
+      {label:"大三下 · 升学就业准备",event:"大三"}
+    ], si=0;
+    function playPre(){
+      if(preludes.length){ var it=preludes.shift(); addNarr(it.fn(),{tag:it.tag,slow:it.slow},function(){ setTapNext('稍后继续',function(){clearDock();playPre();}); }); }
+      else { runYear(); }
+    }
+    function runYear(){
+      if(si>=stages.length){ graduation(); return; }
+      var stage=stages[si], year=stage.event, label=stage.label;
+      var queue=[];
+      queue.push({tag:label,slow:true,fn:function(){return schoolBeat(year);}});
+      if(si===0) queue.push({fn:specialBeat}); // 学校特色专属事件
+      queue.push({fn:function(){return personaBeat(year);}});
+      var rbeat=reachBeat(); if(rbeat) queue.push({fn:function(){return rbeat;}});
+      var pool=eligible(year),taken=[],n=1+(chance(.6)?1:0);
+      for(var k=0;k<n&&pool.length;k++){ var idx=wpick(pool);taken.push(pool.splice(idx,1)[0]); }
+      var firstText=null;
+      function playQueue(){ if(queue.length){ var it=queue.shift();var tx=it.fn();if(!firstText)firstText=tx;
+          addNarr(tx,{tag:it.tag,slow:it.slow},function(){setTapNext('稍后继续',function(){clearDock();playQueue();});}); }
+        else playEvents(); }
+      var ei=0;
+      function playEvents(){ if(ei>=taken.length){ logBeat(label,firstText||(label+'，平静地过去了。'));si++;
+          if(stages[si]){ addNarr(semesterBridge(label,stages[si].label),{tag:"转场",fast:true},function(){ setTimeout(runYear,240); }); }
+          else setTimeout(runYear,240);
+          return; }
+        var ev=taken[ei++];
+        if(ev.choice){ addNarr(ev.choice.prompt,{},function(){ setChoices(ev.choice.opts,function(o){
+              if(o.__skip){ addUser("（顺其自然）"); clearDock();
+                applyProfile({v:{freedom:1}});
+                addNarr(say('skipflow',["这一次，"+he()+"没有刻意选择，任由生活把"+he()+"带向某个方向。",""+he()+"耸耸肩，把决定交给了时间。"]),{},function(){setTapNext('稍后继续',function(){clearDock();playEvents();});}); }
+              else { addUser(o.t);applyProfile(o);if(o.eff)o.eff();var t=o.text?o.text():'';clearDock();
+                addNarr(t,{},function(){setTapNext('稍后继续',function(){clearDock();playEvents();});}); }
+            }, ev.choice.skippable?"顺其自然，不刻意选":null); }); }
+        else { var t=ev.text();if(ev.eff)ev.eff();addNarr(t,{},function(){setTapNext('稍后继续',function(){clearDock();playEvents();});}); }
+      }
+      playQueue();
+    }
+    playPre();
+  }
+  function reachBeatFraming(){
+    if(!S.userLevel) return null;
+    if(S.reach<=-2) return say('rf_over',[
+      "说句实话——"+S.school.name+"的分数线，比"+he()+"当年的成绩高出不少。在这条 IF 线里，"+he()+"是踩着线、甚至带点运气挤进来的。这意味着开局就比别人吃力，但也意味着，接下来的每一点进步都格外珍贵。",
+      "这其实是一场冒险："+he()+"的分数本够不太到"+S.school.name+"。假设命运给了"+he()+"这个机会，那么这条路注定要走得比别人更用力。"]);
+    if(S.reach>=2) return say('rf_under',[
+      he()+"的分数，其实足够去更高的地方。但在这条线里，"+he()+"选择了"+S.school.name+"——于是"+he()+"很可能成为这里学有余力、闪闪发光的那一个。",
+      "带着高出录取线一截的底子，"+he()+"在"+S.school.name+"会过得相当从容。'鸡头'还是'凤尾'，这条线替"+he()+"选了前者。"]);
+    return null;
+  }
+
+  /* ---------- 毕业季 ---------- */
+  function graduation(){
+    document.getElementById('chat-status').textContent='毕业季';
+    var intro=say('grad_intro',[
+      "四年很快到了尽头。"+pick(S.school.scenes)+"还是老样子，但"+he()+"已经不是大一那个人了。毕业季的十字路口，"+he()+"决定——",
+      "毕业的钟声敲响。"+S.school.city+"的这座校园即将放"+he()+"走向更大的世界。站在岔路口，"+he()+"选择——"]);
+    addNarr(intro,{tag:"毕业季",slow:true},function(){
+      var opts=[{t:"考研 / 保研，继续深造",k:"考研",v:{ambition:1,meaning:1}},
+        {t:"出国留学",k:"留学",v:{freedom:1,ambition:1}},
+        {t:"考公 / 进体制",k:"考公",v:{security:2,belonging:1}},
+        {t:"直接就业，进入社会",k:"就业",v:{money:1,security:1}},
+        {t:"自己干，去创业",k:"创业",d:{risk:1},v:{ambition:1,freedom:1}},
+        {t:"先给自己一个间隔年",k:"gap",v:{freedom:2,meaning:1}}];
+      setChoices(opts,function(o){ if(o.__skip){ addUser("（让生活替我选）"); applyProfile({v:{freedom:1}}); clearDock(); resolveOutcome(autoPath()); }
+        else { addUser(o.t);applyProfile(o);clearDock();resolveOutcome(o.k); } }, "我不知道，让生活替我选");
+    });
+  }
+  function autoPath(){
+    if(pref("freedom")>=3&&pref("meaning")>=1&&S.stats.money>=45) return "gap";
+    if(S.p.risk>=2&&pref("ambition")>=2&&S.stats.social>58) return "创业";
+    if(pref("security")>=2&&(S.school.type.indexOf("政法")>=0||S.major.lean.indexOf("公")>=0||S.stats.grit>=55)) return "考公";
+    if(S._lean==="深造"||S.stats.academic>=68||pref("ambition")+pref("meaning")>=4) return "考研";
+    if(pref("freedom")>=2&&S.stats.money>=58) return "留学";
+    if(pref("money")>=1||pref("security")>=1) return "就业";
+    return "就业";
+  }
+
+  function resolveOutcome(k){
+    var st=S.stats,sc=S.school,p=S.p,txt="",grad=false,gradTxt="";
+    S.path=k;
+    var penalty = S.reach<=-2? 12 : (S.reach===-1?6:0);
+    if(k==="考研"){
+      var score=st.academic*0.5+st.grit*0.4+(sc.study==="high"?12:sc.study==="mid"?4:0)+(p.grit>=1?6:0)
+        +Math.max(0,pref("ambition"))*3+Math.max(0,pref("meaning"))*2+Math.max(0,pref("security"))-Math.max(0,pref("money"))*1.5-penalty;
+      if(sc.study==="high"&&st.academic>=72&&S.reach>=0&&chance(.6)){ txt=say('ky_bao',[he()+"凭扎实的绩点拿到保研名额，没经历那场最残酷的考试，就稳稳上岸了。",he()+"成绩一路稳居前列，保研顺理成章——别人挤独木桥时，"+he()+"已上了岸。"]);S.outcome="保研成功";grad=true; }
+      else if(score>=66){ txt=say('ky_win',[he()+"把自己关进自习室大半年，每天和那摞书死磕。出分那天，"+he()+"盯着屏幕，眼眶一下热了——上岸了。",he()+"赌上了一整年。查分的手在抖，看到结果时，"+he()+"在走廊里没忍住红了眼。"]);S.outcome="考研上岸";grad=true; }
+      else if(score>=50){ txt=say('ky_tj',[he()+"拼尽全力，分数却卡在线边。纠结后，"+he()+"接受了调剂，去另一座城市继续读研——没有白走的路。"]);S.outcome="考研调剂";grad=true; }
+      else { txt=say('ky_fail',[he()+"第一年没考上。"+R("二战那年更苦，最后"+(chance(.6)?"终于圆梦":"还是擦肩而过，转身投了简历，意外拿到一份不错的工作"),"想了很久，"+he()+"放下执念走进职场，反而轻松了")+"。",he()+"落榜了。那段日子很灰暗，但"+he()+"最终"+(chance(.5)?"二战上岸":"换了条路，把遗憾变成了往前走的力气")+"。"]);S.outcome="考研波折";grad=S.outcome.indexOf("上岸")>=0?true:chance(.4); }
+      if(grad)gradTxt=gradSchool();
+    }
+    else if(k==="留学"){
+      if(S.era.studyHard){ txt=say('ab_era',["在"+S.era.label+"，出国留学还是极少数人的事，手续繁难、费用惊人。"+he()+"最终"+(S.family==="宽裕"&&chance(.5)?"凭着家里的支持和一股闯劲，远渡重洋":"把这个念头收了起来，先在国内立足")+"。"]);
+        if(S.family==="宽裕"&&chance(.5)){S.outcome="负笈远行";grad=true;gradTxt=gradAbroad();}else{S.path="就业";S.outcome="转向就业";} }
+      else if((st.money>=55||S.family==="宽裕")&&penalty<10){ var ok=st.academic>=60||chance(.5);
+        ok = ok || (pref("freedom")+pref("ambition")>=4&&st.academic>=54);
+        txt= ok? say('ab_ok',[he()+"准备语言、文书、申请，熬过焦虑的等待，最终收到了"+pick(["一座海滨城市","一个陌生国度","梦校"])+"的offer。登机那天，既兴奋又有点想家。"]) : (he()+"申请季并不顺利，最后去了一所没那么理想但踏实的学校。后来回头看，那也是珍贵的远行。");
+        S.outcome=ok?"留学梦校":"留学启程";grad=true;gradTxt=gradAbroad(); }
+      else { txt=say('ab_no',[he()+"算了算费用"+(penalty>=10?"，又掂量了下并不亮眼的成绩":"")+"，留学的门槛让"+he()+"犹豫了。最终"+he()+"先工作、先攒钱，告诉自己'以后还有机会'。"]);S.path="就业";S.outcome="转向就业"; }
+      if(S.path==="就业"&&!grad) txt+=" "+buildJob(false);
+    }
+    else if(k==="考公"){ var pass=st.grit*0.5+(p.grit>=1?10:0)+(sc.type.indexOf("人文")>=0||sc.type.indexOf("政法")>=0||S.major.lean.indexOf("公")>=0?10:0)
+        +Math.max(0,pref("security"))*5+Math.max(0,pref("belonging"))*2-Math.max(0,pref("freedom"))*2+rng()*40-penalty*0.5;
+      if(S.era.key==="20s") txt="在'考公热'席卷的当下，"+he()+"也加入了浩浩荡荡的大军。"; else txt="";
+      if(pass>=55){ txt+=say('gk_win',[he()+"在无数刷题的夜晚后，于面试名单里找到了自己的名字——上岸了，回到"+pick([sc.city,"家乡的小城","一座安稳的城市"])+"，端起了那只'稳稳的碗'。"]);S.outcome="考公上岸"; }
+      else { txt+=say('gk_hard',[he()+"考了一次没成，又考了一次。这条路比想象中拥挤，最后"+he()+(chance(.5)?"终于上岸，松了好大一口气":"先去企业落了脚，把考公当成还没关上的选项")+"。"]);S.outcome="考公辗转"; } }
+    else if(k==="创业"){ var win=(p.risk>=1?1:0)+(st.social>60?1:0)+(st.grit>60?1:0)+(pref("ambition")>=2?1:0)+(pref("freedom")>=2?1:0)+(pref("money")>=2?1:0)+(chance(.35+S.era.riskBonus)?1:0);
+      if(win>=3){ txt=say('cy_win',[he()+"和几个伙伴扎进创业的浪里。亏过、吵过、差点散伙，但项目最终活了下来，甚至小有名气。这条最不稳的路，"+he()+"竟走通了。"]);S.outcome="创业小成"; }
+      else if(win>=1){ txt=say('cy_mid',[he()+"创业的第一仗打得很惨，钱和热情都烧光了。但"+he()+"不后悔——那段经历让"+he()+"成长得比谁都快，后来带着这身本事进了行业头部公司。"]);S.outcome="创业受挫后转身"; }
+      else { txt=say('cy_lose',[he()+"满腔热血地开始，却很快被现实浇醒。失败后"+he()+"沉淀了一阵，重新出发，反而看清了真正想要的东西。"]);S.outcome="创业一课"; } }
+    else if(k==="gap"){ var gapAct=pick(["旅行","支教","打工换宿","好好休息"]); txt=say('gap',[he()+"做了个大胆又奢侈的决定：给自己一年，"+(gapAct==="好好休息"?"只是好好休息":"去"+gapAct)+"。这一年没有KPI，却让"+he()+"第一次认真问自己：我到底想成为什么样的人。年末，"+he()+"带着答案，重新走进人群。"]);S.outcome="间隔年后再出发"; }
+    else { S.outcome="直接就业"; txt=buildJob(false); }
+
+    addNarr(txt,{},function(){
+      if(gradTxt){ setTapNext('稍后继续',function(){ clearDock();
+        addNarr(gradTxt,ENDING_PACE,function(){ var jt=buildJob(true);
+          setTapNext('稍后继续',function(){ clearDock(); addNarr(jt,ENDING_PACE,function(){ logBeat("毕业季",txt);logBeat("此后",gradTxt+" "+jt);finish(); }); }); }); });
+      } else { logBeat("毕业季",txt);finish(); }
+    });
+  }
+  function gradSchool(){ return say('gs',[ "读研是另一种修行："+S.cast.mentor+"严格得让人头疼，"+he()+"的第一篇论文被改得满江红。两三年下来，"+he()+"明显沉稳了，眼界也宽了。",
+    "研究生阶段，"+he()+"扎进更深的领域。组会、实验、改不完的稿子，"+he()+"在抱怨里悄悄变强。"]); }
+  function gradAbroad(){ return say('ga',[ "异国的两年，"+he()+"学会一个人扛事：做饭、赶due、在陌生语言里把自己讲清楚。回望那段时光，孤独和成长几乎是同一件事。",
+    "留学的日子，"+he()+"见了更大的世界，也更想家。它没让"+he()+"脱胎换骨，却让"+he()+"变得辽阔。"]); }
+  function buildJob(after){ var sc=S.school,ind=pick((S.major.ind||[]).concat(sc.industries)),region=pick(sc.regions);
+    var prefix=after?"学成之后，":"", role;
+    if(pref("money")>=2&&S.major.name.indexOf("经济")>=0) role=pick(["做投研","做金融产品","跑商业分析"])+"的人";
+    else if(pref("ambition")>=2&&S.stats.social>58) role=pick(["做产品","做增长","带业务线"])+"的人";
+    else if(pref("meaning")>=2&&(S.major.name.indexOf("中文")>=0||S.major.name.indexOf("艺术")>=0)) role=pick(["做内容","做创作","做公共表达"])+"的人";
+    else if(pref("security")>=2) role="一名"+pick(["稳定岗位的从业者","专业扎实的职场人","稳步晋升的年轻人"]);
+    else if(S.talent==="技术"||S.major.name.indexOf("计算机")>=0) role="一名"+pick(["工程师","开发","算法岗"]);
+    else if(S.talent==="文艺"||S.major.name.indexOf("艺术")>=0||S.major.name.indexOf("中文")>=0) role=pick(["做内容","做设计","做媒体"])+"的人";
+    else if(S.stats.social>62) role=pick(["做运营","跑市场","做商务"])+"的人";
+    else role="一名"+ind+"行业的从业者";
+    var eraJob = (!after && S.path==="就业")? (" "+pick(S.era.jobLine)) : "";
+    var mood=S.stats.wellbeing>58?"日子忙碌，但"+he()+"大体踏实而满足。":S.stats.wellbeing>42?"有过迷茫，也有过通勤路上的疲惫，但"+he()+"在慢慢找到自己的位置。":he()+"偶尔深夜怀疑这一切值不值，但第二天还是照常出发——这大概就是长大。";
+    var career=schoolPick("careerFlavor");
+    return prefix+he()+"最终在"+region+"落了脚，成了"+role+"，进入"+ind+"领域。"+eraJob+" "+(career?career+" ":"")+mood;
+  }
+
+  /* ---------- 结局 ---------- */
+  function outcomeCat(){ var o=S.outcome||"";
+    if(/上岸|梦校|小成|保研|远行/.test(o)) return "up";
+    if(/波折|受挫|辗转|调剂|一课/.test(o)) return "rough";
+    return "ordinary";
+  }
+  function finish(){
+    if(!S.finalSummaryShown){
+      S.finalSummaryShown=true;
+      var finalIntro="全部对话完成。我把这条 IF 线收束成最后的总结。";
+      addNarr(finalIntro,{tag:"最终总结",ending:true},finish);
+      return;
+    }
+    document.getElementById('end-sub').textContent=S.era.label+" · "+S.school.name+" · "+S.major.name+" · "+(S.outcome||"另一种人生");
+    var body=document.getElementById('end-body');body.innerHTML='';
+    var tl=document.createElement('div');tl.className='timeline';
+    S.log.forEach(function(it){var d=document.createElement('div');d.className='tl';d.innerHTML='<b>'+it.label+'</b>'+it.text;tl.appendChild(d);});
+    body.appendChild(tl);
+    var w=document.createElement('div');w.className='bubble narr';w.style.maxWidth='100%';w.textContent=personaSummary();body.appendChild(w);
+    var L=document.createElement('div');L.className='letter';L.innerHTML=buildLetter()+'<div class="sign">—— 十年后的'+he()+'</div>';body.appendChild(L);
+    show('screen-end');document.getElementById('screen-end').querySelector('.feed').scrollTop=0;
+  }
+  function personaSummary(){ var p=S.p,traits=[];
+    traits.push(p.social>=1?"外向、热闹":p.social<=-1?"安静、内秀":"温和");
+    traits.push(p.grit>=1?"自律能扛":p.grit<=-1?"随性散漫":"努力得不动声色");
+    traits.push(p.risk>=1?"敢闯":p.risk<=-1?"求稳":"谨慎而灵活");
+    var motives=[];
+    if(pref("ambition")>=2) motives.push("想往上走");
+    if(pref("security")>=2) motives.push("很在意安稳");
+    if(pref("meaning")>=2) motives.push("需要意义感");
+    if(pref("money")>=2) motives.push("早早懂得现实压力");
+    if(pref("freedom")>=2) motives.push("不愿被标准答案困住");
+    if(pref("belonging")>=2) motives.push("珍惜关系与同行的人");
+    var mtext=motives.length?("，也"+motives.join("、")):"";
+    return say('sum',["回头看这条 IF 线："+he()+"是个"+traits.join("、")+"的人"+(S.talentLabel?("，"+S.talentLabel):"")+mtext+"。"+S.era.label+"的际遇，加上"+S.school.name+"的"+S.school.vibe+"，把"+he()+"塑造成了现在的样子——"+(S.outcome||"一个独一无二的你")+"。这不是预测，只是无数种可能里，温柔的一种。"]);
+  }
+  function memoryLine(text){ text=String(text||"").trim(); if(!text) return "对了，多年以后，我还是会想起那段校园日子。"; if(/[。！？!?]$/.test(text)) return "对了，多年以后，我还是会想起这件事："+text; return "对了，还记得"+text+"吗？"; }
+  function buildLetter(){ var sc=S.school,cb=schoolPick("hiddenDetails",pick(sc.scenes)),food=schoolPick("foodMemory"),cat=outcomeCat(),good=S.stats.wellbeing>=50;
+    var open=say('lt_open',["此刻的你，大概正为'选哪条路'而失眠吧。我想告诉你：别怕。","我知道你现在很焦虑，关于未来，关于'万一选错了怎么办'。"]);
+    var mid = cat==="up"? say('lt_up',["后来的我走到了一个还不错的地方。但那不是因为我多聪明，而是因为你在"+sc.name+"那几年，没有放弃自己。"])
+      : cat==="rough"? say('lt_rough',["路没有想象中顺，我摔过跤、绕过远路。可正是那些'不顺'，把我磨成了一个更结实的人。所以就算前面有坎，也请你大胆走。"])
+      : say('lt_ord',["我没变成什么了不起的人物，过着普通却安稳的日子。但我想说——平凡不是失败，把自己的生活过好，本身就很了不起。"]);
+    var close=memoryLine(cb)+(food?(" 也会想起"+food+"。"):"")+"后来，我偶尔还会梦到那里。"+(good?"谢谢你当年的每一个选择。":"谢谢你撑过了那些难熬的日子。")+"无论你最后选哪条路，都会有一个我，在路的尽头等你，并且为你骄傲。";
+    return open+" "+mid+" "+close;
+  }
+
+  /* ---------- 哲思与荐书（小众优先；对症当下困境） ---------- */
+  var QUOTES={
+    up:[["越是从容，越走得远。","——蒙田"],["生活只能向后理解，但必须向前度过。","——克尔凯郭尔"]],
+    rough:[["困扰人的不是事物本身，而是人对它的看法。","——爱比克泰德"],["不嘲笑，不悲叹，不诅咒，只求理解。","——斯宾诺莎"]],
+    ordinary:[["人类几乎所有的不幸，都源于不能独自安静地待在房间里。","——帕斯卡"],["我经历过许多可怕的事，其中大多数从未真正发生。","——蒙田"]]
+  };
+  var BOOKS={
+    up:["《心流》— 米哈里·契克森米哈赖：把全力以赴的状态，变成可复制的能力。"],
+    rough:["《活出生命的意义》— 维克多·弗兰克尔：当一切都被夺走，人依然能选择如何面对。"],
+    ordinary:["《被讨厌的勇气》— 岸见一郎：你的人生，不必活在别人的期待里。"]
+  };
+  function pickQuote(){ var c=outcomeCat();var arr=QUOTES[c]||QUOTES.ordinary;return arr[Math.floor(Math.random()*arr.length)]; }
+  function pickBook(){ var c=outcomeCat();var arr=BOOKS[c]||BOOKS.ordinary;return arr[Math.floor(Math.random()*arr.length)]; }
+
+  /* ---------- 分享海报（Canvas + 离线二维码） ---------- */
+  function wrapText(ctx,text,x,y,maxW,lh){ var chars=text.split(''),line='',yy=y;
+    for(var i=0;i<chars.length;i++){ var test=line+chars[i];
+      if(ctx.measureText(test).width>maxW&&line){ ctx.fillText(line,x,yy);line=chars[i];yy+=lh; } else line=test; }
+    if(line)ctx.fillText(line,x,yy); return yy; }
+  function drawQR(ctx,text,x0,y0,size){ try{ var qr=qrcode(0,'M');qr.addData(text);qr.make();var n=qr.getModuleCount(),cell=size/n;
+      ctx.fillStyle='#ffffff';ctx.fillRect(x0-10,y0-10,size+20,size+20);ctx.fillStyle='#073a6f';
+      for(var r=0;r<n;r++)for(var c=0;c<n;c++){ if(qr.isDark(r,c))ctx.fillRect(Math.floor(x0+c*cell),Math.floor(y0+r*cell),Math.ceil(cell),Math.ceil(cell)); }
+    }catch(e){ ctx.fillStyle='#ffffff';ctx.fillRect(x0,y0,size,size); } }
+  function makePoster(){
+    var W=750,H=1334,cv=document.createElement('canvas');cv.width=W;cv.height=H;var x=cv.getContext('2d');
+    var g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,'#e9fdff');g.addColorStop(.45,'#ffffff');g.addColorStop(1,'#eef9fb');x.fillStyle=g;x.fillRect(0,0,W,H);
+    var glow=x.createRadialGradient(W*.18,120,10,W*.18,120,420);glow.addColorStop(0,'rgba(18,199,208,.35)');glow.addColorStop(1,'rgba(18,199,208,0)');x.fillStyle=glow;x.fillRect(0,0,W,H);
+    var glow2=x.createRadialGradient(W*.9,H*.84,10,W*.9,H*.84,420);glow2.addColorStop(0,'rgba(11,94,183,.18)');glow2.addColorStop(1,'rgba(11,94,183,0)');x.fillStyle=glow2;x.fillRect(0,0,W,H);
+    x.strokeStyle='rgba(18,183,199,.45)';x.lineWidth=2;x.strokeRect(28,28,W-56,H-56);
+    x.textAlign='center';
+    x.fillStyle='#0b5eb7';x.font='28px serif';x.fillText('另 一 种 人 生',W/2,108);
+    x.fillStyle='#073a6f';x.font='bold 74px serif';x.fillText('人生 IF 线',W/2,196);
+    x.fillStyle='#5d7b88';x.font='24px sans-serif';x.fillText(S.era.label+' · '+S.school.name+' · '+S.major.name,W/2,250);
+    x.fillStyle='#12b7c7';x.fillText('· '+(S.outcome||'')+' ·',W/2,290);
+    // 玩家自己的话
+    var y=370;x.fillStyle='rgba(18,183,199,.2)';x.fillRect(70,y-44,W-140,2);
+    x.fillStyle='#5d7b88';x.font='20px sans-serif';x.fillText('我想对此刻的自己说',W/2,y-12);
+    x.fillStyle='#123646';x.font='30px serif';x.textAlign='left';
+    var words=S.mine||'别怕选错，每条路上都有一个我在等你。';
+    var endY=wrapText(x,'「'+words+'」',95,y+34,W-190,46);
+    // 哲思
+    var qy=endY+90;var q=pickQuote();
+    x.textAlign='center';x.fillStyle='#0b5eb7';x.font='italic 27px serif';
+    var qEnd=wrapText(x,q[0],110,qy,W-220,40);
+    x.fillStyle='#5d7b88';x.font='20px sans-serif';x.fillText(q[1],W/2,qEnd+40);
+    // 荐书
+    var by=qEnd+110;x.fillStyle='rgba(18,183,199,.2)';x.fillRect(70,by-30,W-140,2);
+    x.fillStyle='#5d7b88';x.font='20px sans-serif';x.fillText('送你一本书，陪你走过眼下',W/2,by);
+    x.fillStyle='#123646';x.font='22px sans-serif';
+    wrapText(x,pickBook(),95,by+40,W-190,34);
+    // 二维码
+    var qrSize=150,qx=(W-qrSize)/2,qy2=H-260;
+    drawQR(x,GAME_URL,qx,qy2,qrSize);
+    x.fillStyle='#5d7b88';x.font='20px sans-serif';x.textAlign='center';x.fillText('扫码，写下你的人生 IF 线',W/2,qy2+qrSize+50);
+    try{ return cv.toDataURL('image/png'); }catch(e){ return null; }
+  }
+  function showPoster(){ var url=makePoster();
+    if(url){ document.getElementById('poster-img').src=url; ov('ov-poster',true); }
+    else toast('海报生成失败了，但你的人生真实发生过。');
+  }
+
+  /* ---------- overlays / toast / save ---------- */
+  function ov(id,on){ document.getElementById(id).classList[on?'add':'remove']('active'); }
+  function toast(msg){ var t=document.createElement('div');
+    t.style.cssText='position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:rgba(255,255,255,.96);border:1px solid var(--line);color:var(--blue);padding:12px 20px;border-radius:30px;font-family:system-ui,sans-serif;font-size:14px;z-index:200;opacity:0;transition:opacity .3s;max-width:80%;text-align:center;box-shadow:0 14px 34px rgba(7,58,111,.16);';
+    t.textContent=msg;document.body.appendChild(t);requestAnimationFrame(function(){t.style.opacity='1';});
+    setTimeout(function(){t.style.opacity='0';setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},350);},1900); }
+  function saveLife(){ try{ localStorage.setItem('lifeif_last',JSON.stringify({era:S.era.label,school:S.school.name,major:S.major.name,outcome:S.outcome,when:Date.now()}));toast('已经把这一生存进了记忆里。'); }catch(e){ toast('这一次没能保存，但它发生过。'); } }
+
+  /* ---------- actions ---------- */
+  document.addEventListener('click',function(e){ var el=e.target.closest('[data-act]');if(!el)return;var act=el.getAttribute('data-act');
+    if(act==='start'||act==='replay'){ ov('ov-poster',false);ov('ov-mine',false);startProfiling(); }
+    else if(act==='save'){ saveLife(); }
+    else if(act==='mine'){ document.getElementById('mine-text').value=S.mine||'';ov('ov-mine',true);setTimeout(function(){try{document.getElementById('mine-text').focus();}catch(x){}},150); }
+    else if(act==='mine-cancel'){ ov('ov-mine',false); }
+    else if(act==='mine-make'){ S.mine=(document.getElementById('mine-text').value||'').trim();ov('ov-mine',false);showPoster(); }
+    else if(act==='poster-close'){ ov('ov-poster',false); }
+  });
+  document.getElementById('pick-next').addEventListener('click',function(){ if(!selectedSchool)return;
+    if(selectedSchool===CUSTOM){ askCustomName(function(){S.school=CUSTOM;goMajor();}); } else { S.school=selectedSchool;goMajor(); } });
+
+  function updateStatusTime(){
+    var el=document.getElementById('lifeif-status-time');
+    if(!el)return;
+    var d=new Date(),h=String(d.getHours()).padStart(2,'0'),m=String(d.getMinutes()).padStart(2,'0'),s=String(d.getSeconds()).padStart(2,'0');
+    el.textContent=h+':'+m+':'+s;
+  }
+  updateStatusTime();
+  setInterval(updateStatusTime,1000);
+  window.addEventListener('load',function(){ startProfiling(); });
+})();
+</script>
+</body></html>
